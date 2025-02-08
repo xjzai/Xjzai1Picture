@@ -1,13 +1,16 @@
 <template>
-  <div id="BasicLayout">
+  <div id="basicLayout">
+
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
-        <GlobalHeader/>
+        <GlobalHeader />
       </a-layout-header>
       <a-layout-content class="content">
         <router-view />
+        <!--          000000000-->
       </a-layout-content>
       <a-layout-footer class="footer">
+        <!--        <router-view/>-->
         <a href="http://www.xjzai1.fun/" target="_blank">xjzai1个人网站 by xjzai1</a>
       </a-layout-footer>
     </a-layout>
@@ -15,6 +18,8 @@
 </template>
 <script setup lang="ts">
 import GlobalHeader from "@/components/GlobalHeader.vue"
+
+
 </script>
 <style scoped>
 #basicLayout .header {
