@@ -1,8 +1,15 @@
-<script setup lang="ts">
-</script>
-
 <template>
-  <div style="min-height: 200px;">
-    666
+  <div id="homePage">
+    <h1>{{ msg }}</h1>
   </div>
 </template>
+
+<script setup lang="ts">
+const msg = "欢迎来到主页~";
+</script>
+
+<style scoped>
+#homePage {
+}
+</style>
+

@@ -19,16 +19,23 @@
       </a-col>
       <a-col flex="120px">
         <div class="user-login-status">
-          <a-button type="primary" href="/user/login">登录</a-button>
+          <div v-if="loginUserStore.loginUser.id">
+            {{ loginUserStore.loginUser.userName ?? '无名' }}
+          </div>
+          <div v-else>
+            <a-button type="primary" href="/user/login">登录</a-button>
+          </div>
         </div>
       </a-col>
     </a-row>
   </div>
 </template>
 <script lang="ts" setup>
-import { h, ref } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import { HomeOutlined } from '@ant-design/icons-vue'
 import { MenuProps } from 'ant-design-vue'
+
+const loginUserStore = useLoginUserStore()
 
 const current = ref<string[]>(['home'])
 const items = ref<MenuProps['items']>([
@@ -50,6 +57,7 @@ const items = ref<MenuProps['items']>([
   },
 ])
 import { useRouter } from 'vue-router'
+import { useLoginUserStore } from '@/stores/user'
 const router = useRouter()
 
 router.beforeEach((to, from, next) => {
@@ -71,9 +79,8 @@ const doMenuClick = ({ key }: { key: string }) => {
   }).catch((err) => {
     console.error('Navigation failed', err);
   });
-  // router.push('/')
-  // console.log(6666)
 }
+
 </script>
 <style scoped>
 .title-bar {

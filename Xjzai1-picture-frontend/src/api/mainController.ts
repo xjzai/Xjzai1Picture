@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import myAxios from '@/plugins/myAxios'
+import request from '@/plugins/myAxios'
 
 /** health GET /api/health */
 export async function healthUsingGet(options?: { [key: string]: any }) {
