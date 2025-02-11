@@ -11,6 +11,7 @@ public class BusinessException extends RuntimeException {
     private final int code;
     private final String description;
 
+    // todo decription有时候会返回数据库信息，不安全，后续看看怎么改
     public BusinessException(int code, String message, String description) {
         super(message);
         this.code = code;

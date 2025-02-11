@@ -4,6 +4,7 @@ import com.xjzai1.xjzai1picturebackend.common.BaseResponse;
 import com.xjzai1.xjzai1picturebackend.common.ResultUtils;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
+import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.UserLoginRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.UserRegisterRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserLoginVo;
@@ -20,14 +21,6 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    /**
-     * 健康检查
-     */
-    @GetMapping("/health")
-    public BaseResponse<String> health() {
-        return ResultUtils.success("ok");
-    }
-
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         ThrowUtils.throwIf(userRegisterRequest == null, ErrorCode.PARAMS_ERROR);
@@ -40,11 +33,26 @@ public class UserController {
 
     @PostMapping("/login")
     public BaseResponse<UserLoginVo> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
-        ThrowUtils.throwIf(userLoginRequest == null, ErrorCode.PARAMS_ERROR);
+        ThrowUtils.throwIf(userLoginRequest == null || request == null, ErrorCode.PARAMS_ERROR);
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
         UserLoginVo userLoginVo = userService.userLogin(userAccount, userPassword, request);
         return ResultUtils.success(userLoginVo);
     }
+
+    @GetMapping("/get/login")
+    public BaseResponse<UserLoginVo> getLoginUser(HttpServletRequest request) {
+        ThrowUtils.throwIf(request == null, ErrorCode.PARAMS_ERROR);
+        User user = userService.getLoginUser(request);
+        return ResultUtils.success(userService.getLoginUserVO(user));
+    }
+
+    @PostMapping("/logout")
+    public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
+        ThrowUtils.throwIf(request == null, ErrorCode.PARAMS_ERROR);
+        boolean result = userService.userLogout(request);
+        return ResultUtils.success(result);
+    }
+
 }
 
