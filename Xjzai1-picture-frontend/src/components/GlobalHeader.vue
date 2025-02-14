@@ -50,14 +50,15 @@
 <script lang="ts" setup>
 import { DownOutlined } from '@ant-design/icons-vue'
 import { LogoutOutlined } from '@ant-design/icons-vue';
-import { h, onMounted, ref } from 'vue'
+import { computed, h, onMounted, ref } from 'vue'
 import { HomeOutlined } from '@ant-design/icons-vue'
 import { MenuProps, message } from 'ant-design-vue'
 
 const loginUserStore = useLoginUserStore()
 
 const current = ref<string[]>(['home'])
-const items = ref<MenuProps['items']>([
+// 菜单列表
+const originItems = [
   {
     key: '/',
     icon: () => h(HomeOutlined),
@@ -74,7 +75,25 @@ const items = ref<MenuProps['items']>([
     label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),
     title: '编程导航',
   },
-])
+]
+
+// 过滤菜单项
+const filterMenus = (menus = [] as MenuProps['items']) => {
+  return menus?.filter((menu) => {
+    if (menu.key.startsWith('/admin')) {
+      const loginUser = loginUserStore.loginUser
+      if (!loginUser || loginUser.userRole !== "admin") {
+        return false
+      }
+    }
+    return true
+  })
+}
+
+// 展示在菜单的路由数组
+const items = computed<MenuProps['items']>(() => filterMenus(originItems))
+
+
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/user'
 import { userLogoutUsingPost } from '@/api/userController'
