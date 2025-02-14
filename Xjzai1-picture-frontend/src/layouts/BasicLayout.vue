@@ -7,10 +7,8 @@
       </a-layout-header>
       <a-layout-content class="content">
         <router-view />
-        <!--          000000000-->
       </a-layout-content>
       <a-layout-footer class="footer">
-        <!--        <router-view/>-->
         <a href="http://www.xjzai1.fun/" target="_blank">xjzai1个人网站 by xjzai1</a>
       </a-layout-footer>
     </a-layout>
