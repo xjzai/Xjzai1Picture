@@ -9,7 +9,7 @@ import com.xjzai1.xjzai1picturebackend.constant.UserConstant;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
-import com.xjzai1.xjzai1picturebackend.model.dto.UserQueryRequest;
+import com.xjzai1.xjzai1picturebackend.model.dto.user.UserQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserLoginVo;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserVo;
 import com.xjzai1.xjzai1picturebackend.service.UserService;

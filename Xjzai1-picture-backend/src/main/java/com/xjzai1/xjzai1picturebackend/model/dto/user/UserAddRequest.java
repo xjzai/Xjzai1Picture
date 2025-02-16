@@ -1,4 +1,4 @@
-package com.xjzai1.xjzai1picturebackend.model.dto;
+package com.xjzai1.xjzai1picturebackend.model.dto.user;
 
 import lombok.Data;
 

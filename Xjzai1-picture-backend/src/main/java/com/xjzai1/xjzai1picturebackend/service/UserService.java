@@ -3,8 +3,7 @@ package com.xjzai1.xjzai1picturebackend.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xjzai1.xjzai1picturebackend.model.dto.UserQueryRequest;
-import com.xjzai1.xjzai1picturebackend.model.dto.UserRegisterRequest;
+import com.xjzai1.xjzai1picturebackend.model.dto.user.UserQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserLoginVo;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserVo;
 
