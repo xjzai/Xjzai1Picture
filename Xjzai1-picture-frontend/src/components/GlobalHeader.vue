@@ -21,14 +21,17 @@
         <div class="user-login-status">
           <div v-if="loginUserStore.loginUser.id">
             <a-dropdown>
-                <a-space wrap :size="8">
-                  <a-avatar>
-                    <template #icon>
-                      <img src="https://huacheng.gz-cmc.com/upload/news/image/2023/05/26/3e67c105f5ac4a38b45a2c7f0a40688f.jpeg" alt="头像"/>
-                    </template>
-                  </a-avatar>
-                  {{ loginUserStore.loginUser.userName ?? '无名' }}
-                </a-space>
+              <a-space wrap :size="8">
+                <a-avatar>
+                  <template #icon>
+                    <img
+                      src="https://huacheng.gz-cmc.com/upload/news/image/2023/05/26/3e67c105f5ac4a38b45a2c7f0a40688f.jpeg"
+                      alt="头像"
+                    />
+                  </template>
+                </a-avatar>
+                {{ loginUserStore.loginUser.userName ?? '无名' }}
+              </a-space>
               <template #overlay>
                 <a-menu>
                   <a-menu-item @click="doLogout">
@@ -48,11 +51,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { DownOutlined } from '@ant-design/icons-vue'
-import { LogoutOutlined } from '@ant-design/icons-vue';
-import { computed, h, onMounted, ref } from 'vue'
-import { HomeOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined, LogoutOutlined } from '@ant-design/icons-vue'
+import { computed, h, ref } from 'vue'
 import { MenuProps, message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
+import { useLoginUserStore } from '@/stores/user'
+import { userLogoutUsingPost } from '@/api/userController'
 
 const loginUserStore = useLoginUserStore()
 
@@ -82,7 +86,7 @@ const filterMenus = (menus = [] as MenuProps['items']) => {
   return menus?.filter((menu) => {
     if (menu.key.startsWith('/admin')) {
       const loginUser = loginUserStore.loginUser
-      if (!loginUser || loginUser.userRole !== "admin") {
+      if (!loginUser || loginUser.userRole !== 'admin') {
         return false
       }
     }
@@ -92,11 +96,6 @@ const filterMenus = (menus = [] as MenuProps['items']) => {
 
 // 展示在菜单的路由数组
 const items = computed<MenuProps['items']>(() => filterMenus(originItems))
-
-
-import { useRouter } from 'vue-router'
-import { useLoginUserStore } from '@/stores/user'
-import { userLogoutUsingPost } from '@/api/userController'
 
 const router = useRouter()
 
@@ -138,7 +137,6 @@ const doLogout = async () => {
     message.error('退出登录失败，' + res.data.message)
   }
 }
-
 </script>
 <style scoped>
 .title-bar {

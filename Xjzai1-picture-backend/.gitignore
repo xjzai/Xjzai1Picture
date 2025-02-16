@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### 本地才能用 ###
+application-local.properties
+
 ### STS ###
 .apt_generated
 .classpath

@@ -17,12 +17,6 @@
       :pagination="pagination"
       @change="doTableChange"
     >
-      <template #headerCell="{ column }">
-        <template v-if="column.dataIndex === 'id'">
-          <span> 用户ID </span>
-        </template>
-      </template>
-
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'userAvatar'">
           <a-image :src="record.userAvatar" :width="120" />
@@ -52,10 +46,9 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 
-listUserVoByPageUsingPost()
 const columns = [
   {
-    name: '用户ID',
+    title: '用户ID',
     dataIndex: 'id',
   },
   {
@@ -109,6 +102,7 @@ const fetchData = async () => {
   } else {
     message.error('获取数据失败，' + res.data.message)
   }
+  console.log(searchParams);
 }
 
 // 分页参数
@@ -149,7 +143,6 @@ const doDelete = async (id: string) => {
     message.error('删除失败')
   }
 }
-
 
 // 页面加载时请求一次
 onMounted(() => {
