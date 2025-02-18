@@ -10,6 +10,7 @@ import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.user.UserQueryRequest;
+import com.xjzai1.xjzai1picturebackend.model.enums.UserRoleEnum;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserLoginVo;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserVo;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -195,6 +197,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq(StrUtil.isNotBlank(userRole), "user_role", userRole);
         queryWrapper.orderBy(StrUtil.isNotBlank(sortField), sortOrder.equals("ascend"), sortField);
         return queryWrapper;
+    }
+
+    @Override
+    public boolean isAdmin(User user){
+        return user != null && Objects.equals(user.getUserRole(), UserRoleEnum.ADMIN.getValue());
     }
 }
 

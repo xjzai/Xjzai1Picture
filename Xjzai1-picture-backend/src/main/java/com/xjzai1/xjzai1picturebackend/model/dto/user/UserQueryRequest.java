@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
-@EqualsAndHashCode(callSuper = true) // todo 回视频看看怎么哥是
+@EqualsAndHashCode(callSuper = true) // todo 回视频看看怎么个事
 @Data
 public class UserQueryRequest extends PageRequest implements Serializable {
 
