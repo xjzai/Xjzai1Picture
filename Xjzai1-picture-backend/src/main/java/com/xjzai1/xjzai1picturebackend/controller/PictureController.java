@@ -17,6 +17,7 @@ import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureEditRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUpdateRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadRequest;
+import com.xjzai1.xjzai1picturebackend.model.vo.PictureTagCategory;
 import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import com.xjzai1.xjzai1picturebackend.service.PictureService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
@@ -195,6 +196,21 @@ public class PictureController {
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
     }
+
+    /**
+     * 获取预置标签和分类
+     * @return
+     */
+    @GetMapping("/tag_category")
+    public BaseResponse<PictureTagCategory> listPictureTagCategory() {
+        PictureTagCategory pictureTagCategory = new PictureTagCategory();
+        List<String> tagList = Arrays.asList("热门", "搞笑", "生活", "高清", "艺术", "校园", "背景", "简历", "创意");
+        List<String> categoryList = Arrays.asList("模板", "电商", "表情包", "素材", "海报");
+        pictureTagCategory.setTagList(tagList);
+        pictureTagCategory.setCategoryList(categoryList);
+        return ResultUtils.success(pictureTagCategory);
+    }
+
 
 
 }
