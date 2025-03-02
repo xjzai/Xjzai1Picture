@@ -88,9 +88,4 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
   color: #666;
 }
 
-#addPicturePage {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
 </style>
