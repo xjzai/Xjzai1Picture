@@ -74,13 +74,14 @@ const handleSubmit = async (values: any) => {
   if (res.data.code === 0 && res.data.data) {
     if (route.query.id) {
       message.success('修改成功')
+      router.back();
     } else {
       message.success('创建成功')
+      // todo 跳转到图片详情页
+      router.push({
+        path: `/picture/${pictureId}`,
+      })
     }
-    // 跳转到图片详情页
-    router.push({
-      path: `/picture/${pictureId}`,
-    })
   } else {
     if (route.query.id) {
       message.error('修改失败，' + res.data.message)

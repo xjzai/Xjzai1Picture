@@ -41,16 +41,16 @@
         <!-- 标签 -->
         <template v-if="column.dataIndex === 'tags'">
           <a-space wrap>
-            <a-tag v-for="tag in JSON.parse(record.tags || '[]')" :key="tag">{{ tag }}</a-tag>
+            <a-tag v-for="tag in JSON.parse(record.tags || '[]')" :key="tag" color="blue">{{ tag }}</a-tag>
           </a-space>
         </template>
         <!-- 图片信息 -->
         <template v-if="column.dataIndex === 'picInfo'">
-          <div>格式：{{ record.picFormat }}</div>
-          <div>宽度：{{ record.picWidth }}</div>
-          <div>高度：{{ record.picHeight }}</div>
-          <div>宽高比：{{ record.picScale }}</div>
-          <div>大小：{{ (record.picSize / 1024).toFixed(2) }}KB</div>
+          <div>格式：{{ record.pictureFormat }}</div>
+          <div>宽度：{{ record.pictureWidth }}</div>
+          <div>高度：{{ record.pictureHeight }}</div>
+          <div>宽高比：{{ record.pictureScale }}</div>
+          <div>大小：{{ (record.pictureSize / (1024 * 1024)).toFixed(2) }}MB</div>
         </template>
         <template v-else-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
@@ -60,7 +60,7 @@
         </template>
         <template v-else-if="column.key === 'action'">
           <a-space>
-            <a-button type="link" :href="`/add_picture?id=${record.id}`" target="_blank">编辑</a-button>
+            <a-button type="link" @click="doUpdate(record.id)">编辑</a-button>
             <a-button type="link" danger @click="doDelete(record.id)">删除</a-button>
           </a-space>
         </template>
@@ -73,11 +73,12 @@ import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue'
 import {
   deletePictureUsingPost,
   listPictureByPageUsingPost,
-  listPictureVoByPageUsingPost
+  listPictureVoByPageUsingPost,
 } from '@/api/pictureController'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { useRouter } from 'vue-router'
 
 const columns = [
   {
@@ -92,6 +93,7 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'name',
+    width: 150,
   },
   {
     title: '简介',
@@ -101,27 +103,32 @@ const columns = [
   {
     title: '类型',
     dataIndex: 'category',
+    width: 80,
   },
   {
     title: '标签',
     dataIndex: 'tags',
+    width: 150,
   },
   {
     title: '图片信息',
     dataIndex: 'picInfo',
+    width: 130,
   },
   {
     title: '用户 id',
     dataIndex: 'userId',
-    width: 80,
+    width: 180,
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
+    width: 120,
   },
   {
     title: '编辑时间',
     dataIndex: 'editTime',
+    width: 120,
   },
   {
     title: '操作',
@@ -189,6 +196,25 @@ const doDelete = async (id: string) => {
   } else {
     message.error('删除失败')
   }
+}
+
+const router = useRouter();
+
+// 编辑图片
+const doUpdate = (id: string) => {
+  router
+    .push({
+      path: '/picture/addPicture',
+      query: {
+        id: id,
+      },
+    })
+    .then(() => {
+      console.log('Navigation successful')
+    })
+    .catch((err) => {
+      console.error('Navigation failed', err)
+    })
 }
 
 // 页面加载时请求一次
