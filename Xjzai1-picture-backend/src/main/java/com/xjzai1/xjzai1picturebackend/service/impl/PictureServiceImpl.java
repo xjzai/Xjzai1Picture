@@ -130,7 +130,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // Json数组查询
         if (CollUtil.isNotEmpty(tags)) {
             for (String tag : tags) {
-                queryWrapper.like(StrUtil.isNotBlank(tag), "tag", "\"" + tag + "\"");
+                queryWrapper.like(StrUtil.isNotBlank(tag), "tags", "\"" + tag + "\"");
             }
         }
         queryWrapper.orderBy(StrUtil.isNotEmpty(sortField), sortOrder.equals("ascend"), sortField);
