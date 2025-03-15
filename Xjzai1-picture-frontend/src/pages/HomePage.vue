@@ -30,51 +30,52 @@
       </a-space>
     </div>
 
-
     <!-- 图片列表 -->
-    <a-list
-      :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
-      :data-source="dataList"
-      :pagination="pagination"
-      :loading="loading"
-    >
-      <template #renderItem="{ item: picture }">
-        <a-list-item style="padding: 0">
-          <!-- 单张图片 -->
-          <a-card hoverable @click="doClickPicture(picture)">
-
-          <template #cover>
-              <img
-                style="height: 180px; object-fit: cover"
-                :alt="picture.name"
-                :src="picture.url"
-              />
-            </template>
-            <a-card-meta :title="picture.name">
-              <template #description>
-                <a-flex>
-                  <a-tag color="green">
-                    {{ picture.category ?? '默认' }}
-                  </a-tag>
-                  <a-tag v-for="tag in picture.tags" :key="tag">
-                    {{ tag }}
-                  </a-tag>
-                </a-flex>
+    <div style="margin-top: 10px">
+      <a-list
+        :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
+        :data-source="dataList"
+        :pagination="pagination"
+        :loading="loading"
+      >
+        <template #renderItem="{ item: picture }">
+          <a-list-item style="padding: 0">
+            <!-- 单张图片 -->
+            <a-card hoverable @click="doClickPicture(picture)">
+              <template #cover>
+                <img
+                  style="height: 180px; object-fit: cover"
+                  :alt="picture.name"
+                  :src="picture.url"
+                />
               </template>
-            </a-card-meta>
-          </a-card>
-        </a-list-item>
-
-      </template>
-    </a-list>
-
+              <a-card-meta :title="picture.name">
+                <template #description>
+                  <a-flex>
+                    <a-tag color="green">
+                      {{ picture.category ?? '默认' }}
+                    </a-tag>
+                    <a-tag v-for="tag in picture.tags" :key="tag">
+                      {{ tag }}
+                    </a-tag>
+                  </a-flex>
+                </template>
+              </a-card-meta>
+            </a-card>
+          </a-list-item>
+        </template>
+      </a-list>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // 数据
 import { computed, onMounted, reactive, ref } from 'vue'
-import { listPictureTagCategoryUsingGet, listPictureVoByPageUsingPost } from '@/api/pictureController'
+import {
+  listPictureTagCategoryUsingGet,
+  listPictureVoByPageUsingPost,
+} from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
@@ -132,7 +133,6 @@ const fetchData = async () => {
   loading.value = false
 }
 
-
 // 页面加载时请求一次
 onMounted(() => {
   fetchData()
@@ -144,7 +144,6 @@ const doSearch = () => {
   searchParams.current = 1
   fetchData()
 }
-
 
 const categoryList = ref<string[]>([])
 const selectedCategory = ref<string>('all')
@@ -170,10 +169,6 @@ const doClickPicture = (picture) => {
     path: `/picture/${picture.id}`,
   })
 }
-
-
-
-
 </script>
 
 <style scoped>
@@ -181,6 +176,4 @@ const doClickPicture = (picture) => {
   max-width: 480px;
   margin: 0 auto 16px;
 }
-
 </style>
-
