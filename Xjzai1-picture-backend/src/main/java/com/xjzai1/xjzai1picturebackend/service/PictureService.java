@@ -6,6 +6,7 @@ import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureQueryRequest;
+import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureReviewRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,4 +49,13 @@ public interface PictureService extends IService<Picture> {
     Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request);
 
     void validPicture(Picture picture);
+
+    /**
+     * 图片审核
+     *
+     * @param pictureReviewRequest
+     * @param loginUser
+     */
+    void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser);
+
 }

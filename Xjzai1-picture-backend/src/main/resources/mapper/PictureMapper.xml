@@ -21,6 +21,10 @@
             <result property="editTime" column="edit_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+            <result property="reviewStatus" column="review_status" jdbcType="INTEGER"/>
+            <result property="reviewMessage" column="review_message" jdbcType="VARCHAR"/>
+            <result property="reviewerId" column="reviewer_id" jdbcType="BIGINT"/>
+            <result property="reviewTime" column="review_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -29,6 +33,7 @@
         picture_size,picture_width,picture_height,
         picture_scale,picture_format,user_id,
         create_time,edit_time,update_time,
-        is_delete
+        is_delete,review_status,review_message,
+        reviewer_id,review_time
     </sql>
 </mapper>
