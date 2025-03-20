@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.model.ciModel.persistence.ImageInfo;
 import com.xjzai1.xjzai1picturebackend.config.CosClientConfig;
@@ -22,8 +21,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 文件服务
+ * @Deprecated 已废弃，改为使用upload包的模板方法优化
+ */
 @Service
 @Slf4j
+@Deprecated // 服务已废弃注解
 public class FileManager {
     @Resource
     private CosClientConfig cosClientConfig;
@@ -57,13 +61,13 @@ public class FileManager {
             ImageInfo imageInfo = putObjectResult.getCiUploadResult().getOriginalInfo().getImageInfo(); // 看数据万象sdk文档
             // 封装返回结果
             UploadPictureResult uploadPictureResult = new UploadPictureResult();
-            int pictureWidth = imageInfo.getWidth();
-            int pictureHeight = imageInfo.getHeight();
-            double pictureScale = NumberUtil.round(pictureWidth * 1.0 / pictureHeight, 2).doubleValue();
+            int picWidth = imageInfo.getWidth();
+            int picHeight = imageInfo.getHeight();
+            double picScale = NumberUtil.round(picWidth * 1.0 / picHeight, 2).doubleValue();
             uploadPictureResult.setName(FileUtil.mainName(originFilename));
-            uploadPictureResult.setPictureWidth(pictureWidth);
-            uploadPictureResult.setPictureHeight(pictureHeight);
-            uploadPictureResult.setPictureScale(pictureScale);
+            uploadPictureResult.setPictureWidth(picWidth);
+            uploadPictureResult.setPictureHeight(picHeight);
+            uploadPictureResult.setPictureScale(picScale);
             uploadPictureResult.setPictureFormat(imageInfo.getFormat());
             uploadPictureResult.setPictureSize(FileUtil.size(file));
             uploadPictureResult.setUrl(cosClientConfig.getHost() + "/" + uploadPath);
