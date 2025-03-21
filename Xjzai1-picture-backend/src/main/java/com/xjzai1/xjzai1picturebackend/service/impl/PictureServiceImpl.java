@@ -74,7 +74,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             Picture oldPicture = this.getById(pictureId);
             ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR, "图片不存在");
             // 仅本人或者管理员可修改
-            if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)){
+            if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
                 throw new BusinessException(ErrorCode.NO_AUTH);
             }
         }
@@ -118,6 +118,9 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     @Override
     public Integer uploadPictureByBatch(PictureUploadByBatchRequest pictureUploadByBatchRequest, User loginUser) {
         String searchText = pictureUploadByBatchRequest.getSearchText();
+        if (StrUtil.isBlank(searchText)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "关键词不能为空");
+        }
         String namePrefix = pictureUploadByBatchRequest.getNamePrefix();
         if (StrUtil.isBlank(namePrefix)) {
             namePrefix = searchText;
@@ -141,6 +144,18 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // Elements imgElementList = div.select("img.mimg");
         Elements imgElementList = div.select(".iusc");
         int uploadCount = 0;
+        int cnt = 0;
+        // 查找数据库中是否有同名图片
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name", namePrefix)
+                .orderByDesc("id")
+                .last("limit 1");
+        Picture tempPicture = this.getOne(queryWrapper);
+        String tempName = tempPicture.getName();
+        int strCount = namePrefix.length();
+        // 目前数据库中存储的同名图片最大值
+        cnt = Integer.parseInt(StrUtil.subSuf(tempName, strCount));
+
         for (Element imgElement : imgElementList) {
             // String fileUrl = imgElement.attr("src");
             // 获取data-m属性中的JSON字符串
@@ -168,7 +183,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             PictureUploadRequest pictureUploadRequest = new PictureUploadRequest();
             if (StrUtil.isNotBlank(namePrefix)) {
                 // 设置图片名称，序号连续递增
-                pictureUploadRequest.setPictureName(namePrefix + (uploadCount + 1));
+                pictureUploadRequest.setPictureName(namePrefix + (uploadCount + cnt + 1));
             }
             try {
                 PictureVo pictureVo = this.uploadPicture(fileUrl, pictureUploadRequest, loginUser);
@@ -322,7 +337,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     }
 
     @Override
-    public void fillReviewParams(Picture picture, User loginUser){
+    public void fillReviewParams(Picture picture, User loginUser) {
         if (userService.isAdmin(loginUser)) {
             // 管理员自动过审
             picture.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
@@ -334,7 +349,6 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             picture.setReviewStatus(PictureReviewStatusEnum.REVIEWING.getValue());
         }
     }
-
 
 
 }
