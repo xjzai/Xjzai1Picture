@@ -2,8 +2,14 @@
   <div id="pictureManagePage">
     <a-flex justify="space-between">
       <h2>图片管理</h2>
-      <a-button type="primary" href="/add_picture" target="_blank">+ 创建图片</a-button>
+      <a-space>
+        <a-button type="primary" href="/picture/addPicture" target="_blank">+ 创建图片</a-button>
+        <a-button type="primary" href="/picture/addPicture/batch" target="_blank" ghost
+          >+ 批量创建图片</a-button
+        >
+      </a-space>
     </a-flex>
+    <div style="margin-bottom: 16px" />
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
       <a-form-item label="关键词" name="searchText">
         <a-input
@@ -50,9 +56,9 @@
         <!-- 标签 -->
         <template v-if="column.dataIndex === 'tags'">
           <a-space wrap>
-            <a-tag v-for="tag in JSON.parse(record.tags || '[]')" :key="tag" color="blue">{{
-              tag
-            }}</a-tag>
+            <a-tag v-for="tag in JSON.parse(record.tags || '[]')" :key="tag" color="blue"
+              >{{ tag }}
+            </a-tag>
           </a-space>
         </template>
         <!-- 图片信息 -->
