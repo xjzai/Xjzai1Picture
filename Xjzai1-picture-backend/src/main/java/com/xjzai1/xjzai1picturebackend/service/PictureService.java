@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureReviewRequest;
+import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadByBatchRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,19 @@ public interface PictureService extends IService<Picture> {
     PictureVo uploadPicture(Object inputSource,
                             PictureUploadRequest pictureUploadRequest,
                             User loginUser);
+
+    /**
+     * 批量抓取和创建图片
+     *
+     * @param pictureUploadByBatchRequest
+     * @param loginUser
+     * @return 成功创建的图片数
+     */
+    Integer uploadPictureByBatch(
+            PictureUploadByBatchRequest pictureUploadByBatchRequest,
+            User loginUser
+    );
+
 
     /**
      * 获取QueryWrapper
