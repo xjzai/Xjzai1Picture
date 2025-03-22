@@ -151,11 +151,12 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
                 .orderByDesc("id")
                 .last("limit 1");
         Picture tempPicture = this.getOne(queryWrapper);
-        String tempName = tempPicture.getName();
-        int strCount = namePrefix.length();
-        // 目前数据库中存储的同名图片最大值
-        cnt = Integer.parseInt(StrUtil.subSuf(tempName, strCount));
-
+        if (tempPicture != null) {
+            String tempName = tempPicture.getName();
+            int strCount = namePrefix.length();
+            // 目前数据库中存储的同名图片最大值
+            cnt = Integer.parseInt(StrUtil.subSuf(tempName, strCount));
+        }
         for (Element imgElement : imgElementList) {
             // String fileUrl = imgElement.attr("src");
             // 获取data-m属性中的JSON字符串
