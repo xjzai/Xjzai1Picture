@@ -25,6 +25,8 @@
             <result property="reviewMessage" column="review_message" jdbcType="VARCHAR"/>
             <result property="reviewerId" column="reviewer_id" jdbcType="BIGINT"/>
             <result property="reviewTime" column="review_time" jdbcType="TIMESTAMP"/>
+            <result property="thumbnailUrl" column="thumbnail_url" jdbcType="VARCHAR"/>
+            <result property="originalUrl" column="original_url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -34,6 +36,7 @@
         picture_scale,picture_format,user_id,
         create_time,edit_time,update_time,
         is_delete,review_status,review_message,
-        reviewer_id,review_time
+        reviewer_id,review_time,thumbnail_url,
+        original_url
     </sql>
 </mapper>

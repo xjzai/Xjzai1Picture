@@ -1,7 +1,9 @@
-package com.xjzai1.xjzai1picturebackend.model.domain;
+package generator.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -23,16 +25,6 @@ public class Picture implements Serializable {
      * 图片 url
      */
     private String url;
-
-    /**
-     * 缩略图 Url
-     */
-    private String thumbnailUrl;
-
-    /**
-     * 原图 Url
-     */
-    private String originalUrl;
 
     /**
      * 图片名称
@@ -102,11 +94,10 @@ public class Picture implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic
     private Integer isDelete;
 
     /**
-     * 状态：0-待审核; 1-通过; 2-拒绝
+     * 审核状态：0-待审核; 1-通过; 2-拒绝
      */
     private Integer reviewStatus;
 
@@ -116,7 +107,7 @@ public class Picture implements Serializable {
     private String reviewMessage;
 
     /**
-     * 审核人 id
+     * 审核人 ID
      */
     private Long reviewerId;
 
@@ -125,6 +116,15 @@ public class Picture implements Serializable {
      */
     private Date reviewTime;
 
+    /**
+     * 缩略图 url
+     */
+    private String thumbnailUrl;
+
+    /**
+     * 原始图片 url
+     */
+    private String originalUrl;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
