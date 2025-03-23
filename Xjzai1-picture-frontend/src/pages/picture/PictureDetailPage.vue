@@ -88,7 +88,7 @@ import router from '@/router'
 const props = defineProps<{
   id: string | number
 }>()
-const picture = ref<API.PictureVO>({})
+const picture = ref<API.PictureVo>({})
 
 // 获取图片详情
 const fetchPictureDetail = async () => {
@@ -139,7 +139,7 @@ const doDelete = async () => {
 
 // 处理下载
 const doDownload = () => {
-  downloadImage(picture.value.url)
+  downloadImage(picture.value.originalUrl)
 }
 
 

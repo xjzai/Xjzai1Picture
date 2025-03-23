@@ -63,7 +63,7 @@ const pictureForm = reactive<API.PictureEditRequest>({})
 const uploadType = ref<'file' | 'url'>('file')
 
 
-const onSuccess = (newPicture: API.PictureVO) => {
+const onSuccess = (newPicture: API.PictureVo) => {
   picture.value = newPicture;
   pictureForm.name = newPicture.name;
 }

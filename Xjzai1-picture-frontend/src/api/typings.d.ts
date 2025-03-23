@@ -3,91 +3,91 @@ declare namespace API {
     code?: number
     data?: boolean
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponseInt_ = {
     code?: number
     data?: number
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponseLong_ = {
     code?: number
     data?: number
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponsePagePicture_ = {
     code?: number
     data?: PagePicture_
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponsePagePictureVo_ = {
     code?: number
     data?: PagePictureVo_
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponsePageUserVo_ = {
     code?: number
     data?: PageUserVo_
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponsePicture_ = {
     code?: number
     data?: Picture
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponsePictureTagCategory_ = {
     code?: number
     data?: PictureTagCategory
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponsePictureVo_ = {
     code?: number
     data?: PictureVo
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponseString_ = {
     code?: number
     data?: string
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponseUser_ = {
     code?: number
     data?: User
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponseUserLoginVo_ = {
     code?: number
     data?: UserLoginVo
     description?: string
-    msg?: string
+    message?: string
   }
 
   type BaseResponseUserVo_ = {
     code?: number
     data?: UserVo
     description?: string
-    msg?: string
+    message?: string
   }
 
   type DeleteRequest = {
@@ -166,6 +166,7 @@ declare namespace API {
     introduction?: string
     isDelete?: number
     name?: string
+    originalUrl?: string
     pictureFormat?: string
     pictureHeight?: number
     pictureScale?: number
@@ -176,6 +177,7 @@ declare namespace API {
     reviewTime?: string
     reviewerId?: number
     tags?: string
+    thumbnailUrl?: string
     updateTime?: string
     url?: string
     userId?: number
@@ -249,12 +251,14 @@ declare namespace API {
     id?: number
     introduction?: string
     name?: string
+    originalUrl?: string
     pictureFormat?: string
     pictureHeight?: number
     pictureScale?: number
     pictureSize?: number
     pictureWidth?: number
     tags?: string[]
+    thumbnailUrl?: string
     updateTime?: string
     url?: string
     user?: UserVo
