@@ -10,6 +10,7 @@ import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureReviewRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadByBatchRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,4 +75,7 @@ public interface PictureService extends IService<Picture> {
     void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser);
 
     void fillReviewParams(Picture picture, User loginUser);
+
+    @Async
+    void clearPictureFile(Picture oldPicture);
 }

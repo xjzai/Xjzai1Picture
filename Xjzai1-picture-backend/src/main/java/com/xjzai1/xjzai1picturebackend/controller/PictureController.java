@@ -132,6 +132,7 @@ public class PictureController {
             throw new BusinessException(ErrorCode.NO_AUTH);
         }
         // 操作数据库
+        pictureService.clearPictureFile(oldPicture);
         boolean result = pictureService.removeById(id);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库删除失败");
         return ResultUtils.success(true);

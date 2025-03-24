@@ -11,9 +11,12 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xjzai1.xjzai1picturebackend.config.CorsConfig;
+import com.xjzai1.xjzai1picturebackend.config.CosClientConfig;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
+import com.xjzai1.xjzai1picturebackend.manager.CosManager;
 import com.xjzai1.xjzai1picturebackend.manager.upload.FilePictureUpload;
 import com.xjzai1.xjzai1picturebackend.manager.upload.PictureUploadTemplate;
 import com.xjzai1.xjzai1picturebackend.manager.upload.UrlPictureUpload;
@@ -32,8 +35,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +65,11 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     @Resource
     private UserService userService;
 
+    @Resource
+    private CosManager cosManager;
+    @Autowired
+    private CosClientConfig cosClientConfig;
+
     @Override
     public PictureVo uploadPicture(Object inputSource, PictureUploadRequest pictureUploadRequest, User loginUser) {
         ThrowUtils.throwIf(loginUser == null, ErrorCode.NO_AUTH);
@@ -77,6 +86,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
                 throw new BusinessException(ErrorCode.NO_AUTH);
             }
+            // 并且删除COS中的旧图片
+            clearPictureFile(oldPicture);
         }
         // 上传图片，得到信息
         // 按照用户 id 划分目录
@@ -353,7 +364,39 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         }
     }
 
-
+    /**
+     * 清理COS对象存储中的图片资源
+     * @param oldPicture
+     */
+    @Async // 此处使用了异步注解，需要在启动类添加@EnableAsync注解才能生效
+    @Override
+    public void clearPictureFile(Picture oldPicture) {
+        // 判断该图片是否被多条记录使用
+        String pictureUrl = oldPicture.getUrl();
+        long count = this.lambdaQuery()
+                .eq(Picture::getUrl, pictureUrl)
+                .count();
+        // 有不止一条记录用到了该图片，不清理
+        if (count > 1) {
+            return;
+        }
+        // 注意，这里的 url 包含了域名，实际上只要传 key 值（存储路径）就够了
+        int hostLength = cosClientConfig.getHost().length();
+        String urlKey = StrUtil.subSuf(pictureUrl, hostLength + 1);
+        cosManager.deleteObject(urlKey);
+        // 清理缩略图
+        String thumbnailUrl = oldPicture.getThumbnailUrl();
+        if (StrUtil.isNotBlank(thumbnailUrl)) {
+            String thumbnailKey = StrUtil.subSuf(thumbnailUrl, hostLength + 1);
+            cosManager.deleteObject(thumbnailKey);
+        }
+        // 清理原图
+        String originalUrl = oldPicture.getOriginalUrl();
+        if (StrUtil.isNotBlank(originalUrl)) {
+            String originalKey = StrUtil.subSuf(originalUrl, hostLength + 1);
+            cosManager.deleteObject(originalKey);
+        }
+    }
 }
 
 
