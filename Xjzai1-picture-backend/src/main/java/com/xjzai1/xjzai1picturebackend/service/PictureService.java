@@ -2,13 +2,11 @@ package com.xjzai1.xjzai1picturebackend.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xjzai1.xjzai1picturebackend.common.DeleteRequest;
 import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
-import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureQueryRequest;
-import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureReviewRequest;
-import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadByBatchRequest;
-import com.xjzai1.xjzai1picturebackend.model.dto.picture.PictureUploadRequest;
+import com.xjzai1.xjzai1picturebackend.model.dto.picture.*;
 import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +62,10 @@ public interface PictureService extends IService<Picture> {
 
     Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request);
 
+    boolean deletePicture(Long pictureId, User loginUser);
+
+    boolean editPicture(PictureEditRequest pictureEditRequest, User loginUser);
+
     void validPicture(Picture picture);
 
     /**
@@ -75,6 +77,8 @@ public interface PictureService extends IService<Picture> {
     void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser);
 
     void fillReviewParams(Picture picture, User loginUser);
+
+    void checkPictureAuth(User loginUser, Picture picture);
 
     @Async
     void clearPictureFile(Picture oldPicture);
