@@ -133,21 +133,23 @@ const columns = [
   {
     title: '图片',
     dataIndex: 'url',
+    width: 150,
   },
   {
     title: '名称',
     dataIndex: 'name',
-    width: 150,
+    width: 10,
   },
   {
     title: '简介',
     dataIndex: 'introduction',
-    ellipsis: true,
+    width: 150,
+    // ellipsis: true,
   },
   {
     title: '类型',
     dataIndex: 'category',
-    width: 80,
+    width: 100,
   },
   {
     title: '标签',
@@ -157,7 +159,7 @@ const columns = [
   {
     title: '图片信息',
     dataIndex: 'picInfo',
-    width: 130,
+    width: 190,
   },
   {
     title: '用户 id',
@@ -171,12 +173,12 @@ const columns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 120,
+    width: 200,
   },
   {
     title: '编辑时间',
     dataIndex: 'editTime',
-    width: 120,
+    width: 200,
   },
   {
     title: '操作',

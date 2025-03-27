@@ -222,7 +222,7 @@ public class PictureController {
         if (spaceId == null) {
             // 普通用户默认只能查看已过审的公开数据
             pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
-            pictureQueryRequest.setNullSpaceId(true);
+//            pictureQueryRequest.setNullSpaceId(true);
         } else {
             // 私有空间
             User loginUser = userService.getLoginUser(request);

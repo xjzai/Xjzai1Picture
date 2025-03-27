@@ -60,9 +60,9 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
   if (!isJpgOrPng) {
     message.error('不支持上传该各格式图片，推荐使用jpg和png!')
   }
-  const isLt15M = file.size / 1024 / 1024 < 15
-  if (!isLt15M) {
-    message.error('图片必须小于15MB!')
+  const isLt30M = file.size / 1024 / 1024 < 30
+  if (!isLt30M) {
+    message.error('图片必须小于30MB!')
   }
   return isJpgOrPng && isLt15M;
 }

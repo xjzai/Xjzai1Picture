@@ -13,6 +13,13 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseListSpaceLevel_ = {
+    code?: number
+    data?: SpaceLevel[]
+    description?: string
+    message?: string
+  }
+
   type BaseResponseLong_ = {
     code?: number
     data?: number
@@ -30,6 +37,20 @@ declare namespace API {
   type BaseResponsePagePictureVo_ = {
     code?: number
     data?: PagePictureVo_
+    description?: string
+    message?: string
+  }
+
+  type BaseResponsePageSpace_ = {
+    code?: number
+    data?: PageSpace_
+    description?: string
+    message?: string
+  }
+
+  type BaseResponsePageSpaceVo_ = {
+    code?: number
+    data?: PageSpaceVo_
     description?: string
     message?: string
   }
@@ -58,6 +79,20 @@ declare namespace API {
   type BaseResponsePictureVo_ = {
     code?: number
     data?: PictureVo
+    description?: string
+    message?: string
+  }
+
+  type BaseResponseSpace_ = {
+    code?: number
+    data?: Space
+    description?: string
+    message?: string
+  }
+
+  type BaseResponseSpaceVo_ = {
+    code?: number
+    data?: SpaceVo
     description?: string
     message?: string
   }
@@ -104,6 +139,16 @@ declare namespace API {
     id?: number
   }
 
+  type getSpaceByIdUsingGETParams = {
+    /** id */
+    id?: number
+  }
+
+  type getSpaceVoByIdUsingGETParams = {
+    /** id */
+    id?: number
+  }
+
   type getUserByIdUsingGETParams = {
     /** id */
     id?: number
@@ -145,6 +190,32 @@ declare namespace API {
     total?: number
   }
 
+  type PageSpace_ = {
+    countId?: string
+    current?: number
+    maxLimit?: number
+    optimizeCountSql?: boolean
+    orders?: OrderItem[]
+    pages?: number
+    records?: Space[]
+    searchCount?: boolean
+    size?: number
+    total?: number
+  }
+
+  type PageSpaceVo_ = {
+    countId?: string
+    current?: number
+    maxLimit?: number
+    optimizeCountSql?: boolean
+    orders?: OrderItem[]
+    pages?: number
+    records?: SpaceVo[]
+    searchCount?: boolean
+    size?: number
+    total?: number
+  }
+
   type PageUserVo_ = {
     countId?: string
     current?: number
@@ -176,6 +247,7 @@ declare namespace API {
     reviewStatus?: number
     reviewTime?: string
     reviewerId?: number
+    spaceId?: number
     tags?: string
     thumbnailUrl?: string
     updateTime?: string
@@ -209,6 +281,7 @@ declare namespace API {
     searchText?: string
     sortField?: string
     sortOrder?: string
+    spaceId?: number
     tags?: string[]
     userId?: number
   }
@@ -242,6 +315,7 @@ declare namespace API {
     fileUrl?: string
     id?: number
     pictureName?: string
+    spaceId?: number
   }
 
   type PictureVo = {
@@ -257,12 +331,79 @@ declare namespace API {
     pictureScale?: number
     pictureSize?: number
     pictureWidth?: number
+    spaceId?: number
     tags?: string[]
     thumbnailUrl?: string
     updateTime?: string
     url?: string
     user?: UserVo
     userId?: number
+  }
+
+  type Space = {
+    createTime?: string
+    editTime?: string
+    id?: number
+    isDelete?: number
+    maxCount?: number
+    maxSize?: number
+    spaceLevel?: number
+    spaceName?: string
+    totalCount?: number
+    totalSize?: number
+    updateTime?: string
+    userId?: number
+  }
+
+  type SpaceAddRequest = {
+    spaceLevel?: number
+    spaceName?: string
+  }
+
+  type SpaceEditRequest = {
+    id?: number
+    spaceName?: string
+  }
+
+  type SpaceLevel = {
+    maxCount?: number
+    maxSize?: number
+    text?: string
+    value?: number
+  }
+
+  type SpaceQueryRequest = {
+    current?: number
+    id?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    spaceLevel?: number
+    spaceName?: string
+    userId?: number
+  }
+
+  type SpaceUpdateRequest = {
+    id?: number
+    maxCount?: number
+    maxSize?: number
+    spaceLevel?: number
+    spaceName?: string
+  }
+
+  type SpaceVo = {
+    createTime?: string
+    editTime?: string
+    id?: number
+    maxCount?: number
+    maxSize?: number
+    spaceLevel?: number
+    spaceName?: string
+    totalCount?: number
+    totalSize?: number
+    updateTime?: string
+    userId?: number
+    userVo?: UserVo
   }
 
   type testDownloadFileUsingGETParams = {
@@ -274,6 +415,7 @@ declare namespace API {
     fileUrl?: string
     id?: number
     pictureName?: string
+    spaceId?: number
   }
 
   type User = {

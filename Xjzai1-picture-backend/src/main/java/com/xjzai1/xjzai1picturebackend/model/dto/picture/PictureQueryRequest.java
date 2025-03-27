@@ -37,8 +37,9 @@ public class PictureQueryRequest extends PageRequest implements Serializable{
 
     /**
      * 是否只查询 spaceId 为 null 的数据
+     * 先去掉，直接后端判断是否有值
      */
-    private Boolean nullSpaceId;
+//    private Boolean nullSpaceId;
 
     /**
      * 标签（JSON 数组）

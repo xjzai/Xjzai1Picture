@@ -280,7 +280,9 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         String category = pictureQueryRequest.getCategory();
         List<String> tags = pictureQueryRequest.getTags();
         Long spaceId = pictureQueryRequest.getSpaceId();
-        Boolean nullSpaceId = pictureQueryRequest.getNullSpaceId();
+//        Boolean nullSpaceId = pictureQueryRequest.getNullSpaceId();
+        boolean nullSpaceId;
+        nullSpaceId = spaceId == null;
         Long pictureSize = pictureQueryRequest.getPictureSize();
         Integer pictureWidth = pictureQueryRequest.getPictureWidth();
         Integer pictureHeight = pictureQueryRequest.getPictureHeight();

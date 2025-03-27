@@ -25,7 +25,7 @@
                 <a-avatar>
                   <template #icon>
                     <img
-                      src="https://huacheng.gz-cmc.com/upload/news/image/2023/05/26/3e67c105f5ac4a38b45a2c7f0a40688f.jpeg"
+                      :src="loginUserStore.loginUser.userAvatar ?? 'https://huacheng.gz-cmc.com/upload/news/image/2023/05/26/3e67c105f5ac4a38b45a2c7f0a40688f.jpeg'"
                       alt="头像"
                     />
                   </template>
@@ -34,6 +34,12 @@
               </a-space>
               <template #overlay>
                 <a-menu>
+                  <a-menu-item>
+                    <router-link to="/space/mySpace">
+                      <UserOutlined />
+                      我的空间
+                    </router-link>
+                  </a-menu-item>
                   <a-menu-item @click="doLogout">
                     <LogoutOutlined />
                     退出登录
@@ -51,7 +57,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { HomeOutlined, LogoutOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { computed, h, ref } from 'vue'
 import { MenuProps, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
@@ -83,6 +89,11 @@ const originItems = [
     key: '/admin/pictureManage',
     label: '图片管理',
     title: '图片管理',
+  },
+  {
+    key: '/admin/spaceManage',
+    label: '空间管理',
+    title: '空间管理',
   },
   {
     key: 'others',

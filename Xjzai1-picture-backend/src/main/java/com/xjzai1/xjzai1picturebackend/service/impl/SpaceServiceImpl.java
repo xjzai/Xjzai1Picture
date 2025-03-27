@@ -83,7 +83,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
             try {
                 Long newSpaceId = transactionTemplate.execute(status -> {
                     // 先判断是否已经有空间
-                    boolean exists = this.lambdaQuery().eq(Space::getId, userId).exists();
+                    boolean exists = this.lambdaQuery().eq(Space::getUserId, userId).exists();
                     ThrowUtils.throwIf(exists, ErrorCode.OPERATION_ERROR, "每个用户只能创建一个空间");
                     // 写入数据库
                     boolean result = this.save(space);
