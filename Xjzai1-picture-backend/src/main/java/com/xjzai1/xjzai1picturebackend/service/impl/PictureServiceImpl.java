@@ -43,7 +43,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.StyledEditorKit;
 import java.util.stream.Collectors;
 
 /**
@@ -171,8 +170,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             if (finalSpaceId != null) {
                 boolean update = spaceService.lambdaUpdate()
                         .eq(Space::getId, finalSpaceId)
-                        .setSql("totalSize = totalSize + " + picture.getPictureSize())
-                        .setSql("totalCount = totalCount + 1")
+                        .setSql("total_size = total_size + " + picture.getPictureSize())
+                        .setSql("total_count = total_count + 1")
                         .update();
                 ThrowUtils.throwIf(!update, ErrorCode.OPERATION_ERROR, "额度更新失败");
             }
@@ -315,8 +314,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         queryWrapper.eq(ObjUtil.isNotEmpty(pictureWidth), "picture_width", pictureWidth);
         queryWrapper.eq(ObjUtil.isNotEmpty(pictureHeight), "picture_height", pictureHeight);
         queryWrapper.eq(ObjUtil.isNotEmpty(pictureScale), "picture_scale", pictureScale);
-        queryWrapper.eq(ObjUtil.isNotEmpty(spaceId), "spaceId", spaceId);
-        queryWrapper.isNull(nullSpaceId, "spaceId");
+        queryWrapper.eq(ObjUtil.isNotEmpty(spaceId), "space_id", spaceId);
+        queryWrapper.isNull(nullSpaceId, "space_id");
         // Json数组查询
         if (CollUtil.isNotEmpty(tags)) {
             for (String tag : tags) {
@@ -385,8 +384,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             if (spaceId != null) {
                 boolean update = spaceService.lambdaUpdate()
                         .eq(Space::getId, spaceId)
-                        .setSql("totalSize = totalSize - " + oldPicture.getPictureSize())
-                        .setSql("totalCount = totalCount - 1")
+                        .setSql("total_size = total_size - " + oldPicture.getPictureSize())
+                        .setSql("total_count = total_count - 1")
                         .update();
                 ThrowUtils.throwIf(!update, ErrorCode.OPERATION_ERROR, "额度更新失败");
             }
@@ -398,7 +397,42 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     }
 
     @Override
-    public boolean editPicture(PictureEditRequest pictureEditRequest, User loginUser) {
+    public boolean deletePictures(List<Picture> pictureList, User loginUser) {
+        // 开启事务
+        transactionTemplate.execute(status -> {
+            for (Picture picture : pictureList) {
+                Long pictureId = picture.getId();
+                // 判断是否存在
+                Picture oldPicture = this.getById(pictureId);
+                if (oldPicture == null) {
+                    throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+                }
+                // 校验权限
+                this.checkPictureAuth(loginUser, oldPicture);
+                // 操作数据库
+                boolean result = this.removeById(pictureId);
+                ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库删除失败");
+                // 释放额度
+                Long spaceId = oldPicture.getSpaceId();
+                if (spaceId != null) {
+                    boolean update = spaceService.lambdaUpdate()
+                            .eq(Space::getId, spaceId)
+                            .setSql("total_size = total_size - " + oldPicture.getPictureSize())
+                            .setSql("total_count = total_count - 1")
+                            .update();
+                    ThrowUtils.throwIf(!update, ErrorCode.OPERATION_ERROR, "额度更新失败");
+                }
+            }
+            // 清理所有文件
+            this.clearPictureFiles(pictureList);
+            return true;
+        });
+        return true;
+
+    }
+
+    @Override
+    public void editPicture(PictureEditRequest pictureEditRequest, User loginUser) {
         // 在此处将实体类和 DTO 进行转换
         Picture picture = new Picture();
         BeanUtils.copyProperties(pictureEditRequest, picture);
@@ -419,7 +453,6 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // 操作数据库
         boolean result = this.updateById(picture);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return true;
     }
 
     @Override
@@ -497,7 +530,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
      * 清理COS对象存储中的图片资源
      * @param oldPicture
      */
-    @Async // 此处使用了异步注解，需要在启动类添加@EnableAsync注解才能生效
+    @Async
     @Override
     public void clearPictureFile(Picture oldPicture) {
         // 判断该图片是否被多条记录使用
@@ -525,6 +558,44 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             String originalKey = StrUtil.subSuf(originalUrl, hostLength + 1);
             cosManager.deleteObject(originalKey);
         }
+    }
+
+    /**
+     * 批量清理COS对象存储中的图片资源
+     * 先不使用异步，注销空间必须删除干净资源
+     * @param pictureList
+     */
+    @Override
+    public void clearPictureFiles(List<Picture> pictureList) {
+        List<String> keyList = new ArrayList<>();
+        for (Picture oldPicture : pictureList) {
+            // 判断该图片是否被多条记录使用
+            String pictureUrl = oldPicture.getUrl();
+            long count = this.lambdaQuery()
+                    .eq(Picture::getUrl, pictureUrl)
+                    .count();
+            // 有不止一条记录用到了该图片，不清理
+            if (count > 1) {
+                return;
+            }
+            // 注意，这里的 url 包含了域名，实际上只要传 key 值（存储路径）就够了
+            int hostLength = cosClientConfig.getHost().length();
+            String urlKey = StrUtil.subSuf(pictureUrl, hostLength + 1);
+            keyList.add(urlKey);
+            // 清理缩略图
+            String thumbnailUrl = oldPicture.getThumbnailUrl();
+            if (StrUtil.isNotBlank(thumbnailUrl)) {
+                String thumbnailKey = StrUtil.subSuf(thumbnailUrl, hostLength + 1);
+                keyList.add(thumbnailKey);
+            }
+            // 清理原图
+            String originalUrl = oldPicture.getOriginalUrl();
+            if (StrUtil.isNotBlank(originalUrl)) {
+                String originalKey = StrUtil.subSuf(originalUrl, hostLength + 1);
+                keyList.add(originalKey);
+            }
+        }
+        cosManager.deleteObjects(keyList);
     }
 }
 

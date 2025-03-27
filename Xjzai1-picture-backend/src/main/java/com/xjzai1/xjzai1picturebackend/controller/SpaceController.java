@@ -1,5 +1,7 @@
 package com.xjzai1.xjzai1picturebackend.controller;
 
+import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xjzai1.xjzai1picturebackend.annotation.AuthCheck;
 import com.xjzai1.xjzai1picturebackend.common.BaseResponse;
@@ -9,6 +11,7 @@ import com.xjzai1.xjzai1picturebackend.constant.UserConstant;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
+import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.space.SpaceAddRequest;
@@ -18,6 +21,7 @@ import com.xjzai1.xjzai1picturebackend.model.dto.space.SpaceUpdateRequest;
 import com.xjzai1.xjzai1picturebackend.model.enums.SpaceLevelEnum;
 import com.xjzai1.xjzai1picturebackend.model.vo.SpaceLevel;
 import com.xjzai1.xjzai1picturebackend.model.vo.SpaceVo;
+import com.xjzai1.xjzai1picturebackend.service.PictureService;
 import com.xjzai1.xjzai1picturebackend.service.SpaceService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -40,10 +44,10 @@ public class SpaceController {
     private SpaceService spaceService;
 
     @Resource
-    private UserService userService;
+    private PictureService pictureService;
 
     @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private UserService userService;
 
     /**
      * 添加空间
@@ -65,18 +69,26 @@ public class SpaceController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         User loginUser = userService.getLoginUser(request);
-        long id = deleteRequest.getId();
+        long spaceId = deleteRequest.getId();
         // 判断是否存在
-        Space oldSpace = spaceService.getById(id);
+        Space oldSpace = spaceService.getById(spaceId);
         if (oldSpace == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         // 仅本人或者管理员可以删除
-        if (!userService.isAdmin(loginUser) || !Objects.equals(oldSpace.getUserId(), loginUser.getId())) {
+        if (!userService.isAdmin(loginUser) && !Objects.equals(oldSpace.getUserId(), loginUser.getId())) {
             throw new BusinessException(ErrorCode.NO_AUTH);
         }
+        // 删除空间中所有图片
+        // 先查询所有空间中的图片
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(ObjUtil.isNotEmpty(spaceId), "space_id", spaceId);
+        List<Picture> pictureList = pictureService.list(queryWrapper);
+        // 再删除
+        boolean deleteCosResult = pictureService.deletePictures(pictureList, loginUser);
+        ThrowUtils.throwIf(!deleteCosResult, ErrorCode.OPERATION_ERROR, "图片资源删除失败");
         // 操作数据库
-        boolean result = spaceService.removeById(id);
+        boolean result = spaceService.removeById(spaceId);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库删除失败");
         return ResultUtils.success(true);
     }

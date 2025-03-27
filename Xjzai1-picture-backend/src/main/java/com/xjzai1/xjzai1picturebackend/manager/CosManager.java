@@ -3,18 +3,19 @@ package com.xjzai1.xjzai1picturebackend.manager;
 import cn.hutool.core.io.FileUtil;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
-import com.qcloud.cos.model.COSObject;
-import com.qcloud.cos.model.GetObjectRequest;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.exception.MultiObjectDeleteException;
+import com.qcloud.cos.model.*;
 import com.qcloud.cos.model.ciModel.persistence.PicOperations;
 import com.xjzai1.xjzai1picturebackend.config.CosClientConfig;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CosManager {
@@ -95,6 +96,32 @@ public class CosManager {
      */
     public void deleteObject(String key) throws CosClientException {
         cosClient.deleteObject(cosClientConfig.getBucket(), key);
+    }
+
+    /**
+     * 批量删除对象
+     * @param keys
+     * @throws CosClientException
+     */
+    public void deleteObjects(List<String> keys) throws CosClientException {
+        List<DeleteObjectsRequest.KeyVersion> keyList = new ArrayList<>();
+        for (String key : keys) {
+            keyList.add(new DeleteObjectsRequest.KeyVersion(key));
+        }
+        DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(cosClientConfig.getBucket());
+        deleteObjectsRequest.setKeys(keyList);
+        try {
+            DeleteObjectsResult deleteObjectsResult = cosClient.deleteObjects(deleteObjectsRequest);
+            List<DeleteObjectsResult.DeletedObject> deleteObjectResultArray = deleteObjectsResult.getDeletedObjects();
+        } catch (MultiObjectDeleteException mde) {
+            // 如果部分删除成功部分失败, 返回 MultiObjectDeleteException
+            List<DeleteObjectsResult.DeletedObject> deleteObjects = mde.getDeletedObjects();
+            List<MultiObjectDeleteException.DeleteError> deleteErrors = mde.getErrors();
+        } catch (CosServiceException e) {
+            e.printStackTrace();
+        } catch (CosClientException e) {
+            e.printStackTrace();
+        }
     }
 
 

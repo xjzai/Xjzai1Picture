@@ -2,6 +2,7 @@ package com.xjzai1.xjzai1picturebackend.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xjzai1.xjzai1picturebackend.common.DeleteRequest;
 import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
