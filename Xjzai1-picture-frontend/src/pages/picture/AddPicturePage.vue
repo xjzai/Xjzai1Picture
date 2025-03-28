@@ -1,14 +1,15 @@
 <template>
   <div id="addPicturePage">
     <h2 style="margin-bottom: 16px">
-      {{ route.query.id ? '修改图片' : '创建图片'}}
+      {{ route.query.id ? '修改图片' : '创建图片' }}
     </h2>
     <a-typography-paragraph v-if="spaceId" type="secondary">
       保存至空间：<a :href="`/space/${spaceId}`" target="_blank">{{ spaceId }}</a>
     </a-typography-paragraph>
     <!-- 选择上传方式 -->
+    <!-- todo 尝试实现上传大文件-->
     <a-tabs v-model:activeKey="uploadType"
-    >>
+      >>
       <a-tab-pane key="file" tab="文件上传">
         <PictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
@@ -24,7 +25,7 @@
         <a-textarea
           v-model:value="pictureForm.introduction"
           placeholder="请输入简介"
-          :autoSize="{minRows: 5, maxRows: 5}"
+          :autoSize="{ minRows: 5, maxRows: 5 }"
           allowClear
         />
       </a-form-item>
@@ -47,7 +48,7 @@
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit" style="width: 100%">
-          {{ route.query.id ? '修改' : '创建'}}
+          {{ route.query.id ? '修改' : '创建' }}
         </a-button>
       </a-form-item>
     </a-form>
@@ -60,7 +61,7 @@ import {
   editPictureUsingPost,
   getPictureVoByIdUsingGet,
   listPictureTagCategoryUsingGet,
-  uploadPictureUsingPost
+  uploadPictureUsingPost,
 } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -72,10 +73,9 @@ const picture = ref<API.PictureVo>()
 const pictureForm = reactive<API.PictureEditRequest>({})
 const uploadType = ref<'file' | 'url'>('file')
 
-
 const onSuccess = (newPicture: API.PictureVo) => {
-  picture.value = newPicture;
-  pictureForm.name = newPicture.name;
+  picture.value = newPicture
+  pictureForm.name = newPicture.name
 }
 
 const router = useRouter()
@@ -102,7 +102,7 @@ const handleSubmit = async (values: any) => {
   if (res.data.code === 0 && res.data.data) {
     if (route.query.id) {
       message.success('修改成功')
-      router.back();
+      router.back()
     } else {
       message.success('创建成功')
       // todo 跳转到图片详情页
@@ -166,17 +166,9 @@ const getOldPicture = async () => {
 }
 
 onMounted(() => {
-  getOldPicture();
+  getOldPicture()
   getTagCategoryOptions()
 })
-
-
-
-
-
-
-
-
 </script>
 <style scoped>
 #addPicturePage {
