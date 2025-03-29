@@ -154,7 +154,6 @@ const fetchData = async () => {
 onMounted(() => {
   fetchData()
   getTagCategoryOptions()
-  purgeUploadArtifacts()
 })
 
 const doSearch = () => {

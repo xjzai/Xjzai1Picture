@@ -36,10 +36,11 @@ const handleUpload = async ({ file }: any) => {
   loading.value = true;
   // console.log(file);
   try {
+    // const params = props.picture ? { id: props.picture.id } : {}
     const params: API.PictureUploadRequest = props.picture ? { id: props.picture.id } : {}
     params.spaceId = props.spaceId;
     const res = await uploadPictureUsingPost(params, {}, file)
-    console.log(res.data);
+    // console.log(res.data);
     if (res.data.code === 0 && res.data.data) {
       message.success('图片上传成功')
       props.onSuccess?.(res.data.data)
@@ -63,7 +64,7 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
   if (!isLt30M) {
     message.error('图片必须小于30MB!')
   }
-  return isJpgOrPng && isLt15M;
+  return isJpgOrPng && isLt30M;
 }
 </script>
 <style scoped>

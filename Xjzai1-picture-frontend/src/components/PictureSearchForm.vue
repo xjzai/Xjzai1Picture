@@ -54,7 +54,7 @@
       <a-form-item label="格式" name="picFormat">
         <a-input v-model:value="searchParams.picFormat" placeholder="请输入格式" allow-clear />
       </a-form-item>
-      <a-form-item label="按颜色搜索" style="margin-top: 16px">
+      <a-form-item label="颜色">
         <color-picker format="hex" @pureColorChange="onColorChange" />
       </a-form-item>
       <a-form-item>

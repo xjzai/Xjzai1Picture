@@ -4,10 +4,7 @@
       <!-- 图片展示区 -->
       <a-col :sm="24" :md="16" :xl="18">
         <a-card title="图片预览">
-          <a-image
-            style="max-height: 600px; object-fit: contain"
-            :src="picture.url"
-          />
+          <a-image style="max-height: 600px; object-fit: contain" :src="picture.url" />
         </a-card>
       </a-col>
       <!-- 图片信息区 -->
@@ -49,12 +46,31 @@
             <a-descriptions-item label="大小">
               {{ formatSize(picture.pictureSize) }}
             </a-descriptions-item>
+            <a-descriptions-item label="主色调">
+              <a-space>
+                {{ picture.pictureColor ?? '-' }}
+                <div
+                  v-if="picture.pictureColor"
+                  :style="{
+                    backgroundColor: toHexColor(picture.pictureColor),
+                    width: '16px',
+                    height: '16px',
+                  }"
+                />
+              </a-space>
+            </a-descriptions-item>
           </a-descriptions>
           <a-space wrap>
             <a-button type="primary" @click="doDownload">
               免费下载
               <template #icon>
                 <DownloadOutlined />
+              </template>
+            </a-button>
+            <a-button type="primary" ghost @click="doShare">
+              分享
+              <template #icon>
+                <ShareAltOutlined />
               </template>
             </a-button>
             <a-button v-if="canEdit" type="default" @click="doEdit">
@@ -73,7 +89,6 @@
         </a-card>
       </a-col>
     </a-row>
-
   </div>
 </template>
 <script setup lang="ts">
@@ -81,7 +96,12 @@ import { computed, onMounted, ref } from 'vue'
 import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import { downloadImage, formatSize } from '../../utils'
-import { EditOutlined, DeleteOutlined, DownloadOutlined} from '@ant-design/icons-vue';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  DownloadOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons-vue'
 import { useLoginUserStore } from '@/stores/user'
 import router from '@/router'
 
@@ -109,7 +129,7 @@ const fetchPictureDetail = async () => {
 const loginUserStore = useLoginUserStore()
 // 是否具有编辑权限
 const canEdit = computed(() => {
-  const loginUser = loginUserStore.loginUser;
+  const loginUser = loginUserStore.loginUser
   // 未登录不可编辑
   if (!loginUser.id) {
     return false
@@ -142,12 +162,20 @@ const doDownload = () => {
   downloadImage(picture.value.originalUrl)
 }
 
-
 onMounted(() => {
   fetchPictureDetail()
 })
 
-</script>
-<style scoped>
+const toHexColor = (input) => {
+  // 去掉 0x 前缀
+  const colorValue = input.startsWith('0x') ? input.slice(2) : input
 
-</style>
+  // 将剩余部分解析为十六进制数，再转成 6 位十六进制字符串
+  const hexColor = parseInt(colorValue, 16).toString(16).padStart(6, '0')
+
+  // 返回标准 #RRGGBB 格式
+  return `#${hexColor}`
+}
+
+</script>
+<style scoped></style>
