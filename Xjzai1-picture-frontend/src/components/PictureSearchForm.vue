@@ -54,6 +54,9 @@
       <a-form-item label="格式" name="picFormat">
         <a-input v-model:value="searchParams.picFormat" placeholder="请输入格式" allow-clear />
       </a-form-item>
+      <a-form-item label="按颜色搜索" style="margin-top: 16px">
+        <color-picker format="hex" @pureColorChange="onColorChange" />
+      </a-form-item>
       <a-form-item>
         <a-space>
           <a-button type="primary" html-type="submit" style="width: 96px">搜索</a-button>
@@ -71,6 +74,8 @@ import PictureQueryRequest = API.PictureQueryRequest
 import { onMounted, reactive, ref } from 'vue'
 import dayjs from 'dayjs'
 import { listPictureTagCategoryUsingGet } from '@/api/pictureController'
+import { ColorPicker } from 'vue3-colorpicker'
+import "vue3-colorpicker/style.css"
 
 interface Props {
   onSearch?: (searchParams: PictureQueryRequest) => void
@@ -83,6 +88,7 @@ const searchParams = reactive<API.PictureQueryRequest>({})
 
 // 获取数据
 const doSearch = () => {
+  // console.log(searchParams);
   props.onSearch?.(searchParams)
 }
 
@@ -139,6 +145,8 @@ const getTagCategoryOptions = async () => {
 
 // 清理
 const doClear = () => {
+  // 先恢复默认颜色
+  // searchParams.pictureColor = "#000000"
   // 取消所有对象的值
   Object.keys(searchParams).forEach((key) => {
     searchParams[key] = undefined
@@ -151,6 +159,12 @@ const doClear = () => {
 onMounted(() => {
   getTagCategoryOptions()
 })
+
+const onColorChange = (color: string) => {
+  searchParams.pictureColor = color;
+  console.log(searchParams.pictureColor);
+
+}
 
 
 </script>

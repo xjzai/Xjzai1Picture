@@ -108,6 +108,11 @@ public class PictureQueryRequest extends PageRequest implements Serializable{
      */
     private Long reviewerId;
 
+    /**
+     * 图片主色调
+     */
+    private String pictureColor;
+
 
     private static final long serialVersionUID = 1L;
 }

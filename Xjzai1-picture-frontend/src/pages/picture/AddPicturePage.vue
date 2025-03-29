@@ -8,8 +8,7 @@
     </a-typography-paragraph>
     <!-- 选择上传方式 -->
     <!-- todo 尝试实现上传大文件-->
-    <a-tabs v-model:activeKey="uploadType"
-      >>
+    <a-tabs v-model:activeKey="uploadType">
       <a-tab-pane key="file" tab="文件上传">
         <PictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
       </a-tab-pane>
@@ -61,13 +60,10 @@ import {
   editPictureUsingPost,
   getPictureVoByIdUsingGet,
   listPictureTagCategoryUsingGet,
-  uploadPictureUsingPost,
 } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
-import _default from 'ant-design-vue/es/vc-slick/inner-slider'
-import props = _default.props
 
 const picture = ref<API.PictureVo>()
 const pictureForm = reactive<API.PictureEditRequest>({})

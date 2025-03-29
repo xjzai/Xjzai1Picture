@@ -28,6 +28,7 @@
             <result property="reviewTime" column="review_time" jdbcType="TIMESTAMP"/>
             <result property="thumbnailUrl" column="thumbnail_url" jdbcType="VARCHAR"/>
             <result property="originalUrl" column="original_url" jdbcType="VARCHAR"/>
+            <result property="pictureColor" column="picture_color" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -38,6 +39,6 @@
         create_time,edit_time,update_time,
         is_delete,review_status,review_message,
         reviewer_id,review_time,thumbnail_url,
-        original_url
+        original_url, picture_color
     </sql>
 </mapper>

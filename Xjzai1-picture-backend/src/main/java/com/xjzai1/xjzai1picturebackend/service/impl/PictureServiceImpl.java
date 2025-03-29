@@ -1,5 +1,6 @@
 package com.xjzai1.xjzai1picturebackend.service.impl;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -30,6 +31,7 @@ import com.xjzai1.xjzai1picturebackend.service.PictureService;
 import com.xjzai1.xjzai1picturebackend.mapper.PictureMapper;
 import com.xjzai1.xjzai1picturebackend.service.SpaceService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
+import com.xjzai1.xjzai1picturebackend.utils.ColorSimilarUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,6 +45,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -153,6 +156,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         picture.setPictureHeight(uploadPictureResult.getPictureHeight());
         picture.setPictureScale(uploadPictureResult.getPictureScale());
         picture.setPictureFormat(uploadPictureResult.getPictureFormat());
+        picture.setPictureColor(uploadPictureResult.getPictureColor());
         picture.setUserId(loginUser.getId());
         // 补充审核状态
         fillReviewParams(picture, loginUser);
@@ -345,11 +349,15 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     }
 
     @Override
-    public Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request) {
+    public Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request, String pictureColor) {
         List<Picture> pictureList = picturePage.getRecords();
         Page<PictureVo> pictureVoPage = new Page<>(picturePage.getCurrent(), picturePage.getSize(), picturePage.getTotal());
         if (CollUtil.isEmpty(pictureList)) {
             return pictureVoPage;
+        }
+        // 如果有颜色参数，则根据颜色算法排序
+        if (StrUtil.isNotBlank(pictureColor)) {
+            pictureList = this.orderPictureByColor(pictureList, pictureColor);
         }
         // 对象列表 => 封装对象列表
         List<PictureVo> pictureVoList = pictureList.stream().map(PictureVo::objToVo).collect(Collectors.toList());
@@ -476,6 +484,39 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         if (StrUtil.isNotBlank(introduction)) {
             ThrowUtils.throwIf(introduction.length() > 800, ErrorCode.PARAMS_ERROR, "简介过长");
         }
+    }
+
+    @Override
+    public List<Picture> orderPictureByColor(List<Picture> pictureList, String pictureColor) {
+        // 如果没有图片，直接返回空列表
+        if (CollUtil.isEmpty(pictureList)) {
+            return Collections.emptyList();
+        }
+        // 将目标颜色转为 Color 对象
+        Color targetColor = Color.decode(pictureColor);
+        // 4. 计算相似度并排序
+        List<Picture> sortedPictures = pictureList.stream()
+                .sorted(Comparator.comparingDouble(picture -> {
+                    // 提取图片主色调
+                    String hexColor = picture.getPictureColor();
+                    // 没有主色调的图片放到最后
+                    if (StrUtil.isBlank(hexColor)) {
+                        return Double.MAX_VALUE;
+                    }
+                    Color color = Color.decode(hexColor);
+                    // 越大越相似
+                    return -ColorSimilarUtils.calculateSimilarity(targetColor, color);
+                }))
+                // 取前 12 个
+//                .limit(12)
+                .collect(Collectors.toList());
+
+
+//        // 转换为 PictureVO
+//        return sortedPictures.stream()
+//                .map(PictureVO::objToVo)
+//                .collect(Collectors.toList());
+        return sortedPictures;
     }
 
     @Override

@@ -59,7 +59,9 @@ public interface PictureService extends IService<Picture> {
      */
     PictureVo getPictureVo(Picture picture, HttpServletRequest request);
 
-    Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request);
+//    Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request);
+
+    Page<PictureVo> getPictureVoPage(Page<Picture> picturePage, HttpServletRequest request, String pictureColor);
 
     boolean deletePicture(Long pictureId, User loginUser);
 
@@ -70,6 +72,8 @@ public interface PictureService extends IService<Picture> {
     void editPicture(PictureEditRequest pictureEditRequest, User loginUser);
 
     void validPicture(Picture picture);
+
+    List<Picture> orderPictureByColor(List<Picture> pictureList, String pictureColor);
 
     /**
      * 图片审核

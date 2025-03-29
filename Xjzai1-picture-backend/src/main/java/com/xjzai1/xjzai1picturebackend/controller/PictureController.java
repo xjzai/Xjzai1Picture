@@ -8,6 +8,8 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.xjzai1.xjzai1picturebackend.annotation.AuthCheck;
+import com.xjzai1.xjzai1picturebackend.api.imagesearch.ImageSearchApiFacade;
+import com.xjzai1.xjzai1picturebackend.api.imagesearch.model.ImageSearchResult;
 import com.xjzai1.xjzai1picturebackend.common.BaseResponse;
 import com.xjzai1.xjzai1picturebackend.common.DeleteRequest;
 import com.xjzai1.xjzai1picturebackend.common.PageRequest;
@@ -235,8 +237,10 @@ public class PictureController {
         // 查询数据库
         Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
                 pictureService.getQueryWrapper(pictureQueryRequest));
+        // 根据颜色参数，选择是否按照图片主颜色排序
+        String pictureColor = pictureQueryRequest.getPictureColor();
         // 获取封装类
-        return ResultUtils.success(pictureService.getPictureVoPage(picturePage, request));
+        return ResultUtils.success(pictureService.getPictureVoPage(picturePage, request, pictureColor));
     }
 
     /**
@@ -279,7 +283,7 @@ public class PictureController {
         Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
                 pictureService.getQueryWrapper(pictureQueryRequest));
         // 获取封装类
-        Page<PictureVo> pictureVoPage = pictureService.getPictureVoPage(picturePage, request);
+        Page<PictureVo> pictureVoPage = pictureService.getPictureVoPage(picturePage, request, null);
 
         // 存入Redis
         String cacheValue = JSONUtil.toJsonStr(pictureVoPage);
@@ -331,6 +335,21 @@ public class PictureController {
         pictureService.doPictureReview(pictureReviewRequest, loginUser);
         return ResultUtils.success(true);
     }
+
+    /**
+     * 以图搜图
+     */
+    @PostMapping("/search/picture")
+    public BaseResponse<List<ImageSearchResult>> searchPictureByPicture(@RequestBody SearchPictureByPictureRequest searchPictureByPictureRequest) {
+        ThrowUtils.throwIf(searchPictureByPictureRequest == null, ErrorCode.PARAMS_ERROR);
+        Long pictureId = searchPictureByPictureRequest.getPictureId();
+        ThrowUtils.throwIf(pictureId == null || pictureId <= 0, ErrorCode.PARAMS_ERROR);
+        Picture oldPicture = pictureService.getById(pictureId);
+        ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
+        List<ImageSearchResult> resultList = ImageSearchApiFacade.searchImage(oldPicture.getOriginalUrl());
+        return ResultUtils.success(resultList);
+    }
+
 
 
 

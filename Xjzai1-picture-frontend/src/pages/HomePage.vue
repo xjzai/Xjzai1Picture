@@ -154,6 +154,7 @@ const fetchData = async () => {
 onMounted(() => {
   fetchData()
   getTagCategoryOptions()
+  purgeUploadArtifacts()
 })
 
 const doSearch = () => {
@@ -186,6 +187,7 @@ const router = useRouter()
 //     path: `/picture/${picture.id}`,
 //   })
 // }
+
 </script>
 
 <style scoped>
