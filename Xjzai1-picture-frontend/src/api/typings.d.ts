@@ -268,6 +268,19 @@ declare namespace API {
     userId?: number
   }
 
+  type PictureDeleteByBatchRequest = {
+    pictureIdList?: number[]
+    spaceId?: number
+  }
+
+  type PictureEditByBatchRequest = {
+    category?: string
+    nameRule?: string
+    pictureIdList?: number[]
+    spaceId?: number
+    tags?: string[]
+  }
+
   type PictureEditRequest = {
     category?: string
     id?: number
@@ -300,6 +313,12 @@ declare namespace API {
     startEditTime?: string
     tags?: string[]
     userId?: number
+  }
+
+  type PictureReviewByBatchRequest = {
+    pictureIdList?: number[]
+    reviewMessage?: string
+    reviewStatus?: number
   }
 
   type PictureReviewRequest = {

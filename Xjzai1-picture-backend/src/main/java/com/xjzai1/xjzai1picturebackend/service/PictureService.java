@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.picture.*;
 import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -69,7 +71,13 @@ public interface PictureService extends IService<Picture> {
     boolean deletePictures(List<Picture> pictureList, User loginUser);
 
 
+    @Transactional(rollbackFor = Exception.class)
+    void doPictureDeleteByBatch(PictureDeleteByBatchRequest pictureDeleteByBatchRequest, User loginUser);
+
     void editPicture(PictureEditRequest pictureEditRequest, User loginUser);
+
+    @Transactional(rollbackFor = Exception.class)
+    void editPictureByBatch(PictureEditByBatchRequest pictureEditByBatchRequest, User loginUser);
 
     void validPicture(Picture picture);
 
@@ -83,9 +91,14 @@ public interface PictureService extends IService<Picture> {
      */
     void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser);
 
+    @Transactional(rollbackFor = Exception.class)
+    void doPictureReviewByBatch(PictureReviewByBatchRequest pictureReviewByBatchRequest, User loginUser);
+
     void fillReviewParams(Picture picture, User loginUser);
 
     void checkPictureAuth(User loginUser, Picture picture);
+
+    void checkSpaceAuth(User loginUser, Space space);
 
     @Async // 此处使用了异步注解，需要在启动类添加@EnableAsync注解才能生效
     void clearPictureFile(Picture oldPicture);

@@ -1,5 +1,6 @@
 <template>
   <div class="picture-list" style="margin-top: 10px">
+    <!--    <button @click="new">点击传递数据</button>-->
     <!-- 图片列表 -->
     <a-list
       :grid="{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }"
@@ -38,28 +39,42 @@
               <a-space @click="(e) => doShare(picture, e)">
                 <ShareAltOutlined />
               </a-space>
-<!--              <ShareAltOutlined @click="(e) => doShare(picture, e)" />-->
-              <a-space @click="e => doEdit(picture, e)">
+              <a-space @click="(e) => doEdit(picture, e)">
                 <EditOutlined />
               </a-space>
-              <a-space @click="e => doDelete(picture, e)">
+              <a-space @click="(e) => doDelete(picture, e)">
                 <DeleteOutlined />
+              </a-space>
+              <a-space @click="(e) => doCheck(picture, e)">
+                <a-checkbox
+                  v-model:checked="picture.checked"
+                  @change="doChange(picture)"
+                ></a-checkbox>
               </a-space>
             </template>
           </a-card>
         </a-list-item>
       </template>
     </a-list>
+    <DeleteConfirmModal ref="deleteConfirmModalRef" :on-success="onDeleteConfirmSuccess" :obj="deletePicture"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { EditOutlined, DeleteOutlined, SearchOutlined, ShareAltOutlined } from '@ant-design/icons-vue'
+import {
+  EditOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons-vue'
 import { deletePictureUsingPost } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import ShareModal from '@/components/ShareModal.vue'
 import { ref } from 'vue'
+import BatchDeletePictureModal from '@/components/BatchDeletePictureModal.vue'
+import DeletePictureModal from '@/components/DeleteConfirmModal.vue'
+import DeleteConfirmModal from '@/components/DeleteConfirmModal.vue'
 
 interface Props {
   dataList?: API.PictureVO[]
@@ -94,23 +109,6 @@ const doEdit = (picture, e) => {
   })
 }
 
-// 删除
-const doDelete = async (picture, e) => {
-  e.stopPropagation()
-  const id = picture.id
-  if (!id) {
-    return
-  }
-  const res = await deletePictureUsingPost({ id })
-  if (res.data.code === 0) {
-    message.success('删除成功')
-    // 让外层刷新
-    props?.onReload()
-  } else {
-    message.error('删除失败')
-  }
-}
-
 // 搜索
 const doSearch = (picture, e) => {
   e.stopPropagation()
@@ -131,7 +129,48 @@ const doShare = (picture: API.PictureVO, e: Event) => {
   }
 }
 
+// 多选框模块
+const doCheck = (picture: API.PictureVO, e: Event) => {
+  e.stopPropagation()
+}
 
+const newPicture = ref()
+
+const doChange = (picture: API.PictureVO[]) => {
+  if (picture.checked) {
+    newPicture.value = JSON.parse(JSON.stringify(picture))
+    newPicture.value.checked = true
+    emit('newPicture', newPicture.value)
+  } else {
+    newPicture.value = JSON.parse(JSON.stringify(picture))
+    newPicture.value.checked = false
+    emit('newPicture', newPicture.value)
+  }
+}
+// 定义 emits
+const emit = defineEmits<{
+  (e: 'newPicture', newPicture: API.PictureVO[]): void,
+}>()
+
+// 删除确认模块
+const deleteConfirmModalRef = ref()
+const deletePicture = ref();
+
+// 批量编辑成功后，刷新数据
+const onDeleteConfirmSuccess = () => {
+  deletePicture.value = '';
+  // 让外层刷新
+  props?.onReload()
+}
+
+// 打开批量编辑弹窗
+const doDelete = (picture: API.PictureVO, e: Event) => {
+  e.stopPropagation()
+  deletePicture.value = picture;
+  if (deleteConfirmModalRef.value) {
+    deleteConfirmModalRef.value.openModal()
+  }
+}
 
 </script>
 

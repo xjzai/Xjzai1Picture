@@ -17,12 +17,42 @@ export async function deletePictureUsingPost(
   })
 }
 
+/** deletePictureByBatch POST /api/picture/delete/batch */
+export async function deletePictureByBatchUsingPost(
+  body: API.PictureDeleteByBatchRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>('/api/picture/delete/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** editPicture POST /api/picture/edit */
 export async function editPictureUsingPost(
   body: API.PictureEditRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean_>('/api/picture/edit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** editPictureByBatch POST /api/picture/edit/batch */
+export async function editPictureByBatchUsingPost(
+  body: API.PictureEditByBatchRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>('/api/picture/edit/batch', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -113,6 +143,21 @@ export async function doPictureReviewUsingPost(
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean_>('/api/picture/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** doPictureReviewByBatch POST /api/picture/review/batch */
+export async function doPictureReviewByBatchUsingPost(
+  body: API.PictureReviewByBatchRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>('/api/picture/review/batch', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

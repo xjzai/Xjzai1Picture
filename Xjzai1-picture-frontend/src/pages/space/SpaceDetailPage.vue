@@ -7,6 +7,9 @@
         <a-button type="primary" :href="`/picture/addPicture?spaceId=${id}`" target="_blank">
           + 创建图片
         </a-button>
+        <a-button :icon="h(SelectOutlined)" v-model:checked="allChecked" @click="doAllSelect"> 全选图片</a-button>
+        <a-button :icon="h(EditOutlined)" @click="doBatchEdit"> 批量编辑</a-button>
+        <a-button :icon="h(DeleteOutlined)" @click="doBatchDelete"> 批量删除</a-button>
         <a-tooltip
           :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
         >
@@ -23,7 +26,7 @@
     <PictureSearchForm :onSearch="onSearch" />
     <div style="margin-bottom: 16px" />
     <!-- 图片列表 -->
-    <PictureList :dataList="dataList" :loading="loading" :showOp="true" :onReload="fetchData"/>
+    <PictureList :dataList="dataList" :loading="loading" :showOp="true" :onReload="fetchData" @newPicture="getNewPicture"/>
     <a-pagination
       style="text-align: right"
       v-model:current="searchParams.current"
@@ -32,7 +35,18 @@
       :show-total="() => `图片总数 ${total} / ${space.maxCount}`"
       @change="onPageChange"
     />
-
+    <BatchEditPictureModal
+      ref="batchEditPictureModalRef"
+      :spaceId="id"
+      :pictureList="newDataList"
+      :onSuccess="onBatchEditPictureSuccess"
+    />
+    <BatchDeletePictureModal
+      ref="batchDeletePictureModalRef"
+      :spaceId="id"
+      :pictureList="newDataList"
+      :onSuccess="onBatchDeletePictureSuccess"
+    />
   </div>
 </template>
 
@@ -40,10 +54,13 @@
 import PictureList from '@/components/PictureList.vue'
 import { formatSize } from '@/utils'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, h } from 'vue'
 import { message } from 'ant-design-vue'
 import { listPictureVoByPageUsingPost } from '@/api/pictureController'
 import PictureSearchForm from '@/components/PictureSearchForm.vue'
+import BatchEditPictureModal from '@/components/BatchEditPictureModal.vue'
+import { DeleteOutlined, EditOutlined, SelectOutlined } from '@ant-design/icons-vue'
+import BatchDeletePictureModal from '@/components/BatchDeletePictureModal.vue'
 
 const props = defineProps<{
   id: string | number
@@ -111,10 +128,20 @@ const fetchData = async () => {
   const res = await listPictureVoByPageUsingPost(params)
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []
+    dataList.value.forEach(item => {
+      item.checked = false;
+    })
+    console.log(dataList.value)
     total.value = res.data.data.total ?? 0
   } else {
     message.error('获取数据失败，' + res.data.message)
   }
+  // 重置选中状态
+  newDataList.value = []
+  console.log(newDataList.value);
+  // 重置全选按钮状态
+  allChecked.value = false
+
   loading.value = false
 }
 
@@ -122,6 +149,67 @@ const fetchData = async () => {
 onMounted(() => {
   fetchData()
 })
+
+// 批量编辑弹窗引用
+const batchEditPictureModalRef = ref()
+
+// 批量编辑成功后，刷新数据
+const onBatchEditPictureSuccess = () => {
+  fetchData()
+}
+
+// 打开批量编辑弹窗
+const doBatchEdit = () => {
+  if (batchEditPictureModalRef.value) {
+    batchEditPictureModalRef.value.openModal()
+  }
+}
+// 从子组件传回的值
+const newDataList = ref([])
+
+const getNewPicture = (newPicture) => {
+  if (newPicture.checked) {
+    newDataList.value.push(newPicture)
+  } else {
+    newDataList.value = newDataList.value.filter(item => item.id !== newPicture.id);
+  }
+  console.log('接收到子组件的数据:', newDataList.value);
+  // message.error("6666");
+  // 更新父组件状态等操作
+}
+
+// 全选图片
+const allChecked = ref(false);
+const doAllSelect = () => {
+  allChecked.value = !allChecked.value;
+  if (allChecked.value) {
+    dataList.value.forEach((item) => {
+      item.checked = true;
+    });
+    newDataList.value = dataList.value;
+  } else {
+    dataList.value.forEach((item) => {
+      item.checked = false;
+    });
+    newDataList.value = [];
+  }
+}
+
+// 批量删除
+// 批量删除弹窗引用
+const batchDeletePictureModalRef = ref()
+
+// 批量删除成功后，刷新数据
+const onBatchDeletePictureSuccess = () => {
+  fetchData()
+}
+
+// 打开批量删除弹窗
+const doBatchDelete = () => {
+  if (batchDeletePictureModalRef.value) {
+    batchDeletePictureModalRef.value.openModal()
+  }
+}
 </script>
 
 <style scoped></style>

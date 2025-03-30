@@ -1,18 +1,15 @@
 package com.xjzai1.xjzai1picturebackend.controller;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.xjzai1.xjzai1picturebackend.annotation.AuthCheck;
 import com.xjzai1.xjzai1picturebackend.api.imagesearch.ImageSearchApiFacade;
 import com.xjzai1.xjzai1picturebackend.api.imagesearch.model.ImageSearchResult;
 import com.xjzai1.xjzai1picturebackend.common.BaseResponse;
 import com.xjzai1.xjzai1picturebackend.common.DeleteRequest;
-import com.xjzai1.xjzai1picturebackend.common.PageRequest;
 import com.xjzai1.xjzai1picturebackend.common.ResultUtils;
 import com.xjzai1.xjzai1picturebackend.constant.UserConstant;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
@@ -28,11 +25,7 @@ import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import com.xjzai1.xjzai1picturebackend.service.PictureService;
 import com.xjzai1.xjzai1picturebackend.service.SpaceService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
-import javafx.geometry.Pos;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.DigestUtils;
@@ -42,9 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -132,6 +123,17 @@ public class PictureController {
         long pictureId = deleteRequest.getId();
         Boolean result = pictureService.deletePicture(pictureId, loginUser);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 批量删除图片
+     */
+    @PostMapping("/delete/batch")
+    public BaseResponse<Boolean> deletePictureByBatch(@RequestBody PictureDeleteByBatchRequest pictureDeleteByBatchRequest, HttpServletRequest request) {
+        ThrowUtils.throwIf(pictureDeleteByBatchRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        pictureService.doPictureDeleteByBatch(pictureDeleteByBatchRequest, loginUser);
+        return ResultUtils.success(true);
     }
 
     /**
@@ -313,6 +315,20 @@ public class PictureController {
     }
 
     /**
+     * 批量编辑图片
+     * @param pictureEditByBatchRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/edit/batch")
+    public BaseResponse<Boolean> editPictureByBatch(@RequestBody PictureEditByBatchRequest pictureEditByBatchRequest, HttpServletRequest request) {
+        ThrowUtils.throwIf(pictureEditByBatchRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        pictureService.editPictureByBatch(pictureEditByBatchRequest, loginUser);
+        return ResultUtils.success(true);
+    }
+
+    /**
      * 获取预置标签和分类
      * @return
      */
@@ -333,6 +349,16 @@ public class PictureController {
         ThrowUtils.throwIf(pictureReviewRequest == null, ErrorCode.PARAMS_ERROR);
         User loginUser = userService.getLoginUser(request);
         pictureService.doPictureReview(pictureReviewRequest, loginUser);
+        return ResultUtils.success(true);
+    }
+
+    @PostMapping("/review/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> doPictureReviewByBatch(@RequestBody PictureReviewByBatchRequest pictureReviewByBatchRequest,
+                                                 HttpServletRequest request) {
+        ThrowUtils.throwIf(pictureReviewByBatchRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        pictureService.doPictureReviewByBatch(pictureReviewByBatchRequest, loginUser);
         return ResultUtils.success(true);
     }
 
