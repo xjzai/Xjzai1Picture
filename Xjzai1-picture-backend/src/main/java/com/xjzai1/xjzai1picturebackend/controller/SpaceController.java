@@ -76,9 +76,7 @@ public class SpaceController {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         // 仅本人或者管理员可以删除
-        if (!userService.isAdmin(loginUser) && !Objects.equals(oldSpace.getUserId(), loginUser.getId())) {
-            throw new BusinessException(ErrorCode.NO_AUTH);
-        }
+        spaceService.checkSpaceAuth(loginUser, oldSpace);
         // 删除空间中所有图片
         // 先查询所有空间中的图片
         QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
@@ -199,9 +197,7 @@ public class SpaceController {
         Space oldSpace = spaceService.getById(id);
         ThrowUtils.throwIf(oldSpace == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可编辑
-        if (!oldSpace.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
-            throw new BusinessException(ErrorCode.NO_AUTH);
-        }
+        spaceService.checkSpaceAuth(loginUser, oldSpace);
         // 操作数据库
         boolean result = spaceService.updateById(space);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);

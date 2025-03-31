@@ -10,7 +10,6 @@ import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
 import com.xjzai1.xjzai1picturebackend.mapper.SpaceMapper;
-import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.space.SpaceAddRequest;
@@ -18,7 +17,6 @@ import com.xjzai1.xjzai1picturebackend.model.dto.space.SpaceQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.enums.SpaceLevelEnum;
 import com.xjzai1.xjzai1picturebackend.model.vo.SpaceVo;
 import com.xjzai1.xjzai1picturebackend.model.vo.UserVo;
-import com.xjzai1.xjzai1picturebackend.service.PictureService;
 import com.xjzai1.xjzai1picturebackend.service.SpaceService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +29,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -201,6 +198,14 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
             if (space.getMaxCount() == null) {
                 space.setMaxCount(maxCount);
             }
+        }
+    }
+
+    @Override
+    public void checkSpaceAuth(User loginUser, Space space) {
+        // 仅本人和管理员可编辑
+        if (!space.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
+            throw new BusinessException(ErrorCode.NO_AUTH);
         }
     }
 
