@@ -7,6 +7,15 @@
         <a-button type="primary" :href="`/picture/addPicture?spaceId=${id}`" target="_blank">
           + 创建图片
         </a-button>
+        <a-button
+          type="primary"
+          ghost
+          :icon="h(BarChartOutlined)"
+          :href="`/space/analyze?spaceId=${id}`"
+          target="_blank"
+        >
+          空间分析
+        </a-button>
         <a-button :icon="h(SelectOutlined)" v-model:checked="allChecked" @click="doAllSelect"> 全选图片</a-button>
         <a-button :icon="h(EditOutlined)" @click="doBatchEdit"> 批量编辑</a-button>
         <a-button :icon="h(DeleteOutlined)" @click="doBatchDelete"> 批量删除</a-button>
@@ -59,7 +68,7 @@ import { message } from 'ant-design-vue'
 import { listPictureVoByPageUsingPost } from '@/api/pictureController'
 import PictureSearchForm from '@/components/PictureSearchForm.vue'
 import BatchEditPictureModal from '@/components/BatchEditPictureModal.vue'
-import { DeleteOutlined, EditOutlined, SelectOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, SelectOutlined, BarChartOutlined } from '@ant-design/icons-vue'
 import BatchDeletePictureModal from '@/components/BatchDeletePictureModal.vue'
 
 const props = defineProps<{

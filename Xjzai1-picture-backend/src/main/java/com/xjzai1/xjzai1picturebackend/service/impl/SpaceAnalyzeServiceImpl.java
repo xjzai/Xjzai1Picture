@@ -49,7 +49,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
         // 检查权限
         if (spaceAnalyzeRequest.isQueryAll() || spaceAnalyzeRequest.isQueryPublic()) {
             // 全空间分析或者公共图库权限校验：仅管理员可访问
-            ThrowUtils.throwIf(userService.isAdmin(loginUser), ErrorCode.NO_AUTH, "无权限访问公共图库");
+            ThrowUtils.throwIf(!userService.isAdmin(loginUser), ErrorCode.NO_AUTH, "无权限访问公共图库");
         } else {
             // 私有空间权限校验
             Long spaceId = spaceAnalyzeRequest.getSpaceId();
@@ -195,7 +195,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
         // 构造查询条件
         QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
         Long userId = spaceUserAnalyzeRequest.getUserId();
-        queryWrapper.eq(ObjUtil.isNotNull(userId), "userId", userId);
+        queryWrapper.eq(ObjUtil.isNotNull(userId), "user_id", userId);
         fillAnalyzeQueryWrapper(spaceUserAnalyzeRequest, queryWrapper);
 
         // 分析维度：每日、每周、每月
@@ -252,12 +252,12 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
             return;
         }
         if (spaceAnalyzeRequest.isQueryPublic()) {
-            queryWrapper.isNull("spaceId");
+            queryWrapper.isNull("space_id");
             return;
         }
         Long spaceId = spaceAnalyzeRequest.getSpaceId();
         if (spaceId != null) {
-            queryWrapper.eq("spaceId", spaceId);
+            queryWrapper.eq("space_id", spaceId);
             return;
         }
         throw new BusinessException(ErrorCode.PARAMS_ERROR, "未指定查询范围");
