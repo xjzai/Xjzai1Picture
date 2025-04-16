@@ -17,12 +17,13 @@
             <result property="editTime" column="edit_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+            <result property="spaceType" column="space_type" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,space_name,space_level,
         max_size,max_count,total_size,
         total_count,user_id,create_time,
-        edit_time,update_time,is_delete
+        edit_time,update_time,is_delete,space_type
     </sql>
 </mapper>
