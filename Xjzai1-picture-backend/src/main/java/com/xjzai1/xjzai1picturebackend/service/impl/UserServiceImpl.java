@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xjzai1.xjzai1picturebackend.constant.UserConstant;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
+import com.xjzai1.xjzai1picturebackend.manager.auth.StpKit;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.user.UserQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.enums.UserRoleEnum;
@@ -109,6 +110,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         // 4.记录用户的登录态
         request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
+        // 5. 记录用户登录态到 Sa-token，便于空间鉴权时使用，注意保证该用户信息与 SpringSession 中的信息过期时间一致
+        StpKit.SPACE.login(user.getId());
+        StpKit.SPACE.getSession().set(USER_LOGIN_STATE, user);
         return this.getLoginUserVo(user);
     }
 

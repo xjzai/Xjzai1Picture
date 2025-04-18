@@ -82,16 +82,16 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
 
     @Override
     public PictureVo uploadPicture(Object inputSource, PictureUploadRequest pictureUploadRequest, User loginUser) {
-        ThrowUtils.throwIf(loginUser == null, ErrorCode.NO_AUTH);
+            ThrowUtils.throwIf(loginUser == null, ErrorCode.NO_AUTH);
         // 校验空间是否存在
         Long spaceId = pictureUploadRequest.getSpaceId();
         if (spaceId != null) {
             Space space = spaceService.getById(spaceId);
             ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
-            // 必须空间创建人/管理人才能上传
-            if (!loginUser.getId().equals(space.getUserId())) {
-                throw new BusinessException(ErrorCode.NO_AUTH, "没有空间权限");
-            }
+            // 必须空间创建人/管理人才能上传, 已经使用Sa-token进行全局鉴权
+//            if (!loginUser.getId().equals(space.getUserId())) {
+//                throw new BusinessException(ErrorCode.NO_AUTH, "没有空间权限");
+//            }
             // 校验额度
             if (space.getTotalCount() >= space.getMaxCount()) {
                 throw new BusinessException(ErrorCode.OPERATION_ERROR, "空间条数不足");
@@ -106,10 +106,10 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         if (pictureId != null) {
             Picture oldPicture = this.getById(pictureId);
             ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR, "图片不存在");
-            // 仅本人或者管理员可修改
-            if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
-                throw new BusinessException(ErrorCode.NO_AUTH);
-            }
+            // 仅本人或者管理员可修改, 已经使用Sa-token进行全局鉴权
+//            if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
+//                throw new BusinessException(ErrorCode.NO_AUTH);
+//            }
             // 校验空间是否一致
             // 没传 spaceId，则复用原有图片的 spaceId
             if (spaceId == null) {
@@ -387,8 +387,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         if (oldPicture == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
-        // 校验权限
-        this.checkPictureAuth(loginUser, oldPicture);
+        // 校验权限, 已经使用Sa-token进行全局鉴权
+//        this.checkPictureAuth(loginUser, oldPicture);
         // 开启事务
         transactionTemplate.execute(status -> {
             // 操作数据库
@@ -418,12 +418,13 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             for (Picture picture : pictureList) {
                 Long pictureId = picture.getId();
                 // 判断是否存在
+                // todo 团队空间的id会查到多个值，添加spaceid
                 Picture oldPicture = this.getById(pictureId);
                 if (oldPicture == null) {
                     throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
                 }
-                // 校验权限
-                this.checkPictureAuth(loginUser, oldPicture);
+                // 校验权限, 已经使用Sa-token进行全局鉴权
+//                this.checkPictureAuth(loginUser, oldPicture);
                 // 操作数据库
                 boolean result = this.removeById(pictureId);
                 ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库删除失败");
@@ -500,8 +501,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         long id = pictureEditRequest.getId();
         Picture oldPicture = this.getById(id);
         ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
-        // 校验权限
-        this.checkPictureAuth(loginUser, oldPicture);
+        // 校验权限, 已经使用Sa-token进行全局鉴权
+//        this.checkPictureAuth(loginUser, oldPicture);
         // 补充审核参数
         this.fillReviewParams(picture, loginUser);
         // 操作数据库
@@ -694,6 +695,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     }
 
     @Override
+    @Deprecated // 已经使用Sa-token进行全局鉴权
     public void checkPictureAuth(User loginUser, Picture picture) {
         Long spaceId = picture.getSpaceId();
         if (spaceId == null) {

@@ -11,6 +11,7 @@ import com.xjzai1.xjzai1picturebackend.constant.UserConstant;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
+import com.xjzai1.xjzai1picturebackend.manager.auth.SpaceUserAuthManager;
 import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
@@ -48,6 +49,9 @@ public class SpaceController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private SpaceUserAuthManager spaceUserAuthManager;
 
     /**
      * 添加空间
@@ -139,6 +143,10 @@ public class SpaceController {
         // 查询数据库
         Space space = spaceService.getById(id);
         ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR);
+        SpaceVo spaceVo = spaceService.getSpaceVo(space, request);
+        User loginUser = userService.getLoginUser(request);
+        List<String> permissionList = spaceUserAuthManager.getPermissionList(space, loginUser);
+        spaceVo.setPermissionList(permissionList);
         // 获取封装类
         return ResultUtils.success(spaceService.getSpaceVo(space, request));
     }

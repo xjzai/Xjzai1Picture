@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
+import com.xjzai1.xjzai1picturebackend.manager.sharding.DynamicShardingManager;
 import com.xjzai1.xjzai1picturebackend.mapper.SpaceMapper;
 import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.xjzai1.xjzai1picturebackend.model.domain.SpaceUser;
@@ -26,6 +27,7 @@ import com.xjzai1.xjzai1picturebackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -55,6 +57,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
 
     @Resource
     private SpaceUserService spaceUserService;
+
+    @Resource
+    @Lazy
+    private DynamicShardingManager dynamicShardingManager;
 
     Map<Long, Object> lockMap = new ConcurrentHashMap<>();
 
@@ -108,6 +114,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
                         result = spaceUserService.save(spaceUser);
                         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "创建团队成员记录失败");
                     }
+                    // 创建分表
+                    dynamicShardingManager.createSpacePictureTable(space);
                     return space.getId();
                 });
                 return newSpaceId;
