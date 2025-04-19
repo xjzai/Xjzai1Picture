@@ -72,7 +72,8 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
             QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
             queryWrapper.select("picture_size");
             if (!spaceUsageAnalyzeRequest.isQueryAll()) {
-                queryWrapper.isNull("space_id");
+//                queryWrapper.isNull("space_id");
+                queryWrapper.eq("space_id", 0L);
             }
             List<Object> pictureObjList = pictureService.getBaseMapper().selectObjs(queryWrapper);
             long usedSize = pictureObjList.stream().mapToLong(result -> result instanceof Long ? (Long) result : 0).sum();
@@ -252,7 +253,8 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
             return;
         }
         if (spaceAnalyzeRequest.isQueryPublic()) {
-            queryWrapper.isNull("space_id");
+//                queryWrapper.isNull("space_id");
+            queryWrapper.eq("space_id", 0L);
             return;
         }
         Long spaceId = spaceAnalyzeRequest.getSpaceId();

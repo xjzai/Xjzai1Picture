@@ -67,9 +67,13 @@ public interface PictureService extends IService<Picture> {
 
     boolean deletePicture(Long pictureId, User loginUser);
 
+    boolean deletePicture(Long pictureId, Long spaceId, User loginUser);
+
     // todo 批量删除感觉有些问题，日后完善，桶内有残余未删除，可以先根据id从桶内查询全部图片再删除。
     boolean deletePictures(List<Picture> pictureList, User loginUser);
 
+
+    boolean deletePictures(List<Picture> pictureList, Long spaceId, User loginUser);
 
     @Transactional(rollbackFor = Exception.class)
     void doPictureDeleteByBatch(PictureDeleteByBatchRequest pictureDeleteByBatchRequest, User loginUser);

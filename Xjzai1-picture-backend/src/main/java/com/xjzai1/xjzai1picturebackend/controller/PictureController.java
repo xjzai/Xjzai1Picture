@@ -2,6 +2,8 @@ package com.xjzai1.xjzai1picturebackend.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -127,13 +129,17 @@ public class PictureController {
      */
     @PostMapping("/delete")
     @SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_DELETE)
-    public BaseResponse<Boolean> deletePicture(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
-        if (deleteRequest == null || deleteRequest.getId() <= 0) {
+    public BaseResponse<Boolean> deletePicture(@RequestBody PictureDeleteRequest pictureDeleteRequest, HttpServletRequest request) {
+        if (pictureDeleteRequest == null || pictureDeleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         User loginUser = userService.getLoginUser(request);
-        long pictureId = deleteRequest.getId();
-        Boolean result = pictureService.deletePicture(pictureId, loginUser);
+        long pictureId = pictureDeleteRequest.getId();
+        Long spaceId = pictureDeleteRequest.getSpaceId();
+        if (spaceId == null) {
+            spaceId = 0L;
+        }
+        Boolean result = pictureService.deletePicture(pictureId, spaceId, loginUser);
         return ResultUtils.success(result);
     }
 
@@ -166,43 +172,118 @@ public class PictureController {
         pictureService.validPicture(picture);
         // 判断是否存在
         long id = pictureUpdateRequest.getId();
-        Picture oldPicture = pictureService.getById(id);
+        Long spaceId = pictureUpdateRequest.getSpaceId();
+        if (spaceId == null) {
+            spaceId = 0L;
+        }
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id)         // 根据主键 id 查询
+                .eq("space_id", spaceId); // 附加 spaceId 条件
+        Picture oldPicture = pictureService.getOne(queryWrapper);
         ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
         // 补充审核参数
         User loginUser = userService.getLoginUser(request);
         pictureService.fillReviewParams(picture, loginUser);
         // 操作数据库
-        boolean result = pictureService.updateById(picture);
+        // 构造 UpdateWrapper
+        UpdateWrapper<Picture> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", picture.getId()) // 指定主键条件，批量更新则使用 in 传递多条
+                .eq("space_id", spaceId);      // 补充条件 spaceId=xxx
+        boolean result = pictureService.update(picture, updateWrapper);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库更新失败");
         return ResultUtils.success(true);
 
     }
+
+//    /**
+//     * 根据 id 获取图片（仅管理员可用）
+//     */
+//    @GetMapping("/get")
+//    @Deprecated // 使用下面的
+//    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+//    public BaseResponse<Picture> getPictureById(long id, HttpServletRequest request) {
+//        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+//        Picture picture = pictureService.getById(id);
+//        ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR, "未找到该数据");
+//        return ResultUtils.success(picture);
+//    }
 
     /**
      * 根据 id 获取图片（仅管理员可用）
      */
     @GetMapping("/get")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Picture> getPictureById(long id, HttpServletRequest request) {
-        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
-        Picture picture = pictureService.getById(id);
+    public BaseResponse<Picture> getPictureById(PictureGetRequest pictureGetRequest, HttpServletRequest request) {
+        if (pictureGetRequest == null || pictureGetRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long id = pictureGetRequest.getId();
+        Long spaceId = pictureGetRequest.getSpaceId();
+        if (spaceId == null) {
+            spaceId = 0L;
+        }
+        // 构造 QueryWrapper
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id)         // 根据主键 id 查询
+                .eq("space_id", spaceId); // 附加 spaceId 条件
+        Picture picture = pictureService.getOne(queryWrapper);
         ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR, "未找到该数据");
         return ResultUtils.success(picture);
     }
+
+//    /**
+//     * 根据 id 获取图片（封装类）
+//     */
+//    @GetMapping("/get/vo")
+//    public BaseResponse<PictureVo> getPictureVoById(long id, HttpServletRequest request) {
+//        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+//        // 查询数据库
+//        Picture picture = pictureService.getById(id);
+//        ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR);
+//        // 空间权限校验
+//        Space space = null;
+//        Long spaceId = picture.getSpaceId();
+//        if (spaceId != null) {
+//            boolean hasPermission = StpKit.SPACE.hasPermission(SpaceUserPermissionConstant.PICTURE_VIEW);
+//            ThrowUtils.throwIf(!hasPermission, ErrorCode.NO_AUTH);
+//            space = spaceService.getById(spaceId);
+//            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
+//            // 已经使用Sa-token进行全局鉴权
+////            User loginUser = userService.getLoginUser(request);
+////            pictureService.checkPictureAuth(loginUser, picture);
+//        }
+//        // 获取权限列表
+//        User loginUser = userService.getLoginUser(request);
+//        List<String> permissionList = spaceUserAuthManager.getPermissionList(space, loginUser);
+//        PictureVo pictureVo = pictureService.getPictureVo(picture, request);
+//        pictureVo.setPermissionList(permissionList);
+//        // 获取封装类
+//        return ResultUtils.success(pictureService.getPictureVo(picture, request));
+//    }
 
     /**
      * 根据 id 获取图片（封装类）
      */
     @GetMapping("/get/vo")
-    public BaseResponse<PictureVo> getPictureVoById(long id, HttpServletRequest request) {
-        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+    public BaseResponse<PictureVo> getPictureVoById(PictureGetRequest pictureGetRequest, HttpServletRequest request) {
+        if (pictureGetRequest == null || pictureGetRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long id = pictureGetRequest.getId();
+        Long spaceId = pictureGetRequest.getSpaceId();
+        if (spaceId == null) {
+            spaceId = 0L;
+        }
         // 查询数据库
-        Picture picture = pictureService.getById(id);
+        // 构造 QueryWrapper
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id)         // 根据主键 id 查询
+                .eq("space_id", spaceId); // 附加 spaceId 条件
+        Picture picture = pictureService.getOne(queryWrapper);
         ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR);
         // 空间权限校验
         Space space = null;
-        Long spaceId = picture.getSpaceId();
-        if (spaceId != null) {
+        if (spaceId != 0L) {
             boolean hasPermission = StpKit.SPACE.hasPermission(SpaceUserPermissionConstant.PICTURE_VIEW);
             ThrowUtils.throwIf(!hasPermission, ErrorCode.NO_AUTH);
             space = spaceService.getById(spaceId);
@@ -246,8 +327,12 @@ public class PictureController {
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         // 空间权限校验
         Long spaceId = pictureQueryRequest.getSpaceId();
-        // 公开图库
         if (spaceId == null) {
+            spaceId = 0L;
+        }
+        // 公开图库
+//        if (spaceId == null) {
+        if (spaceId == 0L) {
             // 普通用户默认只能查看已过审的公开数据
             pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
 //            pictureQueryRequest.setNullSpaceId(true);
@@ -399,7 +484,15 @@ public class PictureController {
         ThrowUtils.throwIf(searchPictureByPictureRequest == null, ErrorCode.PARAMS_ERROR);
         Long pictureId = searchPictureByPictureRequest.getPictureId();
         ThrowUtils.throwIf(pictureId == null || pictureId <= 0, ErrorCode.PARAMS_ERROR);
-        Picture oldPicture = pictureService.getById(pictureId);
+        Long spaceId = searchPictureByPictureRequest.getSpaceId();
+        if (spaceId == null){
+            spaceId = 0L;
+        }
+        // 构造 QueryWrapper
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", pictureId)         // 根据主键 id 查询
+                .eq("space_id", spaceId); // 附加 spaceId 条件
+        Picture oldPicture = pictureService.getOne(queryWrapper);
         ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
         List<ImageSearchResult> resultList = ImageSearchApiFacade.searchImage(oldPicture.getOriginalUrl());
         return ResultUtils.success(resultList);

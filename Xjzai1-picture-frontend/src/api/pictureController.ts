@@ -4,7 +4,7 @@ import request from '@/plugins/myAxios'
 
 /** deletePicture POST /api/picture/delete */
 export async function deletePictureUsingPost(
-  body: API.DeleteRequest,
+  body: API.PictureDeleteRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean_>('/api/picture/delete', {
