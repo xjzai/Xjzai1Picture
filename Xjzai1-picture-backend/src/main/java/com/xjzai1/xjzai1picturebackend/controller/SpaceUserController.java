@@ -9,12 +9,14 @@ import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;
 import com.xjzai1.xjzai1picturebackend.exception.ThrowUtils;
 import com.xjzai1.xjzai1picturebackend.manager.auth.annotation.SaSpaceCheckPermission;
 import com.xjzai1.xjzai1picturebackend.manager.auth.model.SpaceUserPermissionConstant;
+import com.xjzai1.xjzai1picturebackend.model.domain.Space;
 import com.xjzai1.xjzai1picturebackend.model.domain.SpaceUser;
 import com.xjzai1.xjzai1picturebackend.model.domain.User;
 import com.xjzai1.xjzai1picturebackend.model.dto.spaceuser.SpaceUserAddRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.spaceuser.SpaceUserEditRequest;
 import com.xjzai1.xjzai1picturebackend.model.dto.spaceuser.SpaceUserQueryRequest;
 import com.xjzai1.xjzai1picturebackend.model.vo.SpaceUserVo;
+import com.xjzai1.xjzai1picturebackend.service.SpaceService;
 import com.xjzai1.xjzai1picturebackend.service.SpaceUserService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,9 @@ public class SpaceUserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private SpaceService spaceService;
 
     /**
      * 添加成员到空间
@@ -64,6 +69,13 @@ public class SpaceUserController {
         // 判断是否存在
         SpaceUser oldSpaceUser = spaceUserService.getById(id);
         ThrowUtils.throwIf(oldSpaceUser == null, ErrorCode.NOT_FOUND_ERROR);
+        // 判断是否是创建人， 不能删除自己
+        Long spaceId = oldSpaceUser.getSpaceId();
+        Space space = spaceService.getById(spaceId);
+        ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR);
+        if (space.getUserId().equals(oldSpaceUser.getUserId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "不能删除创建人");
+        }
         // 操作数据库
         boolean result = spaceUserService.removeById(id);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
@@ -120,6 +132,13 @@ public class SpaceUserController {
         long id = spaceUserEditRequest.getId();
         SpaceUser oldSpaceUser = spaceUserService.getById(id);
         ThrowUtils.throwIf(oldSpaceUser == null, ErrorCode.NOT_FOUND_ERROR);
+        // 判断是否是创建人， 不能编辑自己的权限
+        Long spaceId = oldSpaceUser.getSpaceId();
+        Space space = spaceService.getById(spaceId);
+        ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR);
+        if (space.getUserId().equals(oldSpaceUser.getUserId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "不能编辑自己的权限");
+        }
         // 操作数据库
         boolean result = spaceUserService.updateById(spaceUser);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);

@@ -35,9 +35,9 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <router-link to="/space/mySpace">
+                    <router-link to="/user/detail">
                       <UserOutlined />
-                      我的空间
+                      个人主页
                     </router-link>
                   </a-menu-item>
                   <a-menu-item @click="doLogout">

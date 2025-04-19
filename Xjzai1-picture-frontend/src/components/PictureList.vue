@@ -39,10 +39,14 @@
               <a-space @click="(e) => doShare(picture, e)">
                 <ShareAltOutlined />
               </a-space>
-              <a-space @click="(e) => doEdit(picture, e)">
+              <a-space
+                v-if="canEdit"
+                @click="(e) => doEdit(picture, e)">
                 <EditOutlined />
               </a-space>
-              <a-space @click="(e) => doDelete(picture, e)">
+              <a-space
+                v-if="canDelete"
+                @click="(e) => doDelete(picture, e)">
                 <DeleteOutlined />
               </a-space>
               <a-space @click="(e) => doCheck(picture, e)">
@@ -81,19 +85,25 @@ interface Props {
   loading?: boolean
   showOp?: boolean
   onReload?: () => void
+  canEdit?: boolean
+  canDelete?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   dataList: () => [],
   loading: false,
   showOp: false,
+  canEdit: false,
+  canDelete: false,
 })
 
 // 跳转至图片详情
 const router = useRouter()
+// todo 添加spaceId
 const doClickPicture = (picture) => {
+  console.log(picture)
   router.push({
-    path: `/picture/${picture.id}`,
+    path: `/picture/${picture.id}/${picture.spaceId}`,
   })
 }
 

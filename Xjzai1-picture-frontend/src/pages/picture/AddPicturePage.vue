@@ -102,9 +102,10 @@ const handleSubmit = async (values: any) => {
       router.back()
     } else {
       message.success('创建成功')
+      console.log(spaceId)
       // todo 跳转到图片详情页
       router.push({
-        path: `/picture/${pictureId}`,
+        path: `/picture/${pictureId}/${spaceId.value ?? 0}`,
       })
     }
   } else {

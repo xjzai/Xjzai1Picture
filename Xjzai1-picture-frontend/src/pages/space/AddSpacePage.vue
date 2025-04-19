@@ -23,7 +23,7 @@
       <!--      </a-form-item>-->
       <a-form-item>
         <a-button type="primary" html-type="submit" style="width: 100%">
-          {{ route.query.id ? '修改' : '创建' }}
+          {{ route.query.id ? '修改' : '创建' }}{{ SPACE_TYPE_MAP[spaceType] }}
         </a-button>
       </a-form-item>
     </a-form>
@@ -40,7 +40,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import {
   addSpaceUsingPost,
   editSpaceUsingPost, getSpaceVoByIdUsingGet,
@@ -48,7 +48,7 @@ import {
 } from '@/api/spaceController'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { SPACE_LEVEL_ENUM, SPACE_LEVEL_OPTIONS } from '@/constants/space'
+import { SPACE_LEVEL_ENUM, SPACE_LEVEL_OPTIONS, SPACE_TYPE_ENUM, SPACE_TYPE_MAP } from '@/constants/space'
 import { formatSize } from '../../utils'
 
 const space = ref<API.SpaceVo>()
@@ -99,6 +99,7 @@ const handleSubmit = async (values: any) => {
     // 创建
     res = await addSpaceUsingPost({
       ...spaceForm,
+      spaceType: spaceType.value
     })
   }
   if (res.data.code === 0 && res.data.data) {
@@ -124,6 +125,15 @@ const fetchSpaceLevelList = async () => {
     message.error('加载空间级别失败，' + res.data.message)
   }
 }
+
+// 空间类别
+const spaceType = computed(() => {
+  if (route.query?.type) {
+    return Number(route.query.type)
+  }
+  return SPACE_TYPE_ENUM.PRIVATE
+})
+
 
 
 onMounted(() => {

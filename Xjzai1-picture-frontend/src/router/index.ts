@@ -13,6 +13,9 @@ import MySpacePage from '@/pages/space/MySpacePage.vue'
 import SpaceDetailPage from '@/pages/space/SpaceDetailPage.vue'
 import SearchPicturePage from '@/pages/picture/SearchPicturePage.vue'
 import SpaceAnalyzePage from '@/pages/space/SpaceAnalyzePage.vue'
+import SpaceUserManagePage from '@/pages/admin/SpaceUserManagePage.vue'
+import UserUpdatePage from '@/pages/user/UserUpdatePage.vue'
+import UserDetailPage from '@/pages/user/UserDetailPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +34,16 @@ const router = createRouter({
       path: '/user/register',
       name: '用户注册',
       component: UserRegisterPage,
+    },
+    {
+      path: '/user/update',
+      name: '更改账号信息',
+      component: UserUpdatePage,
+    },
+    {
+      path: '/user/detail',
+      name: '个人信息',
+      component: UserDetailPage,
     },
     {
       path: '/admin/userManage',
@@ -63,7 +76,7 @@ const router = createRouter({
       component: AddPictureBatchPage,
     },
     {
-      path: '/picture/:id',
+      path: '/picture/:id/:spaceId',
       name: '图片详情',
       component: PictureDetailPage,
       props: true,
@@ -88,7 +101,14 @@ const router = createRouter({
       path: '/space/analyze',
       name: '空间分析',
       component: SpaceAnalyzePage,
-    }
+    },
+    {
+      path: '/space/spaceUserManage/:id',
+      name: '空间成员管理',
+      component: SpaceUserManagePage,
+      props: true,
+    },
+
   ],
 })
 

@@ -32,9 +32,10 @@ public class UserController {
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         ThrowUtils.throwIf(userRegisterRequest == null, ErrorCode.PARAMS_ERROR);
         String userAccount = userRegisterRequest.getUserAccount();
+        String userName = userRegisterRequest.getUserName();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        long userId = userService.userRegister(userAccount, userPassword, checkPassword);
+        long userId = userService.userRegister(userAccount, userName, userPassword, checkPassword);
         return ResultUtils.success(userId);
     }
 
