@@ -45,15 +45,21 @@ const pictureId = computed(() => {
   return route.query?.pictureId
 })
 
+const spaceId = computed(() => {
+  return route.query?.spaceId
+})
+
 const picture = ref<API.PictureVO>({})
 
 // 获取老数据
 const getOldPicture = async () => {
   // 获取数据
   const id = route.query?.pictureId
+  const spaceId = route.query?.spaceId
   if (id) {
     const res = await getPictureVoByIdUsingGet({
       id: id,
+      spaceId: spaceId ?? undefined,
     })
     if (res.data.code === 0 && res.data.data) {
       const data = res.data.data
@@ -71,6 +77,7 @@ const dataList = ref<API.ImageSearchResult[]>([])
 const fetchData = async () => {
   const res = await searchPictureByPictureUsingPost({
     pictureId: pictureId.value,
+    spaceId: spaceId.value,
   })
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data ?? []

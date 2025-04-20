@@ -122,7 +122,7 @@ const doEdit = (picture, e) => {
 // 搜索
 const doSearch = (picture, e) => {
   e.stopPropagation()
-  window.open(`/picture/searchPicture?pictureId=${picture.id}`)
+  window.open(`/picture/searchPicture?pictureId=${picture.id}&spaceId=${picture.spaceId}`)
 }
 
 // 分享弹窗引用

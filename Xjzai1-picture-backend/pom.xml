@@ -161,7 +161,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.xjzai1.xjzai1picturebackend.Xjzai1PictureBackendApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

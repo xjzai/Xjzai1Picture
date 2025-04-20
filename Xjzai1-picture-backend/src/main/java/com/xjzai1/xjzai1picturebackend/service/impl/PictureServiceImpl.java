@@ -86,7 +86,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         ThrowUtils.throwIf(loginUser == null, ErrorCode.NO_AUTH);
         // 校验空间是否存在
         Long spaceId = pictureUploadRequest.getSpaceId();
-        if (spaceId != null) {
+        if (spaceId != null && spaceId != 0L) {
+            QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
             Space space = spaceService.getById(spaceId);
             ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
             // 必须空间创建人/管理人才能上传, 已经使用Sa-token进行全局鉴权
@@ -109,7 +110,10 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         Long pictureId = pictureUploadRequest.getId();
         // 如果是更新图片，需要校验图片是否存在
         if (pictureId != null) {
-            Picture oldPicture = this.getById(pictureId);
+            QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("space_id", spaceId)
+                    .eq("id", pictureId);
+            Picture oldPicture = this.getOne(queryWrapper);
             ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR, "图片不存在");
             // 仅本人或者管理员可修改, 已经使用Sa-token进行全局鉴权
 //            if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
@@ -177,7 +181,16 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // 开启事务
         Long finalSpaceId = spaceId;
         transactionTemplate.execute(status -> {
-            boolean result = this.saveOrUpdate(picture);
+//            boolean result = this.saveOrUpdate(picture);
+            boolean result;
+            if (pictureId != null) {
+                UpdateWrapper<Picture> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("space_id", finalSpaceId)
+                        .eq("id", pictureId);
+                result = this.update(picture, updateWrapper);
+            } else {
+                result = this.save(picture);
+            }
             ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "图片上传失败");
 //            if (finalSpaceId != null) {
             if (finalSpaceId != 0L) {

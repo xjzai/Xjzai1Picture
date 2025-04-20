@@ -6,6 +6,7 @@ target/
 
 ### 本地才能用 ###
 application-local.properties
+application-prod.properties
 
 ### STS ###
 .apt_generated

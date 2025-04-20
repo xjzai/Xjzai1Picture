@@ -4,8 +4,8 @@
       <a-col flex="200px">
         <RouterLink to="/">
           <div class="title-bar">
-            <img class="logo" src="../assets/logo.png" alt="logo" />
-            <div class="title">鱼皮云图库</div>
+            <img class="logo" src="../assets/logo.jpg" alt="logo" />
+            <div class="title">xjz云图库</div>
           </div>
         </RouterLink>
       </a-col>
@@ -97,8 +97,8 @@ const originItems = [
   },
   {
     key: 'others',
-    label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),
-    title: '编程导航',
+    label: h('a', { href: 'http://www.xjzai1.fun', target: '_blank' }, '其他网站'),
+    title: '其他网站',
   },
 ]
 
