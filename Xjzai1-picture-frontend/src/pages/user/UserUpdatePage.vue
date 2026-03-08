@@ -41,7 +41,7 @@ onMounted(() => {
   userForm.userName = route.query.userName
   userForm.userAvatar = route.query.userAvatar
   userForm.userProfile = route.query.userProfile
-  console.log(userForm)
+  // console.log(userForm)
 })
 
 /**
@@ -57,7 +57,7 @@ const handleSubmit = async (values: any) => {
     message.success('修改成功')
     router.back()
   } else {
-    message.error('修改失败，' + res.data.message)
+    message.error('修改失败，' + res.data.message + '，' + res.data.description)
   }
 }
 </script>

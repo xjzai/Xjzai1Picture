@@ -117,7 +117,7 @@ const handleSubmit = async (values: any) => {
       router.back()
     } else {
       message.success('创建成功')
-      console.log(spaceId)
+      // console.log(spaceId)
       // todo 跳转到图片详情页
       router.push({
         path: `/picture/${pictureId}/${spaceId.value ?? 0}`,
@@ -125,9 +125,9 @@ const handleSubmit = async (values: any) => {
     }
   } else {
     if (route.query.id) {
-      message.error('修改失败，' + res.data.message)
+      message.error('修改失败，' + res.data.message + '，' + res.data.description)
     } else {
-      message.error('创建失败，' + res.data.message)
+      message.error('创建失败，' + res.data.message + '，' + res.data.description)
     }
   }
 }
@@ -153,7 +153,7 @@ const getTagCategoryOptions = async () => {
       }
     })
   } else {
-    message.error('加载选项失败，' + res.data.message)
+    message.error('加载选项失败，' + res.data.message + '，' + res.data.description)
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="userLoginPage">
-    <h2 class="title">xjzai1云图库 - 用户登录</h2>
+    <h2 class="title">xjz云图库 - 用户登录</h2>
     <div class="desc">企业级智能协同云图库</div>
     <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit">
       <a-form-item name="userAccount" :rules="[{ required: true, message: '请输入账号' }]">
@@ -55,7 +55,7 @@ const handleSubmit = async (values: any) => {
       replace: true,
     })
   } else {
-    message.error('登录失败，' + res.data.message)
+    message.error('登录失败，' + res.data.message + '，' + res.data.description)
   }
 }
 </script>

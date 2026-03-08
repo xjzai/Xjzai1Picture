@@ -55,7 +55,7 @@ const handleSubmit = async (values: any) => {
     closeModal()
     props.onSuccess?.()
   } else {
-    message.error('操作失败，' + res.data.message)
+    message.error('操作失败，' + res.data.message + '，' + res.data.description)
   }
 }
 </script>

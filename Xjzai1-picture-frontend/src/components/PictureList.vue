@@ -101,7 +101,7 @@ const props = withDefaults(defineProps<Props>(), {
 const router = useRouter()
 // todo 添加spaceId
 const doClickPicture = (picture) => {
-  console.log(picture)
+  // console.log(picture)
   router.push({
     path: `/picture/${picture.id}/${picture.spaceId}`,
   })

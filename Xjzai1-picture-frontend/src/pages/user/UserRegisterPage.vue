@@ -1,6 +1,6 @@
 <template>
   <div id="userRegisterPage">
-    <h2 class="title">xjzai1云图库 - 用户注册</h2>
+    <h2 class="title">xjz云图库 - 用户注册</h2>
     <div class="desc">企业级智能协同云图库</div>
     <a-form
       :model="formState"
@@ -76,7 +76,7 @@ const handleSubmit = async (values: any) => {
       replace: true,
     })
   } else {
-    message.error('注册失败，' + res.data.message)
+    message.error('注册失败，' + res.data.message + '，' + res.data.description)
   }
 }
 </script>

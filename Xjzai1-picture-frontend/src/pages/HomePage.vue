@@ -139,13 +139,13 @@ const fetchData = async () => {
       params.tags.push(tagList.value[index])
     }
   })
-  console.log(params)
+  // console.log(params)
   const res = await listPictureVoByPageUsingPost(params)
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
   } else {
-    message.error('获取数据失败，' + res.data.message)
+    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
   }
   loading.value = false
 }
@@ -175,7 +175,7 @@ const getTagCategoryOptions = async () => {
     categoryList.value = res.data.data.categoryList ?? []
     tagList.value = res.data.data.tagList ?? []
   } else {
-    message.error('加载分类标签失败，' + res.data.message)
+    message.error('加载分类标签失败，' + res.data.message + '，' + res.data.description)
   }
 }
 

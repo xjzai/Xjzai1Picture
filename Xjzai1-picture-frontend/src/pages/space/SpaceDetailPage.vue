@@ -127,7 +127,7 @@ const fetchSpaceDetail = async () => {
     if (res.data.code === 0 && res.data.data) {
       space.value = res.data.data
     } else {
-      message.error('获取空间详情失败，' + res.data.message)
+      message.error('获取空间详情失败，' + res.data.message + '，' + res.data.description)
     }
   } catch (e: any) {
     message.error('获取空间详情失败：' + e.message)
@@ -182,14 +182,14 @@ const fetchData = async () => {
     dataList.value.forEach((item) => {
       item.checked = false
     })
-    console.log(dataList.value)
+    // console.log(dataList.value)
     total.value = res.data.data.total ?? 0
   } else {
-    message.error('获取数据失败，' + res.data.message)
+    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
   }
   // 重置选中状态
   newDataList.value = []
-  console.log(newDataList.value)
+  // console.log(newDataList.value)
   // 重置全选按钮状态
   allChecked.value = false
 
@@ -224,7 +224,7 @@ const getNewPicture = (newPicture) => {
   } else {
     newDataList.value = newDataList.value.filter((item) => item.id !== newPicture.id)
   }
-  console.log('接收到子组件的数据:', newDataList.value)
+  // console.log('接收到子组件的数据:', newDataList.value)
   // message.error("6666");
   // 更新父组件状态等操作
 }

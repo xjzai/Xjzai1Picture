@@ -116,7 +116,7 @@ const picture = ref<API.PictureVo>({})
 
 // 获取图片详情
 const fetchPictureDetail = async () => {
-  console.log(props)
+  // console.log(props)
   try {
     const res = await getPictureVoByIdUsingGet({
       id: props.id,
@@ -124,9 +124,9 @@ const fetchPictureDetail = async () => {
     })
     if (res.data.code === 0 && res.data.data) {
       picture.value = res.data.data
-      console.log(res.data.data)
+      // console.log(res.data.data)
     } else {
-      message.error('获取图片详情失败，' + res.data.message)
+      message.error('获取图片详情失败，' + res.data.message + '，' + res.data.description)
     }
   } catch (e: any) {
     message.error('获取图片详情失败：' + e.message)
@@ -174,7 +174,7 @@ const doDelete = async () => {
 // 处理下载
 const doDownload = () => {
   downloadImage(picture.value.originalUrl)
-  console.log(picture.value.permissionList)
+  // console.log(picture.value.permissionList)
 }
 
 onMounted(() => {

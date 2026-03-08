@@ -82,7 +82,7 @@ const fetchData = async () => {
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message)
+    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
   }
 }
 

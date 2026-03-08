@@ -38,7 +38,7 @@ const checkUserSpace = async () => {
       message.warn('请先创建空间')
     }
   } else {
-    message.error('加载我的空间失败，' + res.data.message)
+    message.error('加载我的空间失败，' + res.data.message + '，' + res.data.description)
   }
 }
 

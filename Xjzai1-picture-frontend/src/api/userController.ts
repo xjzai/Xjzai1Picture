@@ -7,7 +7,8 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
   return request<API.BaseResponseLong_>('/api/user/add', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept-Charset': 'utf-8',
+      'Content-Type': 'application/json;charset=UTF-8',
     },
     data: body,
     ...(options || {}),
@@ -17,12 +18,13 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
 /** deleteUser POST /api/user/delete */
 export async function deleteUserUsingPost(
   body: API.DeleteRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseBoolean_>('/api/user/delete', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept-Charset': 'utf-8',
+      'Content-Type': 'application/json;charset=UTF-8',
     },
     data: body,
     ...(options || {}),
@@ -33,7 +35,7 @@ export async function deleteUserUsingPost(
 export async function getUserByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserByIdUsingGETParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseUser_>('/api/user/get', {
     method: 'GET',
@@ -56,7 +58,7 @@ export async function getLoginUserUsingGet(options?: { [key: string]: any }) {
 export async function getUserVoByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserVoByIdUsingGETParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseUserVo_>('/api/user/get/vo', {
     method: 'GET',
@@ -70,12 +72,13 @@ export async function getUserVoByIdUsingGet(
 /** listUserVoByPage POST /api/user/list/page/vo */
 export async function listUserVoByPageUsingPost(
   body: API.UserQueryRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageUserVo_>('/api/user/list/page/vo', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept-Charset': 'utf-8',
+      'Content-Type': 'application/json;charset=UTF-8',
     },
     data: body,
     ...(options || {}),
@@ -85,12 +88,13 @@ export async function listUserVoByPageUsingPost(
 /** userLogin POST /api/user/login */
 export async function userLoginUsingPost(
   body: API.UserLoginRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseUserLoginVo_>('/api/user/login', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept-Charset': 'utf-8',
+      'Content-Type': 'application/json;charset=UTF-8',
     },
     data: body,
     ...(options || {}),
@@ -108,12 +112,13 @@ export async function userLogoutUsingPost(options?: { [key: string]: any }) {
 /** userRegister POST /api/user/register */
 export async function userRegisterUsingPost(
   body: API.UserRegisterRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseLong_>('/api/user/register', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept-Charset': 'utf-8',
+      'Content-Type': 'application/json;charset=UTF-8',
     },
     data: body,
     ...(options || {}),
@@ -123,12 +128,13 @@ export async function userRegisterUsingPost(
 /** updateUser POST /api/user/update */
 export async function updateUserUsingPost(
   body: API.UserUpdateRequest,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseBoolean_>('/api/user/update', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept-Charset': 'utf-8',
+      'Content-Type': 'application/json;charset=UTF-8',
     },
     data: body,
     ...(options || {}),

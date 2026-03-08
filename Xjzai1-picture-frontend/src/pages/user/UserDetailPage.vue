@@ -62,9 +62,9 @@ const fetchUserDetail = async () => {
     })
     if (res.data.code === 0 && res.data.data) {
       user.value = res.data.data
-      console.log(res.data.data)
+      // console.log(res.data.data)
     } else {
-      message.error('获取用户详情失败，' + res.data.message)
+      message.error('获取用户详情失败，' + res.data.message + '，' + res.data.description)
     }
   } catch (e: any) {
     message.error('获取用户详情失败：' + e.message)

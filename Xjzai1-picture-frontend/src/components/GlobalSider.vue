@@ -1,6 +1,6 @@
 <template>
   <div id="globalSider">
-    <a-menu mode="inline" v-model:selectedKeys="current" :items="menuItems" @click="doMenuClick" />
+    <a-menu mode="inline" v-model:selectedKeys="current" :items="menuItems" @click="doMenuClick" class="menu" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -74,7 +74,7 @@ const fetchTeamSpaceList = async () => {
   if (res.data.code === 0 && res.data.data) {
     teamSpaceList.value = res.data.data
   } else {
-    message.error('加载我的团队空间失败，' + res.data.message)
+    message.error('加载我的团队空间失败，' + res.data.message + '，' + res.data.description)
   }
 }
 
@@ -96,4 +96,8 @@ watchEffect(() => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.menu{
+  //background-image: url("@/assets/background.png");
+}
+</style>

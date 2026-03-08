@@ -106,7 +106,7 @@ const onRangeChange = (dates: any[], dateStrings: string[]) => {
   } else {
     searchParams.startEditTime = dates[0].toDate()
     searchParams.endEditTime = dates[1].toDate()
-    console.log(searchParams.startEditTime)
+    // console.log(searchParams.startEditTime)
   }
 }
 
@@ -139,7 +139,7 @@ const getTagCategoryOptions = async () => {
       }
     })
   } else {
-    message.error('加载选项失败，' + res.data.message)
+    message.error('加载选项失败，' + res.data.message + '，' + res.data.description)
   }
 }
 
@@ -162,7 +162,7 @@ onMounted(() => {
 
 const onColorChange = (color: string) => {
   searchParams.pictureColor = color;
-  console.log(searchParams.pictureColor);
+  // console.log(searchParams.pictureColor);
 
 }
 

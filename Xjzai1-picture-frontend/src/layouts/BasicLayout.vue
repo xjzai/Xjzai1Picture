@@ -19,7 +19,8 @@
         </a-layout-content>
       </a-layout>
       <a-layout-footer class="footer">
-        <a href="http://www.xjzai1.fun/" target="_blank">xjzai1个人网站 by xjzai1</a>
+<!--        <a href="http://www.xjzai1.fun/" target="_blank">xjzai1个人网站 by xjzai1</a>-->
+        <BeiAnHao/>
       </a-layout-footer>
     </a-layout>
   </div>
@@ -28,6 +29,7 @@
 import GlobalHeader from '@/components/GlobalHeader.vue'
 import GlobalSider from '@/components/GlobalSider.vue'
 import { useLoginUserStore } from '@/stores/user'
+import BeiAnHao from '@/components/BeiAnHao.vue'
 
 const loginUserStore = useLoginUserStore()
 </script>
@@ -37,16 +39,20 @@ const loginUserStore = useLoginUserStore()
   margin-bottom: 1px;
   color: unset;
   background: white;
+  //background-image: url("@/assets/background.png");
 }
 
 #basicLayout .content {
   background: linear-gradient(to right, #fefefe, #fff);
+  //background: linear-gradient(to right, #939292, #fff);
+  //background-image: url("@/assets/background.png");
   margin-bottom: 28px;
   padding: 28px;
 }
 
 #basicLayout .footer {
   background: #efefef;
+  //background-image: url("@/assets/background.png");
   padding: 16px;
   position: fixed;
   bottom: 0;
@@ -66,4 +72,5 @@ const loginUserStore = useLoginUserStore()
   border-bottom: none !important;
   border-inline-end: none !important;
 }
+
 </style>

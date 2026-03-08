@@ -15,6 +15,7 @@
           mode="horizontal"
           :items="items"
           @click="doMenuClick"
+          class="menu"
         />
       </a-col>
       <a-col flex="120px">
@@ -95,11 +96,11 @@ const originItems = [
     label: '空间管理',
     title: '空间管理',
   },
-  {
-    key: 'others',
-    label: h('a', { href: 'http://www.xjzai1.fun', target: '_blank' }, '其他网站'),
-    title: '其他网站',
-  },
+  // {
+  //   key: 'others',
+  //   label: h('a', { href: 'http://www.xjzai1.fun', target: '_blank' }, '其他网站'),
+  //   title: '其他网站',
+  // },
 ]
 
 // 过滤菜单项
@@ -121,14 +122,12 @@ const items = computed<MenuProps['items']>(() => filterMenus(originItems))
 const router = useRouter()
 
 router.beforeEach((to, from, next) => {
-  console.log('Navigating from', from.path, 'to', to.path)
   current.value = [to.path]
   next()
 })
 
 const doMenuClick = ({ key }: { key: string }) => {
   // ant-design中Menu组件的回调函数传来的值
-  console.log('Menu clicked, key:', key)
   // router.push({
   //   path: key,
   // })
@@ -137,17 +136,17 @@ const doMenuClick = ({ key }: { key: string }) => {
       path: key,
     })
     .then(() => {
-      console.log('Navigation successful')
+      // console.log('Navigation successful')
     })
     .catch((err) => {
-      console.error('Navigation failed', err)
+      // console.error('Navigation failed', err)
     })
 }
 
 // 用户注销
 const doLogout = async () => {
   const res = await userLogoutUsingPost()
-  console.log(res)
+  // console.log(res)
   if (res.data.code === 0) {
     loginUserStore.setLoginUser({
       userName: '未登录',
@@ -155,7 +154,7 @@ const doLogout = async () => {
     message.success('退出登录成功')
     await router.push('/user/login')
   } else {
-    message.error('退出登录失败，' + res.data.message)
+    message.error('退出登录失败，' + res.data.message + '，' + res.data.description)
   }
 }
 </script>
@@ -173,5 +172,8 @@ const doLogout = async () => {
 
 .logo {
   height: 48px;
+}
+.menu {
+  //background-image: url("@/assets/background.png");
 }
 </style>

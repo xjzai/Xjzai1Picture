@@ -103,7 +103,7 @@ const fetchData = async () => {
   if (res.data.data) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message)
+    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
   }
 }
 
@@ -121,7 +121,7 @@ const editSpaceRole = async (value, record) => {
   if (res.data.code === 0) {
     message.success('修改成功')
   } else {
-    message.error('修改失败，' + res.data.message)
+    message.error('修改失败，' + res.data.message + '，' + res.data.description)
   }
 }
 
@@ -158,7 +158,7 @@ const handleSubmit = async () => {
     // 刷新数据
     fetchData()
   } else {
-    message.error('添加失败，' + res.data.message)
+    message.error('添加失败，' + res.data.message + '，' + res.data.description)
   }
 }
 

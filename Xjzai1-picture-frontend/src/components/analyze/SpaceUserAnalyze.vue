@@ -44,11 +44,11 @@ const fetchData = async () => {
     timeDimension: timeDimension.value,
     userId: userId.value,
   })
-  console.log(options.value);
+  // console.log(options.value);
   if (res.data.code === 0) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message)
+    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
   }
   loading.value = false
 }

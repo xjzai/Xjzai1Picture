@@ -41,7 +41,6 @@ defineExpose({
 // 提交表单时处理
 
 const doDelete = async () => {
-  console.log(props)
   const id = props.obj.id
   if (!id) {
     return

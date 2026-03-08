@@ -17,5 +17,6 @@ import { useLoginUserStore } from '@/stores/user'
 <style scoped>
 #app {
 }
+
 </style>
 

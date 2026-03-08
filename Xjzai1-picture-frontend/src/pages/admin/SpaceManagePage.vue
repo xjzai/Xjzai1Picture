@@ -159,9 +159,9 @@ const fetchData = async () => {
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
-    console.log(dataList.value);
+    // console.log(dataList.value);
   } else {
-    message.error('获取数据失败，' + res.data.message)
+    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
   }
 }
 
@@ -216,10 +216,10 @@ const doUpdate = (id: string) => {
       },
     })
     .then(() => {
-      console.log('Navigation successful')
+      // console.log('Navigation successful')
     })
     .catch((err) => {
-      console.error('Navigation failed', err)
+      // console.error('Navigation failed', err)
     })
 }
 
@@ -236,7 +236,7 @@ const handleReview = async (record: API.Space, reviewStatus: number) => {
     // 重新获取列表
     fetchData()
   } else {
-    message.error('审核操作失败，' + res.data.message)
+    message.error('审核操作失败，' + res.data.message + '，' + res.data.description)
   }
 }
 

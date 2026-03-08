@@ -111,7 +111,7 @@ const handleUpload = async ({ file }: any) => {
   try {
     const params: API.PictureUploadRequest = props.picture ? { id: props.picture.id } : {}
     params.spaceId = props.spaceId
-    console.log(params)
+    // console.log(params)
     const res = await uploadPictureUsingPost(params, {}, file)
     if (res.data.code === 0 && res.data.data) {
       message.success('图片上传成功')
@@ -119,7 +119,7 @@ const handleUpload = async ({ file }: any) => {
       props.onSuccess?.(res.data.data)
       closeModal();
     } else {
-      message.error('图片上传失败，' + res.data.message)
+      message.error('图片上传失败，' + res.data.message + '，' + res.data.description)
     }
   } catch (error) {
     message.error('图片上传失败')
@@ -189,26 +189,26 @@ const initWebsocket = () => {
 
   // 监听通知消息
   websocket.on(PICTURE_EDIT_MESSAGE_TYPE_ENUM.INFO, (msg) => {
-    console.log('收到通知消息：', msg)
+    // console.log('收到通知消息：', msg)
     message.info(msg.message)
   })
 
   // 监听错误消息
   websocket.on(PICTURE_EDIT_MESSAGE_TYPE_ENUM.ERROR, (msg) => {
-    console.log('收到错误消息：', msg)
+    // console.log('收到错误消息：', msg)
     message.error(msg.message)
   })
 
   // 监听进入编辑状态消息
   websocket.on(PICTURE_EDIT_MESSAGE_TYPE_ENUM.ENTER_EDIT, (msg) => {
-    console.log('收到进入编辑状态消息：', msg)
+    // console.log('收到进入编辑状态消息：', msg)
     message.info(msg.message)
     editingUser.value = msg.user
   })
 
   // 监听编辑操作消息
   websocket.on(PICTURE_EDIT_MESSAGE_TYPE_ENUM.EDIT_ACTION, (msg) => {
-    console.log('收到编辑操作消息：', msg)
+    // console.log('收到编辑操作消息：', msg)
     message.info(msg.message)
     switch (msg.editAction) {
       case PICTURE_EDIT_ACTION_ENUM.ROTATE_LEFT:
@@ -228,7 +228,7 @@ const initWebsocket = () => {
 
   // 监听退出编辑状态消息
   websocket.on(PICTURE_EDIT_MESSAGE_TYPE_ENUM.EXIT_EDIT, (msg) => {
-    console.log('收到退出编辑状态消息：', msg)
+    // console.log('收到退出编辑状态消息：', msg)
     message.info(msg.message)
     editingUser.value = undefined
   })
