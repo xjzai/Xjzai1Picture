@@ -11,7 +11,6 @@ import com.xjzai1.xjzai1picturebackend.annotation.AuthCheck;
 import com.xjzai1.xjzai1picturebackend.api.imagesearch.ImageSearchApiFacade;
 import com.xjzai1.xjzai1picturebackend.api.imagesearch.model.ImageSearchResult;
 import com.xjzai1.xjzai1picturebackend.common.BaseResponse;
-import com.xjzai1.xjzai1picturebackend.common.DeleteRequest;
 import com.xjzai1.xjzai1picturebackend.common.ResultUtils;
 import com.xjzai1.xjzai1picturebackend.constant.UserConstant;
 import com.xjzai1.xjzai1picturebackend.exception.BusinessException;
@@ -31,6 +30,7 @@ import com.xjzai1.xjzai1picturebackend.model.vo.PictureVo;
 import com.xjzai1.xjzai1picturebackend.service.PictureService;
 import com.xjzai1.xjzai1picturebackend.service.SpaceService;
 import com.xjzai1.xjzai1picturebackend.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/picture")
+@Slf4j
 public class PictureController {
 
     @Resource
@@ -84,6 +85,7 @@ public class PictureController {
             @RequestPart("file") MultipartFile multipartFile,
             PictureUploadRequest pictureUploadRequest,
             HttpServletRequest request) {
+        log.info("接收到的数据: name={}", pictureUploadRequest.getPictureName()); // 检查是否是中文
         User loginUser = userService.getLoginUser(request);
         PictureVo pictureVo = pictureService.uploadPicture(multipartFile, pictureUploadRequest, loginUser);
         return ResultUtils.success(pictureVo);
@@ -448,12 +450,13 @@ public class PictureController {
     @GetMapping("/tag_category")
     public BaseResponse<PictureTagCategory> listPictureTagCategory() {
         PictureTagCategory pictureTagCategory = new PictureTagCategory();
-        List<String> tagList = Arrays.asList("热门", "搞笑", "生活", "高清", "艺术", "校园", "背景", "简历", "创意");
-        List<String> categoryList = Arrays.asList("模板", "电商", "表情包", "素材", "海报");
+        List<String> tagList = Arrays.asList("FGO", "蛊真人", "宝可梦", "三丽鸥", "道诡异仙", "无职转生", "火影忍者", "轻松熊", "怪物猎人", "最终幻想");
+        List<String> categoryList = Arrays.asList("动漫", "高清", "表情包", "素材", "海报", "其他");
         pictureTagCategory.setTagList(tagList);
         pictureTagCategory.setCategoryList(categoryList);
         return ResultUtils.success(pictureTagCategory);
     }
+
 
     @PostMapping("/review")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
