@@ -98,7 +98,7 @@ const originItems = [
   },
   // {
   //   key: 'others',
-  //   label: h('a', { href: 'http://www.xjzai1.fun', target: '_blank' }, '其他网站'),
+  //   label: h('a', { href: 'http://www.xjzai1.top', target: '_blank' }, '其他网站'),
   //   title: '其他网站',
   // },
 ]

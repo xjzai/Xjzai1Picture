@@ -19,7 +19,7 @@ export default class PictureEditWebSocket {
   connect() {
     // todo url 有问题
     const DEV_BASE_URL = "ws://localhost:8123";
-    const PROD_BASE_URL = "ws://www.xjzai1.fun";
+    const PROD_BASE_URL = "ws://www.xjzai1.top";
     const url = `${PROD_BASE_URL}/api/ws/picture/edit?pictureId=${this.pictureId}&spaceId=${this.spaceId}`
     // const url = `${DEV_BASE_URL}/api/ws/picture/edit?pictureId=${this.pictureId}&spaceId=${this.spaceId}`
     this.socket = new WebSocket(url)

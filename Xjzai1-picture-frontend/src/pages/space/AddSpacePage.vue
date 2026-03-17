@@ -30,7 +30,7 @@
     <a-card title="空间级别介绍">
       <a-typography-paragraph>
         * 目前仅支持开通普通版，如需升级空间，请联系
-        <a href="http://www.xjzai1.fun" target="_blank">xjzai1</a>。
+        <a href="http://www.xjzai1.top" target="_blank">xjzai1</a>。
       </a-typography-paragraph>
       <a-typography-paragraph v-for="spaceLevel in spaceLevelList">
         {{ spaceLevel.text }}： 大小 {{ formatSize(spaceLevel.maxSize) }}， 数量

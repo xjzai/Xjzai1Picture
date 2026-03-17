@@ -19,7 +19,7 @@
         </a-layout-content>
       </a-layout>
       <a-layout-footer class="footer">
-<!--        <a href="http://www.xjzai1.fun/" target="_blank">xjzai1个人网站 by xjzai1</a>-->
+<!--        <a href="http://www.xjzai1.top/" target="_blank">xjzai1个人网站 by xjzai1</a>-->
         <BeiAnHao/>
       </a-layout-footer>
     </a-layout>
