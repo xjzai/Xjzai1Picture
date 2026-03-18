@@ -2,6 +2,7 @@ package com.xjzai1.xjzai1picturebackend.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xjzai1.xjzai1picturebackend.api.aliyunai.model.CreateOutPaintingTaskResponse;
 import com.xjzai1.xjzai1picturebackend.model.domain.Picture;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xjzai1.xjzai1picturebackend.model.domain.Space;
@@ -109,4 +110,6 @@ public interface PictureService extends IService<Picture> {
 
     // 先不使用异步注解，防止数据库删除了但COS没有
     void clearPictureFiles(List<Picture> pictureList);
+
+    CreateOutPaintingTaskResponse createPictureOutPaintingTask(CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest, User loginUser);
 }

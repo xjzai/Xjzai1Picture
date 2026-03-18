@@ -39,8 +39,13 @@ public abstract class PictureUploadTemplate {
         // 2. 图片上传地址
         String uuid = RandomUtil.randomString(16);
         String originFilename = getOriginFilename(inputSource);
+        String uploadSuffixName = FileUtil.getSuffix(originFilename);
+        // 去掉 ? 后面的参数
+        if (uploadSuffixName.contains("?")) {
+            uploadSuffixName = uploadSuffixName.substring(0, uploadSuffixName.indexOf('?'));
+        }
         String uploadFilename = String.format("%s_%s.%s", DateUtil.formatDate(new Date()), uuid,
-                FileUtil.getSuffix(originFilename));
+                uploadSuffixName);
         String uploadPath = String.format("%s/%s", uploadPathPrefix, uploadFilename);
         File file = null;
         try {

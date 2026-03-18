@@ -19,6 +19,15 @@
     </a-tabs>
     <div v-if="picture" class="edit-bar">
       <a-button :icon="h(EditOutlined)" @click="doEditPicture">编辑图片</a-button>
+      <a-button type="primary" ghost :icon="h(FullscreenOutlined)" @click="doImagePainting">
+        AI 扩图
+      </a-button>
+      <ImageOutPainting
+        ref="imageOutPaintingRef"
+        :picture="picture"
+        :spaceId="spaceId"
+        :onSuccess="onImageOutPaintingSuccess"
+      />
       <ImageCropper
         ref="imageCropperRef"
         :imageUrl="picture?.url"
@@ -27,6 +36,7 @@
         :space="space"
         :onSuccess="onSuccess"
       />
+
 
     </div>
     <a-form v-if="picture" layout="vertical" :model="pictureForm" @finish="handleSubmit">
@@ -80,6 +90,7 @@ import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
 import ImageCropper from '@/components/ImageCropper.vue'
 import { EditOutlined } from '@ant-design/icons-vue'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController'
+import ImageOutPainting from '@/components/ImageOutPainting.vue'
 
 const picture = ref<API.PictureVo>()
 const pictureForm = reactive<API.PictureEditRequest>({})
@@ -218,6 +229,21 @@ const fetchSpace = async () => {
 watchEffect(() => {
   fetchSpace()
 })
+
+// AI 扩图弹窗引用
+const imageOutPaintingRef = ref()
+
+// AI 扩图
+const doImagePainting = () => {
+  if (imageOutPaintingRef.value) {
+    imageOutPaintingRef.value.openModal()
+  }
+}
+
+// 编辑成功事件
+const onImageOutPaintingSuccess = (newPicture: API.PictureVO) => {
+  picture.value = newPicture
+}
 
 
 </script>
