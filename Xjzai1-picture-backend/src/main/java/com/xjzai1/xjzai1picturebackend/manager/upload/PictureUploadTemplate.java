@@ -75,8 +75,8 @@ public abstract class PictureUploadTemplate {
             // 5. 封装返回结果
             return buildResult(originFilename, file, uploadPath, imageInfo);
         } catch (Exception e) {
-            log.error("图片上传到对象存储失败", e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传失败");
+            log.error("Failed to upload to object storage", e);
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Upload failed");
         } finally {
             this.deleteTempFile(file);
         }

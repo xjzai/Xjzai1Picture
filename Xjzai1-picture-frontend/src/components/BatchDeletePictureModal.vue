@@ -1,9 +1,9 @@
 <template>
-  <a-modal v-model:visible="visible" title="批量删除图片" :footer="false" @cancel="closeModal">
-    <a-typography-paragraph type="secondary">* 只对当前页面的图片生效</a-typography-paragraph>
+  <a-modal v-model:visible="visible" title="Batch Delete Pictures" :footer="false" @cancel="closeModal">
+    <a-typography-paragraph type="secondary">* Only applies to pictures on the current page</a-typography-paragraph>
     <!-- 确认按钮 -->
-    <a-button type="primary" @click="handleSubmit" danger>确认删除</a-button>
-    <a-button type="primary" @click="closeModal">取消删除</a-button>
+    <a-button type="primary" @click="handleSubmit" danger>Confirm Delete</a-button>
+    <a-button type="primary" @click="closeModal">Cancel</a-button>
   </a-modal>
 </template>
 
@@ -51,11 +51,11 @@ const handleSubmit = async (values: any) => {
     ...values,
   })
   if (res.data.code === 0 && res.data.data) {
-    message.success('操作成功')
+    message.success('Operation successful')
     closeModal()
     props.onSuccess?.()
   } else {
-    message.error('操作失败，' + res.data.message + '，' + res.data.description)
+    message.error('Operation failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 </script>

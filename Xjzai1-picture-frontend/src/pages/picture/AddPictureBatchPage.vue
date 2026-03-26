@@ -1,26 +1,26 @@
 <template>
 <div id="addPictureBatchPage">
-<h2 style="margin-bottom: 16px">批量创建图片</h2>
+<h2 style="margin-bottom: 16px">Batch Create Pictures</h2>
 <a-form layout="vertical" :model="formData" @finish="handleSubmit">
-  <a-form-item label="关键词" name="searchText">
-    <a-input v-model:value="formData.searchText" placeholder="请输入关键词" />
+  <a-form-item label="Keyword" name="searchText">
+    <a-input v-model:value="formData.searchText" placeholder="Please enter keyword" />
   </a-form-item>
-  <a-form-item label="抓取数量" name="count">
+  <a-form-item label="Count" name="count">
     <a-input-number
       v-model:value="formData.count"
-      placeholder="请输入数量"
+      placeholder="Please enter count"
       style="min-width: 180px"
       :min="1"
       :max="30"
       allow-clear
     />
   </a-form-item>
-  <a-form-item label="名称前缀" name="namePrefix">
-    <a-input v-model:value="formData.namePrefix" placeholder="请输入名称前缀，会自动补充序号" />
+  <a-form-item label="Name Prefix" name="namePrefix">
+    <a-input v-model:value="formData.namePrefix" placeholder="Please enter name prefix. Sequence numbers will be auto-generated" />
   </a-form-item>
   <a-form-item>
     <a-button type="primary" html-type="submit" style="width: 100%" :loading="loading">
-      执行任务
+      Execute Task
     </a-button>
   </a-form-item>
 </a-form>
@@ -45,12 +45,12 @@ const handleSubmit = async (values: any) => {
     ...formData,
   })
   if (res.data.code === 0 && res.data.data) {
-    message.success(`创建成功，共 ${res.data.data} 条`)
+    message.success(`Creation successful, ${res.data.data} items`)
     router.push({
       path: '/',
     })
   } else {
-    message.error('创建失败，' + res.data.message + '，' + res.data.description)
+    message.error('Creation failed, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false;
 }

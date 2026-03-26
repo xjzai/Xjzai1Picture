@@ -3,9 +3,9 @@
     <!-- 搜索框 -->
     <div class="search-bar">
       <a-input-search
-        placeholder="从海量图片中搜索"
+        placeholder="Search in the large photo collection"
         v-model:value="searchParams.searchText"
-        enter-button="搜索"
+        enter-button="Search"
         size="large"
         @search="doSearch"
       />
@@ -13,11 +13,11 @@
 
     <!-- 分类 + 标签 -->
     <a-tabs v-model:activeKey="selectedCategory" @change="doSearch">
-      <a-tab-pane key="all" tab="全部" />
+      <a-tab-pane key="all" tab="All" />
       <a-tab-pane v-for="category in categoryList" :key="category" :tab="category" />
     </a-tabs>
     <div class="tag-bar">
-      <span style="margin-right: 8px">标签：</span>
+      <span style="margin-right: 8px">Tags:</span>
       <a-space :size="[0, 8]" wrap>
         <a-checkable-tag
           v-for="(tag, index) in tagList"
@@ -145,7 +145,7 @@ const fetchData = async () => {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false
 }
@@ -175,7 +175,7 @@ const getTagCategoryOptions = async () => {
     categoryList.value = res.data.data.categoryList ?? []
     tagList.value = res.data.data.tagList ?? []
   } else {
-    message.error('加载分类标签失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to load categories and tags, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

@@ -1,46 +1,46 @@
 <template>
   <div id="pictureManagePage">
     <a-flex justify="space-between">
-      <h2>图片管理</h2>
+      <h2>Picture Management</h2>
       <a-space>
-        <a-button type="primary" href="/picture/addPicture" target="_blank">+ 创建图片</a-button>
+        <a-button type="primary" href="/picture/addPicture" target="_blank">+ Create Picture</a-button>
         <a-button type="primary" href="/picture/addPicture/batch" target="_blank" ghost
-          >+ 批量创建图片</a-button
+          >+ Batch Create Pictures</a-button
         >
       </a-space>
     </a-flex>
     <div style="margin-bottom: 16px" />
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="关键词" name="searchText">
+      <a-form-item label="Keyword" name="searchText">
         <a-input
           v-model:value="searchParams.searchText"
-          placeholder="从名称和简介搜索"
+          placeholder="Search by name and introduction"
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="类型" name="category">
-        <a-input v-model:value="searchParams.category" placeholder="请输入类型" allow-clear />
+      <a-form-item label="Category" name="category">
+        <a-input v-model:value="searchParams.category" placeholder="Enter category" allow-clear />
       </a-form-item>
-      <a-form-item label="标签" name="tags">
+      <a-form-item label="Tags" name="tags">
         <a-select
           v-model:value="searchParams.tags"
           mode="tags"
-          placeholder="请输入标签"
+          placeholder="Enter tags"
           style="min-width: 180px"
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="审核状态" name="reviewStatus">
+      <a-form-item label="Review Status" name="reviewStatus">
         <a-select
           v-model:value="searchParams.reviewStatus"
           :options="PIC_REVIEW_STATUS_OPTIONS"
-          placeholder="请输入审核状态"
+          placeholder="Enter review status"
           style="min-width: 180px"
           allow-clear
         />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit">搜索</a-button>
+        <a-button type="primary" html-type="submit">Search</a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -63,17 +63,17 @@
         </template>
         <!-- 图片信息 -->
         <template v-if="column.dataIndex === 'picInfo'">
-          <div>格式：{{ record.pictureFormat }}</div>
-          <div>宽度：{{ record.pictureWidth }}</div>
-          <div>高度：{{ record.pictureHeight }}</div>
-          <div>宽高比：{{ record.pictureScale }}</div>
-          <div>大小：{{ (record.pictureSize / (1024 * 1024)).toFixed(2) }}MB</div>
+          <div>Format: {{ record.pictureFormat }}</div>
+          <div>Width: {{ record.pictureWidth }}</div>
+          <div>Height: {{ record.pictureHeight }}</div>
+          <div>Aspect Ratio: {{ record.pictureScale }}</div>
+          <div>Size: {{ (record.pictureSize / (1024 * 1024)).toFixed(2) }}MB</div>
         </template>
         <!-- 审核信息 -->
         <template v-if="column.dataIndex === 'reviewMessage'">
-          <div>审核状态：{{ PIC_REVIEW_STATUS_MAP[record.reviewStatus] }}</div>
-          <div>审核信息：{{ record.reviewMessage }}</div>
-          <div>审核人：{{ record.reviewerId }}</div>
+          <div>Review Status: {{ PIC_REVIEW_STATUS_MAP[record.reviewStatus] }}</div>
+          <div>Review Message: {{ record.reviewMessage }}</div>
+          <div>Reviewer: {{ record.reviewerId }}</div>
         </template>
         <template v-else-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
@@ -88,7 +88,7 @@
               type="link"
               @click="handleReview(record, PIC_REVIEW_STATUS_ENUM.PASS)"
             >
-              通过
+              Approve
             </a-button>
             <a-button
               v-if="record.reviewStatus !== PIC_REVIEW_STATUS_ENUM.REJECT"
@@ -96,10 +96,10 @@
               danger
               @click="handleReview(record, PIC_REVIEW_STATUS_ENUM.REJECT)"
             >
-              拒绝
+              Reject
             </a-button>
-            <a-button type="link" @click="doUpdate(record.id)">编辑</a-button>
-            <a-button type="link" danger @click="doDelete(record.id)">删除</a-button>
+            <a-button type="link" @click="doUpdate(record.id)">Edit</a-button>
+            <a-button type="link" danger @click="doDelete(record.id)">Delete</a-button>
           </a-space>
         </template>
       </template>
@@ -131,57 +131,57 @@ const columns = [
     width: 80,
   },
   {
-    title: '图片',
+    title: 'Image',
     dataIndex: 'url',
     width: 150,
   },
   {
-    title: '名称',
+    title: 'Name',
     dataIndex: 'name',
     width: 10,
   },
   {
-    title: '简介',
+    title: 'Introduction',
     dataIndex: 'introduction',
     width: 150,
     // ellipsis: true,
   },
   {
-    title: '类型',
+    title: 'Category',
     dataIndex: 'category',
     width: 100,
   },
   {
-    title: '标签',
+    title: 'Tags',
     dataIndex: 'tags',
     width: 150,
   },
   {
-    title: '图片信息',
+    title: 'Picture Info',
     dataIndex: 'picInfo',
     width: 190,
   },
   {
-    title: '用户 id',
+    title: 'User ID',
     dataIndex: 'userId',
     width: 180,
   },
   {
-    title: '审核信息',
+    title: 'Review Message',
     dataIndex: 'reviewMessage',
   },
   {
-    title: '创建时间',
+    title: 'Created At',
     dataIndex: 'createTime',
     width: 200,
   },
   {
-    title: '编辑时间',
+    title: 'Edited At',
     dataIndex: 'editTime',
     width: 200,
   },
   {
-    title: '操作',
+    title: 'Actions',
     key: 'action',
   },
 ]
@@ -205,7 +205,7 @@ const fetchData = async () => {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
 }
 
@@ -216,7 +216,7 @@ const pagination = computed(() => {
     pageSize: searchParams.pageSize ?? 10,
     total: total.value,
     showSizeChanger: true,
-    showTotal: (total) => `共 ${total} 条`,
+    showTotal: (total) => `Total ${total} records`,
   }
 })
 
@@ -240,11 +240,11 @@ const doDelete = async (id: string) => {
   }
   const res = await deletePictureUsingPost({ id })
   if (res.data.code === 0) {
-    message.success('删除成功')
+    message.success('Deleted successfully')
     // 刷新数据
     await fetchData()
   } else {
-    message.error('删除失败')
+    message.error('Delete failed')
   }
 }
 
@@ -269,18 +269,18 @@ const doUpdate = (id: string) => {
 
 const handleReview = async (record: API.Picture, reviewStatus: number) => {
   const reviewMessage =
-    reviewStatus === PIC_REVIEW_STATUS_ENUM.PASS ? '管理员操作通过' : '管理员操作拒绝'
+    reviewStatus === PIC_REVIEW_STATUS_ENUM.PASS ? 'Admin approved' : 'Admin rejected'
   const res = await doPictureReviewUsingPost({
     id: record.id,
     reviewStatus,
     reviewMessage,
   })
   if (res.data.code === 0) {
-    message.success('审核操作成功')
+    message.success('Review operation successful')
     // 重新获取列表
     fetchData()
   } else {
-    message.error('审核操作失败，' + res.data.message + '，' + res.data.description)
+    message.error('Review operation failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

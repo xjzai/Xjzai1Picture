@@ -46,30 +46,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 1.校验参数
         // 参数不能为空
         if(StrUtil.hasBlank(userAccount, userName, userPassword, checkPassword)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Parameter is empty");
         }
         // 用户名不能大于20个字符
         if(userName.length() > 20){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户名不能大于20字符");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Username cannot exceed 20 characters");
         }
         // 账号长度不能小于6个字符
         if(userAccount.length() < 6 || userAccount.length() > 16){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号长度必须在6~16字符之间");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Account length must be between 6 and 16 characters");
         }
         // 密码长度不能小于8个字符
         if(userPassword.length() < 8 || userPassword.length() > 32){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码必须大于8字符");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Password must be at least 8 characters");
         }
         // 两次密码不匹配
         if(!checkPassword.equals(userPassword)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次密码不匹配");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Passwords do not match");
         }
         // 2.检查是否重复
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_account", userAccount);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号已被占用");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Account is already taken");
         }
         // 3.加密
         String encryptPassword = getEncryptPassword(userPassword);
@@ -81,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setUserAvatar("https://huacheng.gz-cmc.com/upload/news/image/2023/05/26/3e67c105f5ac4a38b45a2c7f0a40688f.jpeg");
         boolean result = this.save(user);
         if (!result) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库出现未知错误");
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Registration failed: unknown database error");
         }
         return user.getId();
     }
@@ -91,15 +91,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 1.校验参数
         // 参数不能为空
         if(StrUtil.hasBlank(userAccount, userPassword)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Parameter is empty");
         }
         // 账号长度不能小于6个字符
         if(userAccount.length() < 6 || userAccount.length() > 16){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Invalid account");
         }
         // 密码长度不能小于8个字符
         if(userPassword.length() < 8 || userPassword.length() > 32){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Incorrect password");
         }
         // 2.加密
         String encryptPassword = getEncryptPassword(userPassword);
@@ -110,7 +110,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info("user login failed, userAccount cannot match userPassword");
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或密码错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "User does not exist or password is incorrect");
         }
         // 4.记录用户的登录态
         request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
@@ -132,7 +132,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq("id", userId);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
-            throw new BusinessException(ErrorCode.NO_LOGIN, "用户已不存在");
+            throw new BusinessException(ErrorCode.NO_LOGIN, "User does not exist");
         }
         return user;
     }
@@ -142,7 +142,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 先判断是否已登录
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
         if (userObj == null) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "未登录");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "Not logged in");
         }
         // 移除登录态
         request.getSession().removeAttribute(USER_LOGIN_STATE);
@@ -188,7 +188,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest) {
         if (userQueryRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Request parameters are empty");
         }
         Long id = userQueryRequest.getId();
         String userAccount = userQueryRequest.getUserAccount();

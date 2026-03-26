@@ -1,26 +1,26 @@
 <template>
   <div id="userLoginPage">
-    <h2 class="title">xjz云图库 - 用户登录</h2>
-    <div class="desc">企业级智能协同云图库</div>
+    <h2 class="title">xjz Cloud Gallery - User Login</h2>
+    <div class="desc">Enterprise smart collaborative cloud gallery</div>
     <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit">
-      <a-form-item name="userAccount" :rules="[{ required: true, message: '请输入账号' }]">
-        <a-input v-model:value="formState.userAccount" placeholder="请输入账号" />
+      <a-form-item name="userAccount" :rules="[{ required: true, message: 'Please enter your account' }]">
+        <a-input v-model:value="formState.userAccount" placeholder="Please enter your account" />
       </a-form-item>
       <a-form-item
         name="userPassword"
         :rules="[
-          { required: true, message: '请输入密码' },
-          { min: 8, message: '密码不能小于 8 位' },
+          { required: true, message: 'Please enter your password' },
+          { min: 8, message: 'Password must be at least 8 characters' },
         ]"
       >
-        <a-input-password v-model:value="formState.userPassword" placeholder="请输入密码" />
+        <a-input-password v-model:value="formState.userPassword" placeholder="Please enter your password" />
       </a-form-item>
       <div class="tips">
-        没有账号？
-        <RouterLink to="/user/register">去注册</RouterLink>
+        No account?
+        <RouterLink to="/user/register">Register</RouterLink>
       </div>
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%">登录</a-button>
+        <a-button type="primary" html-type="submit" style="width: 100%">Login</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -49,13 +49,13 @@ const handleSubmit = async (values: any) => {
   // 登录成功，把登录态保存到全局状态中
   if (res.data.code === 0 && res.data.data) {
     await loginUserStore.fetchLoginUser()
-    message.success('登录成功')
+    message.success('Login successful')
     await router.push({
       path: '/',
       replace: true,
     })
   } else {
-    message.error('登录失败，' + res.data.message + '，' + res.data.description)
+    message.error('Login failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 </script>

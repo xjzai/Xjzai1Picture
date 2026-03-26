@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 @Getter
 public enum SpaceRoleEnum {
 
-    VIEWER("浏览者", "viewer"),
-    EDITOR("编辑者", "editor"),
-    ADMIN("管理员", "admin");
+    VIEWER("Viewer", "viewer"),
+    EDITOR("Editor", "editor"),
+    ADMIN("Admin", "admin");
 
     private final String text;
 

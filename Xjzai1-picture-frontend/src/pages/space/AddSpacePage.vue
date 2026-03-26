@@ -1,17 +1,17 @@
 <template>
   <div id="addSpacePage">
     <h2 style="margin-bottom: 16px">
-      {{ route.query.id ? '修改空间' : '创建空间' }}
+      {{ route.query.id ? 'Edit Space' : 'Create Space' }}
     </h2>
     <a-form layout="vertical" :model="spaceForm" @finish="handleSubmit">
-      <a-form-item label="空间名称" name="spaceName">
-        <a-input v-model:value="spaceForm.spaceName" placeholder="请输入空间名称" allow-clear />
+      <a-form-item label="Space Name" name="spaceName">
+        <a-input v-model:value="spaceForm.spaceName" placeholder="Please enter space name" allow-clear />
       </a-form-item>
-      <a-form-item label="空间级别" name="spaceLevel">
+      <a-form-item label="Space Level" name="spaceLevel">
         <a-select
           v-model:value="spaceForm.spaceLevel"
           :options="SPACE_LEVEL_OPTIONS"
-          placeholder="请输入空间级别"
+          placeholder="Please enter space level"
           style="min-width: 180px"
           allow-clear
         />
@@ -23,18 +23,17 @@
       <!--      </a-form-item>-->
       <a-form-item>
         <a-button type="primary" html-type="submit" style="width: 100%">
-          {{ route.query.id ? '修改' : '创建' }}{{ SPACE_TYPE_MAP[spaceType] }}
+          {{ route.query.id ? 'Edit' : 'Create' }}{{ SPACE_TYPE_MAP[spaceType] }}
         </a-button>
       </a-form-item>
     </a-form>
-    <a-card title="空间级别介绍">
+    <a-card title="Space Level Introduction">
       <a-typography-paragraph>
-        * 目前仅支持开通普通版，如需升级空间，请联系
+        * Currently only the Basic plan is supported. If you need to upgrade, please contact
         <a href="http://www.xjzai1.top" target="_blank">xjzai1</a>。
       </a-typography-paragraph>
       <a-typography-paragraph v-for="spaceLevel in spaceLevelList">
-        {{ spaceLevel.text }}： 大小 {{ formatSize(spaceLevel.maxSize) }}， 数量
-        {{ spaceLevel.maxCount }}
+        {{ spaceLevel.text }}: Max size {{ formatSize(spaceLevel.maxSize) }}, Max count {{ spaceLevel.maxCount }}
       </a-typography-paragraph>
     </a-card>
   </div>
@@ -103,13 +102,13 @@ const handleSubmit = async (values: any) => {
     })
   }
   if (res.data.code === 0 && res.data.data) {
-    message.success('操作成功')
+    message.success('Operation successful')
     let path = `/space/${spaceId ?? res.data.data}`
     router.push({
       path,
     })
   } else {
-    message.error('操作失败，' + res.data.message + "，" + res.data.description);
+    message.error('Operation failed, ' + res.data.message + ', ' + res.data.description);
   }
   loading.value = false
 }
@@ -122,7 +121,7 @@ const fetchSpaceLevelList = async () => {
   if (res.data.code === 0 && res.data.data) {
     spaceLevelList.value = res.data.data
   } else {
-    message.error('加载空间级别失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to load space levels, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

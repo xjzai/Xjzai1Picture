@@ -6,8 +6,8 @@
 
 <script setup>
 let year = new Date().getFullYear();        // 一般都是最新的一年
-let author = '小夹子';					// 作者名
-let record = '冀ICP备2026009013号-1';			// 备案号
+let author = 'Xiao Jiazi';				// 作者名
+let record = 'ICP No. 2026009013-1';			// 备案号
 </script>
 
 <style>

@@ -33,7 +33,7 @@ public class AliYunAiApi {
      */
     public CreateOutPaintingTaskResponse createOutPaintingTask(CreateOutPaintingTaskRequest createOutPaintingTaskRequest) {
         if (createOutPaintingTaskRequest == null) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "扩图参数为空");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "Outpainting parameters are empty");
         }
         // 发送请求
         HttpRequest httpRequest = HttpRequest.post(CREATE_OUT_PAINTING_TASK_URL)
@@ -44,15 +44,15 @@ public class AliYunAiApi {
                 .body(JSONUtil.toJsonStr(createOutPaintingTaskRequest));
         try (HttpResponse httpResponse = httpRequest.execute()) {
             if (!httpResponse.isOk()) {
-                log.error("请求异常：{}", httpResponse.body());
-                throw new BusinessException(ErrorCode.OPERATION_ERROR, "AI 扩图失败");
+                log.error("Request exception: {}", httpResponse.body());
+                throw new BusinessException(ErrorCode.OPERATION_ERROR, "AI outpainting failed");
             }
             CreateOutPaintingTaskResponse response = JSONUtil.toBean(httpResponse.body(), CreateOutPaintingTaskResponse.class);
             String errorCode = response.getCode();
             if (StrUtil.isNotBlank(errorCode)) {
                 String errorMessage = response.getMessage();
-                log.error("AI 扩图失败，errorCode:{}, errorMessage:{}", errorCode, errorMessage);
-                throw new BusinessException(ErrorCode.OPERATION_ERROR, "AI 扩图接口响应异常");
+                log.error("AI outpainting failed, errorCode:{}, errorMessage:{}", errorCode, errorMessage);
+                throw new BusinessException(ErrorCode.OPERATION_ERROR, "AI outpainting interface response error");
             }
             log.info("response:" + response.toString());
             return response;
@@ -67,7 +67,7 @@ public class AliYunAiApi {
      */
     public GetOutPaintingTaskResponse getOutPaintingTask(String taskId) {
         if (StrUtil.isBlank(taskId)) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "任务 id 不能为空");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "Task ID cannot be empty");
         }
         log.info("taskId:{}", taskId);
         try (HttpResponse httpResponse = HttpRequest.get(String.format(GET_OUT_PAINTING_TASK_URL, taskId))
@@ -75,7 +75,7 @@ public class AliYunAiApi {
                 .execute()) {
             log.info("response:" + httpResponse.body());
             if (!httpResponse.isOk()) {
-                throw new BusinessException(ErrorCode.OPERATION_ERROR, "获取任务失败");
+                throw new BusinessException(ErrorCode.OPERATION_ERROR, "Failed to fetch the task");
             }
             return JSONUtil.toBean(httpResponse.body(), GetOutPaintingTaskResponse.class);
         }

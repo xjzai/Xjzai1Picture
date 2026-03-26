@@ -80,7 +80,7 @@ public class PictureEditHandler extends TextWebSocketHandler {
         // 构造响应
         PictureEditResponseMessage pictureEditResponseMessage = new PictureEditResponseMessage();
         pictureEditResponseMessage.setType(PictureEditMessageTypeEnum.INFO.getValue());
-        String message = String.format("%s加入编辑", user.getUserName());
+        String message = String.format("%s entered edit mode", user.getUserName());
         pictureEditResponseMessage.setMessage(message);
         pictureEditResponseMessage.setUser(userService.getUserVo(user));
         // 广播给同一张图片的用户
@@ -110,7 +110,7 @@ public class PictureEditHandler extends TextWebSocketHandler {
         // 响应
         PictureEditResponseMessage pictureEditResponseMessage = new PictureEditResponseMessage();
         pictureEditResponseMessage.setType(PictureEditMessageTypeEnum.INFO.getValue());
-        String message = String.format("%s离开编辑", user.getUserName());
+        String message = String.format("%s exited edit mode", user.getUserName());
         pictureEditResponseMessage.setMessage(message);
         pictureEditResponseMessage.setUser(userService.getUserVo(user));
         broadcastToPicture(key, pictureEditResponseMessage);
@@ -137,7 +137,7 @@ public class PictureEditHandler extends TextWebSocketHandler {
             pictureEditingUsers.put(key, user.getId());
             PictureEditResponseMessage pictureEditResponseMessage = new PictureEditResponseMessage();
             pictureEditResponseMessage.setType(PictureEditMessageTypeEnum.ENTER_EDIT.getValue());
-            String message = String.format("%s开始编辑图片", user.getUserName());
+            String message = String.format("%s started editing the picture", user.getUserName());
             pictureEditResponseMessage.setMessage(message);
             pictureEditResponseMessage.setUser(userService.getUserVo(user));
             broadcastToPicture(key, pictureEditResponseMessage);
@@ -155,7 +155,7 @@ public class PictureEditHandler extends TextWebSocketHandler {
         if (editingUserId != null && editingUserId.equals(user.getId())) {
             PictureEditResponseMessage pictureEditResponseMessage = new PictureEditResponseMessage();
             pictureEditResponseMessage.setType(PictureEditMessageTypeEnum.EDIT_ACTION.getValue());
-            String message = String.format("%s执行%s", user.getUserName(), actionEnum.getText());
+            String message = String.format("%s performed %s", user.getUserName(), actionEnum.getText());
             pictureEditResponseMessage.setMessage(message);
             pictureEditResponseMessage.setEditAction(editAction);
             pictureEditResponseMessage.setUser(userService.getUserVo(user));
@@ -172,7 +172,7 @@ public class PictureEditHandler extends TextWebSocketHandler {
             // 构造响应，发送退出编辑的消息通知
             PictureEditResponseMessage pictureEditResponseMessage = new PictureEditResponseMessage();
             pictureEditResponseMessage.setType(PictureEditMessageTypeEnum.EXIT_EDIT.getValue());
-            String message = String.format("%s退出编辑图片", user.getUserName());
+            String message = String.format("%s exited picture edit", user.getUserName());
             pictureEditResponseMessage.setMessage(message);
             pictureEditResponseMessage.setUser(userService.getUserVo(user));
             broadcastToPicture(key, pictureEditResponseMessage);

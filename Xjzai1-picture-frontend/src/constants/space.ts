@@ -6,9 +6,9 @@ export const SPACE_LEVEL_ENUM = {
 
 // 空间级别文本映射
 export const SPACE_LEVEL_MAP: Record<number, string> = {
-  0: '普通版',
-  1: '专业版',
-  2: '旗舰版',
+  0: 'Basic',
+  1: 'Professional',
+  2: 'Enterprise',
 };
 
 // 空间级别选项映射
@@ -28,8 +28,8 @@ export const SPACE_TYPE_ENUM = {
 
 // 空间类型文本映射
 export const SPACE_TYPE_MAP: Record<number, string> = {
-  0: '私有空间',
-  1: '团队空间',
+  0: 'Private Space',
+  1: 'Team Space',
 }
 
 // 空间类型选项映射
@@ -50,9 +50,9 @@ export const SPACE_ROLE_ENUM = {
 
 // 空间角色文本映射
 export const SPACE_ROLE_MAP: Record<string, string> = {
-  viewer: "浏览者",
-  editor: "编辑者",
-  admin: "管理员",
+  viewer: "Viewer",
+  editor: "Editor",
+  admin: "Admin",
 };
 
 // 空间角色选项映射

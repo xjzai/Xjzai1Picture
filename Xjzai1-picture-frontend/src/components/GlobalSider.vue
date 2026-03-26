@@ -16,17 +16,17 @@ import { useLoginUserStore } from '@/stores/user'
 const fixedMenuItems = [
   {
     key: '/',
-    label: '公共图库',
+    label: 'Public Gallery',
     icon: () => h(PictureOutlined),
   },
   {
     key: '/space/mySpace',
-    label: '我的空间',
+    label: 'My Spaces',
     icon: () => h(UserOutlined),
   },
   {
     key: '/space/addSpace?type=' + SPACE_TYPE_ENUM.TEAM,
-    label: '创建团队',
+    label: 'Create Team',
     icon: () => h(TeamOutlined),
   },
 ]
@@ -61,7 +61,7 @@ const menuItems = computed(() => {
   })
   const teamSpaceMenuGroup = {
     type: 'group',
-    label: '我的团队',
+    label: 'My Teams',
     key: 'teamSpace',
     children: teamSpaceSubMenus,
   }
@@ -74,7 +74,7 @@ const fetchTeamSpaceList = async () => {
   if (res.data.code === 0 && res.data.data) {
     teamSpaceList.value = res.data.data
   } else {
-    message.error('加载我的团队空间失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to load my team spaces, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

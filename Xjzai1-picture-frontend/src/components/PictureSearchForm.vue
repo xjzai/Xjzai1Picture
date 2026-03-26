@@ -2,65 +2,69 @@
   <div class="picture-search-form">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="关键词" name="searchText">
+      <a-form-item label="Keyword" name="searchText">
         <a-input
           v-model:value="searchParams.searchText"
-          placeholder="从名称和简介搜索"
+          placeholder="Search by name and introduction"
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="分类" name="category">
+      <a-form-item label="Category" name="category">
         <a-auto-complete
           v-model:value="searchParams.category"
           style="min-width: 180px"
           :options="categoryOptions"
-          placeholder="请输入分类"
+          placeholder="Please enter category"
           allowClear
         />
       </a-form-item>
-      <a-form-item label="标签" name="tags">
+      <a-form-item label="Tags" name="tags">
         <a-select
           v-model:value="searchParams.tags"
           style="min-width: 180px"
           :options="tagOptions"
           mode="tags"
-          placeholder="请输入标签"
+          placeholder="Please enter tags"
           allowClear
         />
       </a-form-item>
-      <a-form-item label="日期" name="">
+      <a-form-item label="Date" name="">
         <a-range-picker
           style="width: 400px"
           show-time
           v-model:value="dateRange"
-          :placeholder="['编辑开始日期', '编辑结束时间']"
+          :placeholder="['Start date', 'End date']"
           format="YYYY/MM/DD HH:mm:ss"
           :presets="rangePresets"
           @change="onRangeChange"
         />
       </a-form-item>
-      <a-form-item label="名称" name="name">
-        <a-input v-model:value="searchParams.name" placeholder="请输入名称" allow-clear />
+      <a-form-item label="Name" name="name">
+        <a-input v-model:value="searchParams.name" placeholder="Please enter name" allow-clear />
       </a-form-item>
-      <a-form-item label="简介" name="introduction">
-        <a-input v-model:value="searchParams.introduction" placeholder="请输入简介" allow-clear />
+      <a-form-item label="Introduction" name="introduction">
+        <a-input
+          v-model:value="searchParams.introduction"
+          placeholder="Please enter introduction"
+          allow-clear
+        />
       </a-form-item>
-      <a-form-item label="宽度" name="picWidth">
+      <a-form-item label="Width" name="picWidth">
         <a-input-number v-model:value="searchParams.picWidth" />
       </a-form-item>
-      <a-form-item label="高度" name="picHeight">
+      <a-form-item label="Height" name="picHeight">
         <a-input-number v-model:value="searchParams.picHeight" />
       </a-form-item>
-      <a-form-item label="格式" name="picFormat">
-        <a-input v-model:value="searchParams.picFormat" placeholder="请输入格式" allow-clear />
+      <a-form-item label="Format" name="picFormat">
+        <a-input v-model:value="searchParams.picFormat" placeholder="Please enter format" allow-clear />
       </a-form-item>
-      <a-form-item label="颜色">
+      <a-form-item label="Color">
         <color-picker format="hex" @pureColorChange="onColorChange" />
       </a-form-item>
       <a-form-item>
         <a-space>
-          <a-button type="primary" html-type="submit" style="width: 96px">搜索</a-button>
-          <a-button html-type="reset" @click="doClear">重置</a-button>
+          <a-button type="primary" html-type="submit" style="width: 96px">Search</a-button>
+          <a-button html-type="reset" @click="doClear">Reset</a-button>
         </a-space>
       </a-form-item>
 
@@ -111,10 +115,10 @@ const onRangeChange = (dates: any[], dateStrings: string[]) => {
 }
 
 const rangePresets = ref([
-  { label: '过去 7 天', value: [dayjs().add(-7, 'd'), dayjs()] },
-  { label: '过去 14 天', value: [dayjs().add(-14, 'd'), dayjs()] },
-  { label: '过去 30 天', value: [dayjs().add(-30, 'd'), dayjs()] },
-  { label: '过去 90 天', value: [dayjs().add(-90, 'd'), dayjs()] },
+  { label: 'Last 7 days', value: [dayjs().add(-7, 'd'), dayjs()] },
+  { label: 'Last 14 days', value: [dayjs().add(-14, 'd'), dayjs()] },
+  { label: 'Last 30 days', value: [dayjs().add(-30, 'd'), dayjs()] },
+  { label: 'Last 90 days', value: [dayjs().add(-90, 'd'), dayjs()] },
 ])
 
 
@@ -139,7 +143,7 @@ const getTagCategoryOptions = async () => {
       }
     })
   } else {
-    message.error('加载选项失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to load options, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

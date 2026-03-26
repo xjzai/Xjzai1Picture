@@ -1,7 +1,7 @@
 <template>
   <div id="userRegisterPage">
-    <h2 class="title">xjz云图库 - 用户注册</h2>
-    <div class="desc">企业级智能协同云图库</div>
+    <h2 class="title">xjz Cloud Gallery - User Registration</h2>
+    <div class="desc">Enterprise smart collaborative cloud gallery</div>
     <a-form
       :model="formState"
       name="basic"
@@ -9,36 +9,36 @@
       autocomplete="off"
       @finish="handleSubmit"
     >
-      <a-form-item name="userAccount" :rules="[{ required: true, message: '请输入账号' }]">
-        <a-input v-model:value="formState.userAccount" placeholder="请输入账号" />
+      <a-form-item name="userAccount" :rules="[{ required: true, message: 'Please enter your account' }]">
+        <a-input v-model:value="formState.userAccount" placeholder="Please enter your account" />
       </a-form-item>
-      <a-form-item name="userName" :rules="[{ required: true, message: '请输入用户名' }]">
-        <a-input v-model:value="formState.userName" placeholder="请输入用户名" />
+      <a-form-item name="userName" :rules="[{ required: true, message: 'Please enter your username' }]">
+        <a-input v-model:value="formState.userName" placeholder="Please enter your username" />
       </a-form-item>
       <a-form-item
         name="userPassword"
         :rules="[
-          { required: true, message: '请输入密码' },
-          { min: 8, message: '密码不能小于 8 位' },
+          { required: true, message: 'Please enter your password' },
+          { min: 8, message: 'Password must be at least 8 characters' },
         ]"
       >
-        <a-input-password v-model:value="formState.userPassword" placeholder="请输入密码" />
+        <a-input-password v-model:value="formState.userPassword" placeholder="Please enter your password" />
       </a-form-item>
       <a-form-item
         name="checkPassword"
         :rules="[
-          { required: true, message: '请输入确认密码' },
-          { min: 8, message: '确认密码不能小于 8 位' },
+          { required: true, message: 'Please enter confirmation password' },
+          { min: 8, message: 'Confirmation password must be at least 8 characters' },
         ]"
       >
-        <a-input-password v-model:value="formState.checkPassword" placeholder="请输入确认密码" />
+        <a-input-password v-model:value="formState.checkPassword" placeholder="Please enter confirmation password" />
       </a-form-item>
       <div class="tips">
-        已有账号？
-        <RouterLink to="/user/login">去登录</RouterLink>
+        Already have an account?
+        <RouterLink to="/user/login">Log in</RouterLink>
       </div>
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%">注册</a-button>
+        <a-button type="primary" html-type="submit" style="width: 100%">Register</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -64,19 +64,19 @@ const router = useRouter()
 const handleSubmit = async (values: any) => {
   // 判断两次输入的密码是否一致
   if (formState.userPassword !== formState.checkPassword) {
-    message.error('二次输入的密码不一致')
+    message.error('The two passwords do not match')
     return
   }
   const res = await userRegisterUsingPost(values)
   // 注册成功，跳转到登录页面
   if (res.data.code === 0 && res.data.data) {
-    message.success('注册成功')
+    message.success('Registration successful')
     await router.push({
       path: '/user/login',
       replace: true,
     })
   } else {
-    message.error('注册失败，' + res.data.message + '，' + res.data.description)
+    message.error('Registration failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 </script>

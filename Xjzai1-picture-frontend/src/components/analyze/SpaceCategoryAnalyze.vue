@@ -1,6 +1,6 @@
 <template>
   <div class="space-category-analyze">
-    <a-card title="图库分类占用">
+    <a-card title="Category Usage">
       <v-chart :option="options" style="height: 320px; max-width: 100%;" :loading="loading" />
     </a-card>
   </div>
@@ -42,7 +42,7 @@ const fetchData = async () => {
   if (res.data.code === 0) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false
 }
@@ -54,17 +54,17 @@ const options = computed(() => {
 
   return {
     tooltip: { trigger: 'axis' },
-    legend: { data: ['图片数量', '图片总大小'], top: 'bottom' },
+    legend: { data: ['Picture Count', 'Total Picture Size'], top: 'bottom' },
     xAxis: { type: 'category', data: categories },
     yAxis: [
       {
         type: 'value',
-        name: '图片数量',
+        name: 'Picture Count',
         axisLine: { show: true, lineStyle: { color: '#5470C6' } }, // 左轴颜色
       },
       {
         type: 'value',
-        name: '图片总大小 (MB)',
+        name: 'Total Picture Size (MB)',
         position: 'right',
         axisLine: { show: true, lineStyle: { color: '#91CC75' } }, // 右轴颜色
         splitLine: {
@@ -76,8 +76,8 @@ const options = computed(() => {
       },
     ],
     series: [
-      { name: '图片数量', type: 'bar', data: countData, yAxisIndex: 0 },
-      { name: '图片总大小', type: 'bar', data: sizeData, yAxisIndex: 1 },
+      { name: 'Picture Count', type: 'bar', data: countData, yAxisIndex: 0 },
+      { name: 'Total Picture Size', type: 'bar', data: sizeData, yAxisIndex: 1 },
     ],
   }
 })

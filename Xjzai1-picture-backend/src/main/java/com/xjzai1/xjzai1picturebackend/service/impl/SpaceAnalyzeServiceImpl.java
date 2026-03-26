@@ -49,13 +49,13 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
         // 检查权限
         if (spaceAnalyzeRequest.isQueryAll() || spaceAnalyzeRequest.isQueryPublic()) {
             // 全空间分析或者公共图库权限校验：仅管理员可访问
-            ThrowUtils.throwIf(!userService.isAdmin(loginUser), ErrorCode.NO_AUTH, "无权限访问公共图库");
+            ThrowUtils.throwIf(!userService.isAdmin(loginUser), ErrorCode.NO_AUTH, "No permission to access the public gallery");
         } else {
             // 私有空间权限校验
             Long spaceId = spaceAnalyzeRequest.getSpaceId();
             ThrowUtils.throwIf(spaceId == null || spaceId <= 0, ErrorCode.PARAMS_ERROR);
             Space space = spaceService.getById(spaceId);
-            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
+            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "Space not found");
             spaceService.checkSpaceAuth(loginUser, space);
         }
     }
@@ -67,7 +67,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
             // 查询全部或公共图库逻辑
             // 仅管理员可以访问
             boolean isAdmin = userService.isAdmin(loginUser);
-            ThrowUtils.throwIf(!isAdmin, ErrorCode.NO_AUTH, "无权访问空间");
+            ThrowUtils.throwIf(!isAdmin, ErrorCode.NO_AUTH, "No permission to access the space");
             // 统计公共图库的资源使用
             QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
             queryWrapper.select("picture_size");
@@ -93,7 +93,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
             ThrowUtils.throwIf(spaceId == null || spaceId <= 0, ErrorCode.PARAMS_ERROR);
             // 获取空间信息
             Space space = spaceService.getById(spaceId);
-            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
+            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "Space not found");
             // 权限校验：仅空间所有者或管理员可访问
             spaceService.checkSpaceAuth(loginUser, space);
             // 构造返回结果
@@ -127,7 +127,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
                 .groupBy("category");
         return pictureService.getBaseMapper().selectMaps(queryWrapper)
                 .stream().map(result -> {
-                    String category = result.get("category") != null ? result.get("category").toString() : "未分类";
+                    String category = result.get("category") != null ? result.get("category").toString() : "Uncategorized";
                     Long count = ((Number) result.get("count")).longValue();
                     Long totalSize = ((Number) result.get("total_size")).longValue();
                     return new SpaceCategoryAnalyzeResponse(category, count, totalSize);
@@ -212,7 +212,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
                 queryWrapper.select("DATE_FORMAT(create_time, '%Y-%m') AS period", "COUNT(*) AS count");
                 break;
             default:
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "不支持的时间维度");
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "Unsupported time dimension");
         }
 
         // 分组和排序
@@ -234,7 +234,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
         ThrowUtils.throwIf(spaceRankAnalyzeRequest == null, ErrorCode.PARAMS_ERROR);
 
         // 仅管理员可查看空间排行
-        ThrowUtils.throwIf(!userService.isAdmin(loginUser), ErrorCode.NO_AUTH, "无权查看空间排行");
+        ThrowUtils.throwIf(!userService.isAdmin(loginUser), ErrorCode.NO_AUTH, "No permission to view space ranking");
 
         // 构造查询条件
         QueryWrapper<Space> queryWrapper = new QueryWrapper<>();
@@ -262,7 +262,7 @@ public class SpaceAnalyzeServiceImpl extends ServiceImpl<SpaceMapper, Space>
             queryWrapper.eq("space_id", spaceId);
             return;
         }
-        throw new BusinessException(ErrorCode.PARAMS_ERROR, "未指定查询范围");
+        throw new BusinessException(ErrorCode.PARAMS_ERROR, "No query scope specified");
     }
 
 

@@ -131,15 +131,15 @@ public class SpaceUserServiceImpl extends ServiceImpl<SpaceUserMapper, SpaceUser
         if (add) {
             ThrowUtils.throwIf(ObjectUtil.hasEmpty(spaceId, userId), ErrorCode.PARAMS_ERROR);
             User user = userService.getById(userId);
-            ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR, "用户不存在");
+            ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR, "User not found");
             Space space = spaceService.getById(spaceId);
-            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
+            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "Space not found");
         }
         // 校验空间角色
         String spaceRole = spaceUser.getSpaceRole();
         SpaceRoleEnum spaceRoleEnum = SpaceRoleEnum.getEnumByValue(spaceRole);
         if (spaceRole != null && spaceRoleEnum == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间角色不存在");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space role does not exist");
         }
     }
 

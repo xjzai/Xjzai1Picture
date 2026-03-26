@@ -45,7 +45,7 @@ public class GetImagePageUrlApi {
                     .execute();
             // 判断响应状态
             if (HttpStatus.HTTP_OK != response.getStatus()) {
-                throw new BusinessException(ErrorCode.OPERATION_ERROR, "接口调用失败");
+                throw new BusinessException(ErrorCode.OPERATION_ERROR, "API call failed");
             }
             // 解析响应
             String responseBody = response.body();
@@ -53,7 +53,7 @@ public class GetImagePageUrlApi {
 
             // 3. 处理响应结果
             if (result == null || !Integer.valueOf(0).equals(result.get("status"))) {
-                throw new BusinessException(ErrorCode.OPERATION_ERROR, "接口调用失败");
+                throw new BusinessException(ErrorCode.OPERATION_ERROR, "API call failed");
             }
             Map<String, Object> data = (Map<String, Object>) result.get("data");
             String rawUrl = (String) data.get("url");
@@ -61,12 +61,12 @@ public class GetImagePageUrlApi {
             String searchResultUrl = URLUtil.decode(rawUrl, StandardCharsets.UTF_8);
             // 如果 URL 为空
             if (searchResultUrl == null) {
-                throw new BusinessException(ErrorCode.OPERATION_ERROR, "未返回有效结果");
+                throw new BusinessException(ErrorCode.OPERATION_ERROR, "No valid result returned");
             }
             return searchResultUrl;
         } catch (Exception e) {
-            log.error("搜索失败", e);
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "搜索失败");
+            log.error("Search failed", e);
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "Search failed");
         }
     }
 
@@ -74,7 +74,7 @@ public class GetImagePageUrlApi {
         // 测试以图搜图功能
         String imageUrl = "https://www.codefather.cn/logo.png";
         String result = getImagePageUrl(imageUrl);
-        System.out.println("搜索成功，结果 URL：" + result);
+        System.out.println("Search succeeded. Result URL: " + result);
     }
 }
 

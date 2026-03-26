@@ -24,7 +24,7 @@
               <template #description>
                 <a-flex>
                   <a-tag color="green">
-                    {{ picture.category ?? '默认' }}
+                    {{ picture.category ?? 'Default' }}
                   </a-tag>
                   <a-tag v-for="tag in picture.tags" :key="tag">
                     {{ tag }}

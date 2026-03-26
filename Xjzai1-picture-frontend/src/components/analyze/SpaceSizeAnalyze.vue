@@ -1,6 +1,6 @@
 <template>
   <div class="space-size-analyze">
-    <a-card title="空间图片大小分析">
+    <a-card title="Space Picture Size Analysis">
       <v-chart :option="options" style="height: 320px; max-width: 100%" :loading="loading" />
     </a-card>
   </div>
@@ -39,7 +39,7 @@ const fetchData = async () => {
   if (res.data.code === 0) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false
 }
@@ -60,7 +60,7 @@ const options = computed(() => {
     },
     series: [
       {
-        name: '图片大小',
+        name: 'Picture Size',
         type: 'pie',
         radius: '50%',
         data: pieData,

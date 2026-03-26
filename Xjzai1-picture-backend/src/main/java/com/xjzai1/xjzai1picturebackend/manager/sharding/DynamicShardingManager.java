@@ -40,7 +40,7 @@ public class DynamicShardingManager {
 
     @PostConstruct
     public void initialize() {
-        log.info("初始化动态分表配置...");
+        log.info("Initializing dynamic sharding configuration...");
         updateShardingTableNodes();
     }
 
@@ -71,7 +71,7 @@ public class DynamicShardingManager {
         String newActualDataNodes = tableNames.stream()
                 .map(tableName -> "xjzai1_picture." + tableName) // 确保前缀合法
                 .collect(Collectors.joining(","));
-        log.info("动态分表 actual-data-nodes 配置: {}", newActualDataNodes);
+        log.info("Dynamic sharding actual-data-nodes configuration: {}", newActualDataNodes);
 
         ContextManager contextManager = getContextManager();
         ShardingSphereRuleMetaData ruleMetaData = contextManager.getMetaDataContexts()
@@ -100,9 +100,9 @@ public class DynamicShardingManager {
             ruleConfig.setTables(updatedRules);
             contextManager.alterRuleConfiguration(DATABASE_NAME, Collections.singleton(ruleConfig));
             contextManager.reloadDatabase(DATABASE_NAME);
-            log.info("动态分表规则更新成功！");
+            log.info("Dynamic sharding rule update successful!");
         } else {
-            log.error("未找到 ShardingSphere 的分片规则配置，动态分表更新失败。");
+            log.error("ShardingSphere sharding rule configuration not found; dynamic sharding update failed.");
         }
     }
 
@@ -113,7 +113,7 @@ public class DynamicShardingManager {
         try (ShardingSphereConnection connection = dataSource.getConnection().unwrap(ShardingSphereConnection.class)) {
             return connection.getContextManager();
         } catch (SQLException e) {
-            throw new RuntimeException("获取 ShardingSphere ContextManager 失败", e);
+            throw new RuntimeException("Failed to get ShardingSphere ContextManager", e);
         }
     }
 
@@ -130,7 +130,7 @@ public class DynamicShardingManager {
                 // 更新分表
                 updateShardingTableNodes();
             } catch (Exception e) {
-                log.error("创建图片空间分表失败，空间 id = {}", space.getId());
+                log.error("Failed to create picture space sharding table, space id = {}", space.getId());
             }
         }
     }

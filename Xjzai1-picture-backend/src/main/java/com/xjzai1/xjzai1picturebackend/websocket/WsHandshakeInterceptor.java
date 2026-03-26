@@ -49,12 +49,12 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
             // 获取请求参数
             String pictureId = servletRequest.getParameter("pictureId");
             if (StrUtil.isBlank(pictureId)) {
-                log.error("缺少图片参数，拒绝握手");
+                log.error("Missing picture parameter, rejecting handshake");
                 return false;
             }
             User loginUser = userService.getLoginUser(servletRequest);
             if (ObjUtil.isEmpty(loginUser)) {
-                log.error("用户未登录，拒绝握手");
+                log.error("User not logged in, rejecting handshake");
                 return false;
             }
             // 校验用户是否有该图片的权限
@@ -69,24 +69,24 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
                     .eq("id", pictureId);
             Picture picture = pictureService.getOne(queryWrapper);
             if (picture == null) {
-                log.error("图片不存在，拒绝握手");
+                log.error("Picture not found, rejecting handshake");
                 return false;
             }
             Space space = null;
             if (spaceId != 0L) {
                 space = spaceService.getById(spaceId);
                 if (space == null) {
-                    log.error("空间不存在，拒绝握手");
+                    log.error("Space not found, rejecting handshake");
                     return false;
                 }
                 if (space.getSpaceType() != SpaceTypeEnum.TEAM.getValue()) {
-                    log.info("不是团队空间，拒绝握手");
+                    log.info("Not a team space, rejecting handshake");
                     return false;
                 }
             }
             List<String> permissionList = spaceUserAuthManager.getPermissionList(space, loginUser);
             if (!permissionList.contains(SpaceUserPermissionConstant.PICTURE_EDIT)) {
-                log.error("没有图片编辑权限，拒绝握手");
+                log.error("No permission to edit picture, rejecting handshake");
                 return false;
             }
             // 设置 attributes

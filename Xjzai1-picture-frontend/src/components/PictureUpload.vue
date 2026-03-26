@@ -10,7 +10,7 @@
       <div v-else>
         <loading-outlined v-if="loading"></loading-outlined>
         <plus-outlined v-else></plus-outlined>
-        <div class="ant-upload-text">请点击或拖拽上传文件</div>
+        <div class="ant-upload-text">Click or drag a file to upload</div>
       </div>
     </a-upload>
   </div>
@@ -42,14 +42,14 @@ const handleUpload = async ({ file }: any) => {
     const res = await uploadPictureUsingPost(params, {}, file)
     // console.log(res.data);
     if (res.data.code === 0 && res.data.data) {
-      message.success('图片上传成功')
+      message.success('Picture uploaded successfully')
       props.onSuccess?.(res.data.data)
     } else {
-      message.error('图片上传失败' + res.data.message + '，' + res.data.description)
+      message.error('Picture upload failed, ' + res.data.message + ', ' + res.data.description)
     }
   } catch (error) {
     // console.log('图片上传失败' + error)
-    message.error('图片上传失败' + error.message)
+    message.error('Picture upload failed: ' + error.message)
   }
 
   loading.value = false
@@ -58,11 +58,11 @@ const handleUpload = async ({ file }: any) => {
 const beforeUpload = (file: UploadProps['fileList'][number]) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
   if (!isJpgOrPng) {
-    message.error('不支持上传该各格式图片，推荐使用jpg和png!')
+    message.error('Unsupported image format. Please use JPG or PNG!')
   }
   const isLt30M = file.size / 1024 / 1024 < 30
   if (!isLt30M) {
-    message.error('图片必须小于30MB!')
+    message.error('Image must be smaller than 30MB!')
   }
   return isJpgOrPng && isLt30M;
 }

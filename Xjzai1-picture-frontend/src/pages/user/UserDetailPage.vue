@@ -3,29 +3,29 @@
     <a-row :gutter="[16, 16]" position="center">
       <!-- 图片信息区 -->
       <a-col >
-        <a-card title="用户信息">
+        <a-card title="User Information">
           <a-descriptions :column="1">
-            <a-descriptions-item label="头像">
+            <a-descriptions-item label="Avatar">
               <a-space>
                 <a-avatar :size="300" :src="user.userAvatar" />
               </a-space>
             </a-descriptions-item>
-            <a-descriptions-item label="用户名">
-              {{ user.userName ?? '匿名用户' }}
+            <a-descriptions-item label="Username">
+              {{ user.userName ?? 'Anonymous User' }}
             </a-descriptions-item>
-            <a-descriptions-item label="账号">
+            <a-descriptions-item label="Account">
               {{ user.userAccount }}
             </a-descriptions-item>
             <a-descriptions-item label="ID">
               {{ user.id }}
             </a-descriptions-item>
-            <a-descriptions-item label="个人简介">
-              {{ user.userProfile ?? '这个人很懒，没有简介呢' }}
+            <a-descriptions-item label="Profile">
+              {{ user.userProfile ?? 'No profile yet' }}
             </a-descriptions-item>
           </a-descriptions>
           <a-space wrap>
             <a-button type="default" @click="doEdit">
-              编辑
+              Edit
               <template #icon>
                 <EditOutlined />
               </template>
@@ -64,10 +64,10 @@ const fetchUserDetail = async () => {
       user.value = res.data.data
       // console.log(res.data.data)
     } else {
-      message.error('获取用户详情失败，' + res.data.message + '，' + res.data.description)
+      message.error('Failed to get user details, ' + res.data.message + ', ' + res.data.description)
     }
   } catch (e: any) {
-    message.error('获取用户详情失败：' + e.message)
+    message.error('Failed to get user details: ' + e.message)
   }
 }
 

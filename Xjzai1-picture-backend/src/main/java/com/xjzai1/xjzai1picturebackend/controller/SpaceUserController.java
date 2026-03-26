@@ -74,7 +74,7 @@ public class SpaceUserController {
         Space space = spaceService.getById(spaceId);
         ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR);
         if (space.getUserId().equals(oldSpaceUser.getUserId())) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "不能删除创建人");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Cannot delete the creator");
         }
         // 操作数据库
         boolean result = spaceUserService.removeById(id);
@@ -137,7 +137,7 @@ public class SpaceUserController {
         Space space = spaceService.getById(spaceId);
         ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR);
         if (space.getUserId().equals(oldSpaceUser.getUserId())) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "不能编辑自己的权限");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Cannot edit your own permissions");
         }
         // 操作数据库
         boolean result = spaceUserService.updateById(spaceUser);

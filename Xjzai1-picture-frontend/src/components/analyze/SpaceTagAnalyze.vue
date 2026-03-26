@@ -1,6 +1,6 @@
 <template>
   <div class="space-tag-analyze">
-    <a-card title="图库标签词云">
+    <a-card title="Picture Tag Word Cloud">
       <v-chart :option="options" style="height: 320px; max-width: 100%;" :loading="loading" />
     </a-card>
   </div>
@@ -39,7 +39,7 @@ const fetchData = async () => {
   if (res.data.code === 0) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false
 }
@@ -53,7 +53,7 @@ const options = computed(() => {
   return {
     tooltip: {
       trigger: 'item',
-      formatter: (params: any) => `${params.name}: ${params.value} 次`,
+      formatter: (params: any) => `${params.name}: ${params.value} times`,
     },
     series: [
       {

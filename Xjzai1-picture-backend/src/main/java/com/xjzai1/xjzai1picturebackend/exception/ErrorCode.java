@@ -3,14 +3,14 @@ package com.xjzai1.xjzai1picturebackend.exception;
 public enum ErrorCode {
 
     SUCCESS(0, "success", ""),
-    PARAMS_ERROR(40000, "请求参数错误", ""),
-    NULL_ERROR(40001, "请求参数为空", ""),
-    NO_LOGIN(40100, "未登录", ""),
-    NO_AUTH(40101, "已登录无权限", ""),
-    FORBIDDEN_ERROR(40300, "禁止访问", ""),
-    NOT_FOUND_ERROR(40400, "请求数据不存在", ""),
-    SYSTEM_ERROR(50000, "系统内异常", ""),
-    OPERATION_ERROR(50001, "操作失败", "");
+    PARAMS_ERROR(40000, "Invalid request parameters", ""),
+    NULL_ERROR(40001, "Request parameters are empty", ""),
+    NO_LOGIN(40100, "Not logged in", ""),
+    NO_AUTH(40101, "Logged in but no permission", ""),
+    FORBIDDEN_ERROR(40300, "Forbidden access", ""),
+    NOT_FOUND_ERROR(40400, "Requested data not found", ""),
+    SYSTEM_ERROR(50000, "System error", ""),
+    OPERATION_ERROR(50001, "Operation failed", "");
 
 
 

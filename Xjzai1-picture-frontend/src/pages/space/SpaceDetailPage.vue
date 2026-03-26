@@ -10,7 +10,7 @@
           target="_blank"
           v-if="canUploadPicture"
         >
-          + 创建图片
+          + Create Picture
         </a-button>
         <a-button
           v-if="space.spaceType === 1 && canManageSpaceUser"
@@ -20,7 +20,7 @@
           :href="`/space/spaceUserManage/${id}`"
           target="_blank"
         >
-          成员管理
+          Member Management
         </a-button>
         <a-button
           v-if="canManageSpaceUser"
@@ -30,7 +30,7 @@
           :href="`/space/analyze?spaceId=${id}`"
           target="_blank"
         >
-          空间分析
+          Space Analytics
         </a-button>
         <a-button
           v-if="canEditPicture"
@@ -38,16 +38,16 @@
           v-model:checked="allChecked"
           @click="doAllSelect"
         >
-          全选图片
+          Select All Pictures
         </a-button>
         <a-button v-if="canEditPicture" :icon="h(EditOutlined)" @click="doBatchEdit">
-          批量编辑
+          Batch Edit
         </a-button>
         <a-button v-if="canDeletePicture" :icon="h(DeleteOutlined)" @click="doBatchDelete">
-          批量删除
+          Batch Delete
         </a-button>
         <a-tooltip
-          :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
+          :title="`Storage used ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
         >
           <a-progress
             type="circle"
@@ -76,7 +76,7 @@
       v-model:current="searchParams.current"
       v-model:pageSize="searchParams.pageSize"
       :total="total"
-      :show-total="() => `图片总数 ${total} / ${space.maxCount}`"
+      :show-total="() => `Total pictures ${total} / ${space.maxCount}`"
       @change="onPageChange"
     />
     <BatchEditPictureModal
@@ -127,10 +127,10 @@ const fetchSpaceDetail = async () => {
     if (res.data.code === 0 && res.data.data) {
       space.value = res.data.data
     } else {
-      message.error('获取空间详情失败，' + res.data.message + '，' + res.data.description)
+          message.error('Failed to fetch space details, ' + res.data.message + ', ' + res.data.description)
     }
   } catch (e: any) {
-    message.error('获取空间详情失败：' + e.message)
+        message.error('Failed to fetch space details: ' + e.message)
   }
 }
 
@@ -185,7 +185,7 @@ const fetchData = async () => {
     // console.log(dataList.value)
     total.value = res.data.data.total ?? 0
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   // 重置选中状态
   newDataList.value = []

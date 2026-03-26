@@ -46,10 +46,10 @@ public class GetImageFirstUrlApi {
                 }
             }
 
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "未找到 url");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "URL not found");
         } catch (Exception e) {
-            log.error("搜索失败", e);
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "搜索失败");
+            log.error("Search failed", e);
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "Search failed");
         }
     }
 
@@ -57,7 +57,7 @@ public class GetImageFirstUrlApi {
         // 请求目标 URL
         String url = "https://graph.baidu.com/s?card_key=&entrance=GENERAL&extUiData[isLogoShow]=1&f=all&isLogoShow=1&session_id=16250747570487381669&sign=1265ce97cd54acd88139901733452612&tpl_from=pc";
         String imageFirstUrl = getImageFirstUrl(url);
-        System.out.println("搜索成功，结果 URL：" + imageFirstUrl);
+        System.out.println("Search succeeded. Result URL: " + imageFirstUrl);
     }
 }
 

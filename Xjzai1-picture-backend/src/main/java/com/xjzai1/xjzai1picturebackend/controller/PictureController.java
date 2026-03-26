@@ -93,7 +93,7 @@ public class PictureController {
             @RequestPart("file") MultipartFile multipartFile,
             PictureUploadRequest pictureUploadRequest,
             HttpServletRequest request) {
-        log.info("接收到的数据: name={}", pictureUploadRequest.getPictureName()); // 检查是否是中文
+        log.info("Received data: name={}", pictureUploadRequest.getPictureName()); // 检查是否是中文
         User loginUser = userService.getLoginUser(request);
         PictureVo pictureVo = pictureService.uploadPicture(multipartFile, pictureUploadRequest, loginUser);
         return ResultUtils.success(pictureVo);
@@ -200,7 +200,7 @@ public class PictureController {
         updateWrapper.eq("id", picture.getId()) // 指定主键条件，批量更新则使用 in 传递多条
                 .eq("space_id", spaceId);      // 补充条件 spaceId=xxx
         boolean result = pictureService.update(picture, updateWrapper);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库更新失败");
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "Failed to update database");
         return ResultUtils.success(true);
 
     }
@@ -237,7 +237,7 @@ public class PictureController {
         queryWrapper.eq("id", id)         // 根据主键 id 查询
                 .eq("space_id", spaceId); // 附加 spaceId 条件
         Picture picture = pictureService.getOne(queryWrapper);
-        ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR, "未找到该数据");
+        ThrowUtils.throwIf(picture == null, ErrorCode.NOT_FOUND_ERROR, "Data not found");
         return ResultUtils.success(picture);
     }
 
@@ -297,7 +297,7 @@ public class PictureController {
             boolean hasPermission = StpKit.SPACE.hasPermission(SpaceUserPermissionConstant.PICTURE_VIEW);
             ThrowUtils.throwIf(!hasPermission, ErrorCode.NO_AUTH);
             space = spaceService.getById(spaceId);
-            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "空间不存在");
+            ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "Space not found");
             // 已经使用Sa-token进行全局鉴权
 //            User loginUser = userService.getLoginUser(request);
 //            pictureService.checkPictureAuth(loginUser, picture);
@@ -458,8 +458,19 @@ public class PictureController {
     @GetMapping("/tag_category")
     public BaseResponse<PictureTagCategory> listPictureTagCategory() {
         PictureTagCategory pictureTagCategory = new PictureTagCategory();
-        List<String> tagList = Arrays.asList("FGO", "蛊真人", "宝可梦", "三丽鸥", "道诡异仙", "无职转生", "火影忍者", "轻松熊", "怪物猎人", "最终幻想");
-        List<String> categoryList = Arrays.asList("动漫", "高清", "表情包", "素材", "海报", "其他");
+        List<String> tagList = Arrays.asList(
+                "FGO",
+                "Gu Zhen Ren",
+                "Pokemon",
+                "Sanrio",
+                "Dao Gui Yi Xian",
+                "Jobless Reincarnation",
+                "Naruto",
+                "Rilakkuma",
+                "Monster Hunter",
+                "Final Fantasy"
+        );
+        List<String> categoryList = Arrays.asList("Anime", "High Quality", "Meme", "Assets", "Posters", "Other");
         pictureTagCategory.setTagList(tagList);
         pictureTagCategory.setCategoryList(categoryList);
         return ResultUtils.success(pictureTagCategory);

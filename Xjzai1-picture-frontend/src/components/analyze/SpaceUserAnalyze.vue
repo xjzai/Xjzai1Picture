@@ -1,11 +1,11 @@
 <template>
   <div class="space-user-analyze">
-    <a-card title="用户上传分析">
+    <a-card title="User Upload Analysis">
       <v-chart :option="options" style="height: 320px" />
       <template #extra>
         <a-space>
           <a-segmented v-model:value="timeDimension" :options="timeDimensionOptions" />
-          <a-input-search v-if="!spaceId" placeholder="请输入用户 id" enter-button="搜索用户" @search="doSearch" />
+          <a-input-search v-if="!spaceId" placeholder="Please enter user id" enter-button="Search user" @search="doSearch" />
         </a-space>
       </template>
     </a-card>
@@ -48,7 +48,7 @@ const fetchData = async () => {
   if (res.data.code === 0) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false
 }
@@ -59,11 +59,11 @@ const options = computed(() => {
 
   return {
     tooltip: { trigger: 'axis' },
-    xAxis: { type: 'category', data: periods, name: '时间区间' },
-    yAxis: { type: 'value', name: '上传数量' },
+    xAxis: { type: 'category', data: periods, name: 'Time Range' },
+    yAxis: { type: 'value', name: 'Upload Count' },
     series: [
       {
-        name: '上传数量',
+        name: 'Upload Count',
         type: 'line',
         data: counts,
         smooth: true, // 平滑折线
@@ -80,15 +80,15 @@ const userId = ref<string>()
 const timeDimension = ref<string>('day')
 const timeDimensionOptions = [
   {
-    label: '日',
+    label: 'Day',
     value: 'day',
   },
   {
-    label: '周',
+    label: 'Week',
     value: 'week',
   },
   {
-    label: '月',
+    label: 'Month',
     value: 'month',
   },
 ]

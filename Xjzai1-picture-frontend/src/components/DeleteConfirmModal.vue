@@ -1,8 +1,8 @@
 <template>
-  <a-modal v-model:visible="visible" title="确认删除" :footer="false" @cancel="closeModal">
+  <a-modal v-model:visible="visible" title="Confirm Delete" :footer="false" @cancel="closeModal">
     <!-- 确认按钮 -->
-    <a-button type="primary" @click="doDelete" danger>确认删除</a-button>
-    <a-button type="primary" @click="closeModal">取消删除</a-button>
+    <a-button type="primary" @click="doDelete" danger>Confirm Delete</a-button>
+    <a-button type="primary" @click="closeModal">Cancel</a-button>
   </a-modal>
 </template>
 
@@ -47,12 +47,12 @@ const doDelete = async () => {
   }
   const res = await deletePictureUsingPost({ id })
   if (res.data.code === 0) {
-    message.success('删除成功')
+    message.success('Deleted successfully')
     closeModal()
     // 让外层刷新
     props.onSuccess?.()
   } else {
-    message.error('删除失败')
+    message.error('Delete failed')
   }
 }
 </script>

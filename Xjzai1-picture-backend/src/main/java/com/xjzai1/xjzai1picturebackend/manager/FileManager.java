@@ -73,8 +73,8 @@ public class FileManager {
             uploadPictureResult.setUrl(cosClientConfig.getHost() + "/" + uploadPath);
             return uploadPictureResult;
         } catch (Exception e) {
-            log.error("图片上传到对象存储失败", e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传失败");
+            log.error("Failed to upload image to object storage", e);
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Upload failed");
         } finally {
             this.deleteTempFile(file);
         }
@@ -86,16 +86,16 @@ public class FileManager {
      * @param multipartFile multipart 文件
      */
     public void validPicture(MultipartFile multipartFile) {
-        ThrowUtils.throwIf(multipartFile == null, ErrorCode.PARAMS_ERROR, "文件不能为空");
+        ThrowUtils.throwIf(multipartFile == null, ErrorCode.PARAMS_ERROR, "File cannot be empty");
         // 1. 校验文件大小
         long fileSize = multipartFile.getSize();
         final long ONE_M = 1024 * 1024L;
-        ThrowUtils.throwIf(fileSize > 15 * ONE_M, ErrorCode.PARAMS_ERROR, "文件大小不能超过 15M");
+        ThrowUtils.throwIf(fileSize > 15 * ONE_M, ErrorCode.PARAMS_ERROR, "File size cannot exceed 15M");
         // 2. 校验文件后缀
         String fileSuffix = FileUtil.getSuffix(multipartFile.getOriginalFilename());
         // 允许上传的文件后缀
         final List<String> ALLOW_FORMAT_LIST = Arrays.asList("jpeg", "jpg", "png", "webp");
-        ThrowUtils.throwIf(!ALLOW_FORMAT_LIST.contains(fileSuffix), ErrorCode.PARAMS_ERROR, "文件类型错误");
+        ThrowUtils.throwIf(!ALLOW_FORMAT_LIST.contains(fileSuffix), ErrorCode.PARAMS_ERROR, "Invalid file type");
     }
 
     /**

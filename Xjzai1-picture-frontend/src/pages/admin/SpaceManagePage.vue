@@ -1,45 +1,45 @@
 <template>
   <div id="spaceManagePage">
     <a-flex justify="space-between">
-      <h2>空间管理</h2>
+      <h2>Space Management</h2>
       <a-space>
-        <a-button type="primary" href="/space/addSpace" target="_blank">+ 创建空间</a-button>
+        <a-button type="primary" href="/space/addSpace" target="_blank">+ Create Space</a-button>
         <a-button type="primary" ghost href="/space/analyze?queryPublic=1" target="_blank">
-          分析公共图库
+          Analyze Public Gallery
         </a-button>
         <a-button type="primary" ghost href="/space/analyze?queryAll=1" target="_blank">
-          分析全空间
+          Analyze All Spaces
         </a-button>
       </a-space>
     </a-flex>
     <div style="margin-bottom: 16px" />
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="空间名称" name="spaceName">
-        <a-input v-model:value="searchParams.spaceName" placeholder="请输入空间名称" allow-clear />
+      <a-form-item label="Space Name" name="spaceName">
+        <a-input v-model:value="searchParams.spaceName" placeholder="Enter space name" allow-clear />
       </a-form-item>
-      <a-form-item label="空间级别" name="spaceLevel">
+      <a-form-item label="Space Level" name="spaceLevel">
         <a-select
           v-model:value="searchParams.spaceLevel"
           :options="SPACE_LEVEL_OPTIONS"
-          placeholder="请输入空间级别"
+          placeholder="Enter space level"
           style="min-width: 180px"
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="空间类别" name="spaceType">
+      <a-form-item label="Space Type" name="spaceType">
         <a-select
           v-model:value="searchParams.spaceType"
           :options="SPACE_TYPE_OPTIONS"
-          placeholder="请输入空间类别"
+          placeholder="Enter space type"
           style="min-width: 180px"
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="用户 id" name="userId">
-        <a-input v-model:value="searchParams.userId" placeholder="请输入用户 id" allow-clear />
+      <a-form-item label="User ID" name="userId">
+        <a-input v-model:value="searchParams.userId" placeholder="Enter user id" allow-clear />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit">搜索</a-button>
+        <a-button type="primary" html-type="submit">Search</a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -59,8 +59,8 @@
         </template>
         <!-- 使用情况 -->
         <template v-if="column.dataIndex === 'spaceUseInfo'">
-          <div>大小：{{ formatSize(record.totalSize) }} / {{ formatSize(record.maxSize) }}</div>
-          <div>数量：{{ record.totalCount }} / {{ record.maxCount }}</div>
+          <div>Size: {{ formatSize(record.totalSize) }} / {{ formatSize(record.maxSize) }}</div>
+          <div>Count: {{ record.totalCount }} / {{ record.maxCount }}</div>
         </template>
         <template v-else-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
@@ -71,10 +71,10 @@
         <template v-else-if="column.key === 'action'">
           <a-space wrap>
             <a-button type="link" :href="`/space/analyze?spaceId=${record.id}`" target="_blank">
-              分析
+              Analyze
             </a-button>
-            <a-button type="link" @click="doUpdate(record.id)">编辑</a-button>
-            <a-button type="link" danger @click="doDelete(record.id)">删除</a-button>
+            <a-button type="link" @click="doUpdate(record.id)">Edit</a-button>
+            <a-button type="link" danger @click="doDelete(record.id)">Delete</a-button>
           </a-space>
         </template>
       </template>
@@ -104,36 +104,36 @@ const columns = [
     width: 80,
   },
   {
-    title: '空间名称',
+    title: 'Space Name',
     dataIndex: 'spaceName',
   },
   {
-    title: '空间级别',
+    title: 'Space Level',
     dataIndex: 'spaceLevel',
   },
   {
-    title: '空间类别',
+    title: 'Space Type',
     dataIndex: 'spaceType',
   },
   {
-    title: '使用情况',
+    title: 'Usage',
     dataIndex: 'spaceUseInfo',
   },
   {
-    title: '用户 id',
+    title: 'User ID',
     dataIndex: 'userId',
     width: 80,
   },
   {
-    title: '创建时间',
+    title: 'Created At',
     dataIndex: 'createTime',
   },
   {
-    title: '编辑时间',
+    title: 'Edited At',
     dataIndex: 'editTime',
   },
   {
-    title: '操作',
+    title: 'Actions',
     key: 'action',
   },
 ]
@@ -161,7 +161,7 @@ const fetchData = async () => {
     total.value = res.data.data.total ?? 0
     // console.log(dataList.value);
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
 }
 
@@ -196,11 +196,11 @@ const doDelete = async (id: string) => {
   }
   const res = await deleteSpaceUsingPost({ id })
   if (res.data.code === 0) {
-    message.success('删除成功')
+    message.success('Deleted successfully')
     // 刷新数据
     await fetchData()
   } else {
-    message.error('删除失败')
+    message.error('Delete failed')
   }
 }
 
@@ -225,18 +225,18 @@ const doUpdate = (id: string) => {
 
 const handleReview = async (record: API.Space, reviewStatus: number) => {
   const reviewMessage =
-    reviewStatus === PIC_REVIEW_STATUS_ENUM.PASS ? '管理员操作通过' : '管理员操作拒绝'
+    reviewStatus === PIC_REVIEW_STATUS_ENUM.PASS ? 'Admin approved' : 'Admin rejected'
   const res = await doSpaceReviewUsingPost({
     id: record.id,
     reviewStatus,
     reviewMessage,
   })
   if (res.data.code === 0) {
-    message.success('审核操作成功')
+    message.success('Review operation successful')
     // 重新获取列表
     fetchData()
   } else {
-    message.error('审核操作失败，' + res.data.message + '，' + res.data.description)
+    message.error('Review operation failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

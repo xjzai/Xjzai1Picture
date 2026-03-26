@@ -71,7 +71,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
         BeanUtils.copyProperties(spaceAddRequest, space);
         // 1. 填充参数默认值
         if (StrUtil.isBlank(space.getSpaceName())) {
-            space.setSpaceName(String.format("%s的空间", loginUser.getUserName()));
+            space.setSpaceName(String.format("%s's Space", loginUser.getUserName()));
         }
         if (spaceAddRequest.getSpaceLevel() == null) {
             space.setSpaceLevel(SpaceLevelEnum.COMMON.getValue());
@@ -88,7 +88,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
         space.setUserId(userId);
         // 3. 校验权限，非管理员只能创建普通级别的空间
         if (space.getSpaceLevel() != SpaceLevelEnum.COMMON.getValue() && !userService.isAdmin(loginUser)) {
-            throw new BusinessException(ErrorCode.NO_AUTH, "无权限创建指定级别的空间");
+            throw new BusinessException(ErrorCode.NO_AUTH, "No permission to create a space of the specified level");
         }
         // 4. 控制同一用户只能创建一个私有空间
         // String lock = String.valueOf(userId).intern();
@@ -101,10 +101,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
                             .eq(Space::getUserId, userId)
                             .eq(Space::getSpaceType, space.getSpaceType())
                             .exists();
-                    ThrowUtils.throwIf(exists, ErrorCode.OPERATION_ERROR, "每个用户只能创建一个空间");
+                    ThrowUtils.throwIf(exists, ErrorCode.OPERATION_ERROR, "Each user can only create one space");
                     // 写入数据库
                     boolean result = this.save(space);
-                    ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库添加失败");
+                    ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "Failed to add to the database");
                     // 如果是团队空间，关联新增团队成员记录
                     if (SpaceTypeEnum.TEAM.getValue() == spaceAddRequest.getSpaceType()) {
                         SpaceUser spaceUser = new SpaceUser();
@@ -112,7 +112,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
                         spaceUser.setUserId(userId);
                         spaceUser.setSpaceRole(SpaceRoleEnum.ADMIN.getValue());
                         result = spaceUserService.save(spaceUser);
-                        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "创建团队成员记录失败");
+                        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "Failed to create the team member record");
                     }
                     // 创建分表
                     dynamicShardingManager.createSpacePictureTable(space);
@@ -205,24 +205,24 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
         // 如果要创建
         if (add) {
             if (StrUtil.isBlank(spaceName)) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间名称不能为空");
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space name cannot be empty");
             }
             if (spaceLevel == null) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间级别不能为空");
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space level cannot be empty");
             }
             if (spaceType == null) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间类型不能为空");
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space type cannot be empty");
             }
         }
         // 修改数据时，如果要改空间级别
         if (spaceLevel != null && spaceLevelEnum == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间级别不存在");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space level does not exist");
         }
         if (StrUtil.isNotBlank(spaceName) && spaceName.length() > 30) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间名称过长");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space name is too long");
         }
         if (spaceType != null && spaceTypeEnum == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "空间类型不存在");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Space type does not exist");
         }
     }
 

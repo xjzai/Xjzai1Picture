@@ -1,12 +1,12 @@
 <template>
-  <a-modal v-model:visible="visible" title="分享图片" :footer="false" @cancel="closeModal">
-    <h4>复制分享链接</h4>
+  <a-modal v-model:visible="visible" title="Share Picture" :footer="false" @cancel="closeModal">
+    <h4>Copy Share Link</h4>
     <a-typography-link copyable>
       <!-- todo 分享页面自己写一个，不然别人没有权限查看分享的页面-->
       {{ link }}
     </a-typography-link>
     <div style="margin-bottom: 16px" />
-    <h4>手机扫码查看</h4>
+    <h4>Scan QR Code to View on Mobile</h4>
     <a-qrcode :value="link" />
   </a-modal>
 </template>
@@ -26,7 +26,7 @@ interface Props {
  * 给组件指定初始值
  */
 const props = withDefaults(defineProps<Props>(), {
-  title: () => '分享',
+  title: () => 'Share',
   link: () => 'https://laoyujianli.com/share/yupi',
 })
 

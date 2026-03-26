@@ -3,50 +3,50 @@
     <a-row :gutter="[16, 16]">
       <!-- 图片展示区 -->
       <a-col :sm="24" :md="16" :xl="18">
-        <a-card title="图片预览">
+        <a-card title="Image Preview">
           <a-image style="max-height: 600px; object-fit: contain" :src="picture.url" />
         </a-card>
       </a-col>
       <!-- 图片信息区 -->
       <a-col :sm="24" :md="8" :xl="6">
-        <a-card title="图片信息">
+        <a-card title="Image Information">
           <a-descriptions :column="1">
-            <a-descriptions-item label="作者">
+            <a-descriptions-item label="Author">
               <a-space>
                 <a-avatar :size="24" :src="picture.user?.userAvatar" />
                 <div>{{ picture.user?.userName }}</div>
               </a-space>
             </a-descriptions-item>
-            <a-descriptions-item label="名称">
-              {{ picture.name ?? '未命名' }}
+            <a-descriptions-item label="Name">
+              {{ picture.name ?? 'Untitled' }}
             </a-descriptions-item>
-            <a-descriptions-item label="简介">
+            <a-descriptions-item label="Introduction">
               {{ picture.introduction ?? '-' }}
             </a-descriptions-item>
-            <a-descriptions-item label="分类">
-              {{ picture.category ?? '默认' }}
+            <a-descriptions-item label="Category">
+              {{ picture.category ?? 'Default' }}
             </a-descriptions-item>
-            <a-descriptions-item label="标签">
+            <a-descriptions-item label="Tags">
               <a-tag v-for="tag in picture.tags" :key="tag">
                 {{ tag }}
               </a-tag>
             </a-descriptions-item>
-            <a-descriptions-item label="格式">
+            <a-descriptions-item label="Format">
               {{ picture.pictureFormat ?? '-' }}
             </a-descriptions-item>
-            <a-descriptions-item label="宽度">
+            <a-descriptions-item label="Width">
               {{ picture.pictureWidth ?? '-' }}
             </a-descriptions-item>
-            <a-descriptions-item label="高度">
+            <a-descriptions-item label="Height">
               {{ picture.pictureHeight ?? '-' }}
             </a-descriptions-item>
-            <a-descriptions-item label="宽高比">
+            <a-descriptions-item label="Aspect Ratio">
               {{ picture.pictureScale ?? '-' }}
             </a-descriptions-item>
-            <a-descriptions-item label="大小">
+            <a-descriptions-item label="Size">
               {{ formatSize(picture.pictureSize) }}
             </a-descriptions-item>
-            <a-descriptions-item label="主色调">
+            <a-descriptions-item label="Primary Color">
               <a-space>
                 {{ picture.pictureColor ?? '-' }}
                 <div
@@ -62,25 +62,25 @@
           </a-descriptions>
           <a-space wrap>
             <a-button type="primary" @click="doDownload">
-              免费下载
+              Free Download
               <template #icon>
                 <DownloadOutlined />
               </template>
             </a-button>
             <a-button type="primary" ghost @click="doShare">
-              分享
+              Share
               <template #icon>
                 <ShareAltOutlined />
               </template>
             </a-button>
             <a-button v-if="canEdit" type="default" @click="doEdit">
-              编辑
+              Edit
               <template #icon>
                 <EditOutlined />
               </template>
             </a-button>
             <a-button v-if="canDelete" danger @click="doDelete">
-              删除
+              Delete
               <template #icon>
                 <DeleteOutlined />
               </template>
@@ -126,10 +126,10 @@ const fetchPictureDetail = async () => {
       picture.value = res.data.data
       // console.log(res.data.data)
     } else {
-      message.error('获取图片详情失败，' + res.data.message + '，' + res.data.description)
+      message.error('Failed to fetch picture details, ' + res.data.message + ', ' + res.data.description)
     }
   } catch (e: any) {
-    message.error('获取图片详情失败：' + e.message)
+    message.error('Failed to fetch picture details: ' + e.message)
   }
 }
 
@@ -165,9 +165,9 @@ const doDelete = async () => {
   }
   const res = await deletePictureUsingPost({ id })
   if (res.data.code === 0) {
-    message.success('删除成功')
+    message.success('Deleted successfully')
   } else {
-    message.error('删除失败')
+    message.error('Delete failed')
   }
 }
 

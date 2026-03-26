@@ -1,23 +1,23 @@
 <template>
   <div id="userUpdatePage">
-    <h2 style="margin-bottom: 16px">个人信息修改</h2>
+    <h2 style="margin-bottom: 16px">Edit Personal Information</h2>
     <a-form layout="vertical" :model="userForm" @finish="handleSubmit">
-      <a-form-item label="头像" name="userAvatar">
-        <a-input v-model:value="userForm.userAvatar" placeholder="请输入头像url" />
+      <a-form-item label="Avatar" name="userAvatar">
+        <a-input v-model:value="userForm.userAvatar" placeholder="Please enter avatar URL" />
       </a-form-item>
-      <a-form-item label="用户名" name="userName">
-        <a-input v-model:value="userForm.userName" placeholder="请输入用户名" />
+      <a-form-item label="Username" name="userName">
+        <a-input v-model:value="userForm.userName" placeholder="Please enter your username" />
       </a-form-item>
-      <a-form-item label="个人简介" name="userProfile">
+      <a-form-item label="Profile" name="userProfile">
         <a-textarea
           v-model:value="userForm.userProfile"
-          placeholder="请输入个人简介"
+          placeholder="Please enter your profile"
           :autoSize="{ minRows: 5, maxRows: 5 }"
           allowClear
         />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%"> 提交</a-button>
+        <a-button type="primary" html-type="submit" style="width: 100%"> Submit</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -54,10 +54,10 @@ const handleSubmit = async (values: any) => {
     ...values,
   })
   if (res.data.code === 0 && res.data.data) {
-    message.success('修改成功')
+    message.success('Update successful')
     router.back()
   } else {
-    message.error('修改失败，' + res.data.message + '，' + res.data.description)
+    message.error('Update failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 </script>

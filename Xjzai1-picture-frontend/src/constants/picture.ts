@@ -5,9 +5,9 @@ export const PIC_REVIEW_STATUS_ENUM = {
 }
 
 export const PIC_REVIEW_STATUS_MAP = {
-  0: '待审核',
-  1: '通过',
-  2: '拒绝',
+  0: 'Pending Review',
+  1: 'Approved',
+  2: 'Rejected',
 }
 
 export const PIC_REVIEW_STATUS_OPTIONS = Object.keys(PIC_REVIEW_STATUS_MAP).map((key) => {
@@ -26,11 +26,11 @@ export const PICTURE_EDIT_MESSAGE_TYPE_ENUM = {
 };
 
 export const PICTURE_EDIT_MESSAGE_TYPE_MAP = {
-  INFO: '发送通知',
-  ERROR: '发送错误',
-  ENTER_EDIT: '进入编辑状态',
-  EXIT_EDIT: '退出编辑状态',
-  EDIT_ACTION: '执行编辑操作',
+  INFO: 'Notification',
+  ERROR: 'Error',
+  ENTER_EDIT: 'Enter Edit Mode',
+  EXIT_EDIT: 'Exit Edit Mode',
+  EDIT_ACTION: 'Edit Action',
 };
 
 export const PICTURE_EDIT_ACTION_ENUM = {
@@ -41,10 +41,10 @@ export const PICTURE_EDIT_ACTION_ENUM = {
 };
 
 export const PICTURE_EDIT_ACTION_MAP = {
-  ZOOM_IN: '放大操作',
-  ZOOM_OUT: '缩小操作',
-  ROTATE_LEFT: '左旋操作',
-  ROTATE_RIGHT: '右旋操作',
+  ZOOM_IN: 'Zoom In',
+  ZOOM_OUT: 'Zoom Out',
+  ROTATE_LEFT: 'Rotate Left',
+  ROTATE_RIGHT: 'Rotate Right',
 };
 
 

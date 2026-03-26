@@ -1,14 +1,14 @@
 <template>
   <div id="userManagePage">
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="账号">
-        <a-input v-model:value="searchParams.userAccount" placeholder="输入账号" />
+      <a-form-item label="Account">
+        <a-input v-model:value="searchParams.userAccount" placeholder="Enter account" />
       </a-form-item>
-      <a-form-item label="用户名">
-        <a-input v-model:value="searchParams.userName" placeholder="输入用户名" />
+      <a-form-item label="Username">
+        <a-input v-model:value="searchParams.userName" placeholder="Enter username" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit">搜索</a-button>
+        <a-button type="primary" html-type="submit">Search</a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -23,17 +23,17 @@
         </template>
         <template v-else-if="column.dataIndex === 'userRole'">
           <div v-if="record.userRole === 'admin'">
-            <a-tag color="green">管理员</a-tag>
+            <a-tag color="green">Admin</a-tag>
           </div>
           <div v-else>
-            <a-tag color="blue">普通用户</a-tag>
+            <a-tag color="blue">User</a-tag>
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
         </template>
         <template v-else-if="column.key === 'action'">
-          <a-button danger @click="doDelete(record.id)">删除</a-button>
+          <a-button danger @click="doDelete(record.id)">Delete</a-button>
         </template>
       </template>
     </a-table>
@@ -48,35 +48,35 @@ import dayjs from 'dayjs'
 
 const columns = [
   {
-    title: '用户ID',
+    title: 'User ID',
     dataIndex: 'id',
   },
   {
-    title: '账号',
+    title: 'Account',
     dataIndex: 'userAccount',
   },
   {
-    title: '用户名',
+    title: 'Username',
     dataIndex: 'userName',
   },
   {
-    title: '头像',
+    title: 'Avatar',
     dataIndex: 'userAvatar',
   },
   {
-    title: '个人简介',
+    title: 'Profile',
     dataIndex: 'userProfile',
   },
   {
-    title: '用户权限',
+    title: 'Role',
     dataIndex: 'userRole',
   },
   {
-    title: '创建时间',
+    title: 'Create Time',
     dataIndex: 'createTime',
   },
   {
-    title: '选项',
+    title: 'Actions',
     key: 'action',
   },
 ]
@@ -100,7 +100,7 @@ const fetchData = async () => {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   // console.log(searchParams);
 }
@@ -112,7 +112,7 @@ const pagination = computed(() => {
     pageSize: searchParams.pageSize ?? 10,
     total: total.value,
     showSizeChanger: true,
-    showTotal: (total) => `共 ${total} 条`,
+    showTotal: (total) => `Total ${total} items`,
   }
 })
 
@@ -136,11 +136,11 @@ const doDelete = async (id: string) => {
   }
   const res = await deleteUserUsingPost({ id })
   if (res.data.code === 0) {
-    message.success('删除成功')
+    message.success('Deleted successfully')
     // 刷新数据
     await fetchData()
   } else {
-    message.error('删除失败')
+    message.error('Delete failed')
   }
 }
 

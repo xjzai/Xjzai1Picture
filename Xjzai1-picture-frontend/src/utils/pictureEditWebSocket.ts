@@ -75,7 +75,7 @@ export default class PictureEditWebSocket {
       this.socket.send(JSON.stringify(message))
       // console.log('消息已发送:', message)
     } else {
-      console.error('WebSocket 未连接，无法发送消息:', message)
+      console.error('WebSocket is not connected. Cannot send message:', message)
     }
   }
 

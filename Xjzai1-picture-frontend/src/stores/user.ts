@@ -4,7 +4,7 @@ import { getLoginUserUsingGet } from '@/api/userController'
 
 export const useLoginUserStore = defineStore("loginUser", () => {
   const loginUser = ref<API.UserLoginVo>({
-    userName: "未登录",
+    userName: "Logged out",
   });
 
   async function fetchLoginUser() {

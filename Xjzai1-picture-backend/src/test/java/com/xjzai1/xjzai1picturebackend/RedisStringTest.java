@@ -28,22 +28,22 @@ public class RedisStringTest {
         // 1. 测试新增或更新操作
         valueOps.set(key, value);
         String storedValue = valueOps.get(key);
-        assertEquals(value, storedValue, "存储的值与预期不一致");
+        assertEquals(value, storedValue, "Stored value does not match expected");
 
         // 2. 测试修改操作
         String updatedValue = "updatedValue";
         valueOps.set(key, updatedValue);
         storedValue = valueOps.get(key);
-        assertEquals(updatedValue, storedValue, "更新后的值与预期不一致");
+        assertEquals(updatedValue, storedValue, "Updated value does not match expected");
 
         // 3. 测试查询操作
         storedValue = valueOps.get(key);
-        assertNotNull(storedValue, "查询的值为空");
-        assertEquals(updatedValue, storedValue, "查询的值与预期不一致");
+        assertNotNull(storedValue, "Query returned a null value");
+        assertEquals(updatedValue, storedValue, "Query result does not match expected");
 
         // 4. 测试删除操作
         stringRedisTemplate.delete(key);
         storedValue = valueOps.get(key);
-        assertNull(storedValue, "删除后的值不为空");
+        assertNull(storedValue, "Value is not null after deletion");
     }
 }

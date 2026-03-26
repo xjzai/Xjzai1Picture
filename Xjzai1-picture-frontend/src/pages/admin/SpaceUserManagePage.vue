@@ -1,12 +1,12 @@
 <template>
   <div id="spaceManagePage">
     <a-flex justify="space-between">
-      <h2>空间用户管理</h2>
+      <h2>Space User Management</h2>
     </a-flex>
     <div style="margin-bottom: 16px" />
     <a-form layout="inline" :model="formData" @finish="handleSubmit">
-      <a-form-item label="用户 id" name="userId">
-        <a-input v-model:value="formData.userId" placeholder="请输入用户 id" allow-clear />
+      <a-form-item label="User ID" name="userId">
+        <a-input v-model:value="formData.userId" placeholder="Enter user id" allow-clear />
       </a-form-item>
 <!--      <a-form-item label="账号" name="userAccount">-->
 <!--        <a-input v-model:value="formData.userAccount" placeholder="请输入账号" allow-clear />-->
@@ -15,7 +15,7 @@
 <!--        <a-input v-model:value="formData.username" placeholder="请输入用户名" allow-clear />-->
 <!--      </a-form-item>-->
       <a-form-item>
-        <a-button type="primary" html-type="submit">添加用户</a-button>
+        <a-button type="primary" html-type="submit">Add User</a-button>
       </a-form-item>
     </a-form>
     <a-table :columns="columns" :data-source="dataList">
@@ -38,7 +38,7 @@
         </template>
         <template v-else-if="column.key === 'action'">
           <a-space wrap>
-            <a-button type="link" danger @click="doDelete(record.id)">删除</a-button>
+            <a-button type="link" danger @click="doDelete(record.id)">Delete</a-button>
           </a-space>
         </template>
       </template>
@@ -64,19 +64,19 @@ import {
 // 表格列
 const columns = [
   {
-    title: '用户',
+    title: 'User',
     dataIndex: 'userInfo',
   },
   {
-    title: '角色',
+    title: 'Role',
     dataIndex: 'spaceRole',
   },
   {
-    title: '创建时间',
+    title: 'Created At',
     dataIndex: 'createTime',
   },
   {
-    title: '操作',
+    title: 'Actions',
     key: 'action',
   },
 ]
@@ -103,7 +103,7 @@ const fetchData = async () => {
   if (res.data.data) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
 }
 
@@ -119,9 +119,9 @@ const editSpaceRole = async (value, record) => {
     spaceRole: value,
   })
   if (res.data.code === 0) {
-    message.success('修改成功')
+    message.success('Updated successfully')
   } else {
-    message.error('修改失败，' + res.data.message + '，' + res.data.description)
+    message.error('Update failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 
@@ -132,11 +132,11 @@ const doDelete = async (id: string) => {
   }
   const res = await deleteSpaceUserUsingPost({ id })
   if (res.data.code === 0) {
-    message.success('删除成功')
+    message.success('Deleted successfully')
     // 刷新数据
     fetchData()
   } else {
-    message.error('删除失败')
+    message.error('Delete failed')
   }
 }
 
@@ -154,11 +154,11 @@ const handleSubmit = async () => {
     ...formData,
   })
   if (res.data.code === 0) {
-    message.success('添加成功')
+    message.success('User added successfully')
     // 刷新数据
     fetchData()
   } else {
-    message.error('添加失败，' + res.data.message + '，' + res.data.description)
+    message.error('Add failed, ' + res.data.message + ', ' + res.data.description)
   }
 }
 

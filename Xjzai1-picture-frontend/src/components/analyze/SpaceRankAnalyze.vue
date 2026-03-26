@@ -1,6 +1,6 @@
 <template>
   <div class="space-rank-analyze">
-    <a-card title="空间使用排行">
+    <a-card title="Space Usage Ranking">
       <v-chart :option="options" style="height: 320px" />
     </a-card>
   </div>
@@ -38,7 +38,7 @@ const fetchData = async () => {
   if (res.data.code === 0) {
     dataList.value = res.data.data ?? []
   } else {
-    message.error('获取数据失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to fetch data, ' + res.data.message + ', ' + res.data.description)
   }
   loading.value = false
 }
@@ -55,11 +55,11 @@ const options = computed(() => {
     },
     yAxis: {
       type: 'value',
-      name: '空间使用量 (MB)',
+      name: 'Space Usage (MB)',
     },
     series: [
       {
-        name: '空间使用量 (MB)',
+        name: 'Space Usage (MB)',
         type: 'bar',
         data: usageData,
         itemStyle: {

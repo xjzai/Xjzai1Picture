@@ -116,7 +116,7 @@ public class StpInterfaceImpl implements StpInterface, UserConstant {
         // 获取 userId
         User loginUser = (User) StpKit.SPACE.getSessionByLoginId(loginId).get(USER_LOGIN_STATE);
         if (loginUser == null) {
-            throw new BusinessException(ErrorCode.NO_AUTH, "用户未登录");
+            throw new BusinessException(ErrorCode.NO_AUTH, "User not logged in");
         }
         Long userId = loginUser.getId();
         // 优先从上下文中获取 SpaceUser 对象
@@ -129,7 +129,7 @@ public class StpInterfaceImpl implements StpInterface, UserConstant {
         if (spaceUserId != null) {
             spaceUser = spaceUserService.getById(spaceUserId);
             if (spaceUser == null) {
-                throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "未找到空间用户信息");
+                throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "Space user information not found");
             }
             // 取出当前登录用户对应的 spaceUser
             SpaceUser loginSpaceUser = spaceUserService.lambdaQuery()
@@ -156,7 +156,7 @@ public class StpInterfaceImpl implements StpInterface, UserConstant {
                     .select(Picture::getId, Picture::getSpaceId, Picture::getUserId)
                     .one();
             if (picture == null) {
-                throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "未找到图片信息");
+                throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "Picture information not found");
             }
             spaceId = picture.getSpaceId();
             // 公共图库，仅本人或管理员可操作
@@ -172,7 +172,7 @@ public class StpInterfaceImpl implements StpInterface, UserConstant {
         // 获取 Space 对象
         Space space = spaceService.getById(spaceId);
         if (space == null) {
-            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "未找到空间信息");
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "Space information not found");
         }
         // 根据 Space 类型判断权限
         if (space.getSpaceType() == SpaceTypeEnum.PRIVATE.getValue()) {

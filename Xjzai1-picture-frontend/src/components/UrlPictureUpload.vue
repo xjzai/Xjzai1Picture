@@ -2,8 +2,8 @@
   <div class="urlPictureUpload">
     <div class="url-picture-upload">
       <a-input-group compact style="margin-bottom: 16px">
-        <a-input v-model:value="fileUrl" style="width: calc(100% - 120px)" placeholder="请输入图片 URL" />
-        <a-button type="primary" :loading="loading" @click="handleUpload" style="width: 120px">提交</a-button>
+        <a-input v-model:value="fileUrl" style="width: calc(100% - 120px)" placeholder="Please enter image URL" />
+        <a-button type="primary" :loading="loading" @click="handleUpload" style="width: 120px">Submit</a-button>
       </a-input-group>
       <div class="img-wrapper">
         <img v-if="picture?.url" :src="picture?.url" alt="avatar" />
@@ -43,14 +43,14 @@ const handleUpload = async () => {
     }
     const res = await uploadPictureByUrlUsingPost(params)
     if (res.data.code === 0 && res.data.data) {
-      message.success('图片上传成功')
+      message.success('Picture uploaded successfully')
       // 将上传成功的图片信息传递给父组件
       props.onSuccess?.(res.data.data)
     } else {
-      message.error('图片上传失败，' + res.data.message + '，' + res.data.description)
+      message.error('Picture upload failed, ' + res.data.message + ', ' + res.data.description)
     }
   } catch (error) {
-    message.error('图片上传失败')
+    message.error('Picture upload failed')
   } finally {
     loading.value = false
   }
@@ -60,11 +60,11 @@ const handleUpload = async () => {
 const beforeUpload = (file: UploadProps['fileList'][number]) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
   if (!isJpgOrPng) {
-    message.error('不支持上传该各格式图片，推荐使用jpg和png!')
+    message.error('Unsupported image format. Please use JPG or PNG!')
   }
   const isLt30M = file.size / 1024 / 1024 < 30
   if (!isLt30M) {
-    message.error('图片必须小于30MB!')
+    message.error('Image must be smaller than 30MB!')
   }
   return isJpgOrPng && isLt15M;
 }

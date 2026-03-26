@@ -89,10 +89,10 @@ public class SpaceController {
         // 再删除
 //        boolean deleteCosResult = pictureService.deletePictures(pictureList, loginUser);
         boolean deleteCosResult = pictureService.deletePictures(pictureList, spaceId, loginUser);
-        ThrowUtils.throwIf(!deleteCosResult, ErrorCode.OPERATION_ERROR, "图片资源删除失败");
+        ThrowUtils.throwIf(!deleteCosResult, ErrorCode.OPERATION_ERROR, "Failed to delete image resources");
         // 操作数据库
         boolean result = spaceService.removeById(spaceId);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库删除失败");
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "Failed to delete from database");
         return ResultUtils.success(true);
     }
 
@@ -118,7 +118,7 @@ public class SpaceController {
         ThrowUtils.throwIf(oldSpace == null, ErrorCode.NOT_FOUND_ERROR);
         // 操作数据库
         boolean result = spaceService.updateById(space);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "数据库更新失败");
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "Failed to update database");
         return ResultUtils.success(true);
 
     }
@@ -131,7 +131,7 @@ public class SpaceController {
     public BaseResponse<Space> getSpaceById(long id, HttpServletRequest request) {
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
         Space space = spaceService.getById(id);
-        ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "未找到该数据");
+        ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR, "Data not found");
         return ResultUtils.success(space);
     }
 

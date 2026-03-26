@@ -2,7 +2,7 @@
   <a-modal
     class="image-cropper"
     v-model:visible="visible"
-    title="编辑图片"
+    title="Edit Picture"
     :footer="false"
     @cancel="closeModal"
   >
@@ -20,20 +20,29 @@
     <!-- 协同编辑操作 -->
     <div class="image-edit-actions" v-if="isTeamSpace">
       <a-space>
-        <a-button v-if="editingUser" disabled> {{ editingUser.userName }}正在编辑</a-button>
-        <a-button v-if="canEnterEdit" type="primary" ghost @click="enterEdit">进入编辑</a-button>
-        <a-button v-if="canExitEdit" danger ghost @click="exitEdit">退出编辑</a-button>
+        <a-button v-if="editingUser" disabled>
+          {{ editingUser.userName }} is editing
+        </a-button>
+        <a-button v-if="canEnterEdit" type="primary" ghost @click="enterEdit">Enter Edit</a-button>
+        <a-button v-if="canExitEdit" danger ghost @click="exitEdit">Exit Edit</a-button>
       </a-space>
     </div>
     <div style="margin-bottom: 16px" />
     <!-- 图片操作 -->
     <div class="image-cropper-actions">
       <a-space>
-        <a-button @click="rotateLeft" :disabled="!canEdit">逆时针旋转</a-button>
-        <a-button @click="rotateRight" :disabled="!canEdit">顺时针旋转</a-button>
-        <a-button @click="changeScale(1)" :disabled="!canEdit">放大</a-button>
-        <a-button @click="changeScale(-1)" :disabled="!canEdit">缩小</a-button>
-        <a-button type="primary" :loading="loading" :disabled="!canEdit" @click="handleConfirm">确认</a-button>
+        <a-button @click="rotateLeft" :disabled="!canEdit">Rotate Left</a-button>
+        <a-button @click="rotateRight" :disabled="!canEdit">Rotate Right</a-button>
+        <a-button @click="changeScale(1)" :disabled="!canEdit">Zoom In</a-button>
+        <a-button @click="changeScale(-1)" :disabled="!canEdit">Zoom Out</a-button>
+        <a-button
+          type="primary"
+          :loading="loading"
+          :disabled="!canEdit"
+          @click="handleConfirm"
+        >
+          Confirm
+        </a-button>
       </a-space>
     </div>
   </a-modal>
@@ -114,15 +123,15 @@ const handleUpload = async ({ file }: any) => {
     // console.log(params)
     const res = await uploadPictureUsingPost(params, {}, file)
     if (res.data.code === 0 && res.data.data) {
-      message.success('图片上传成功')
+      message.success('Picture uploaded successfully')
       // 将上传成功的图片信息传递给父组件
       props.onSuccess?.(res.data.data)
       closeModal();
     } else {
-      message.error('图片上传失败，' + res.data.message + '，' + res.data.description)
+      message.error('Picture upload failed, ' + res.data.message + ', ' + res.data.description)
     }
   } catch (error) {
-    message.error('图片上传失败')
+    message.error('Picture upload failed')
   } finally {
     loading.value = false
   }

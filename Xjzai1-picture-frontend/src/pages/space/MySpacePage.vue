@@ -1,6 +1,6 @@
 <template>
   <div id="mySpace">
-    <p>正在跳转，请稍候...</p>
+    <p>Redirecting, please wait...</p>
   </div>
 </template>
 
@@ -35,10 +35,10 @@ const checkUserSpace = async () => {
       router.replace(`/space/${space.id}`)
     } else {
       router.replace('/space/addSpace')
-      message.warn('请先创建空间')
+      message.warn('Please create a space first')
     }
   } else {
-    message.error('加载我的空间失败，' + res.data.message + '，' + res.data.description)
+    message.error('Failed to load my spaces, ' + res.data.message + ', ' + res.data.description)
   }
 }
 
