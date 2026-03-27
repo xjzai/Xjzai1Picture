@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <a-modal v-model:visible="visible" title="Batch Edit Pictures" :footer="false" @cancel="closeModal">
     <a-typography-paragraph type="secondary">* Only applies to pictures on the current page</a-typography-paragraph>

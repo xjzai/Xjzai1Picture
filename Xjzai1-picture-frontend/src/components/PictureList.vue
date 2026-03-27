@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div class="picture-list" style="margin-top: 10px">
     <!--    <button @click="new">点击传递数据</button>-->

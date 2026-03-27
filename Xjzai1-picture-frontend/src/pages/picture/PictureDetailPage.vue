@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div class="pictureDetailPage">
     <a-row :gutter="[16, 16]">

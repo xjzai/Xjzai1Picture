@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div id="homePage">
     <!-- 搜索框 -->

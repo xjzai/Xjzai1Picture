@@ -1,3 +1,7 @@
+/**
+ * 作者: Liu Jiaxu (B01051251)
+ */
+
 package com.xjzai1.xjzai1picturebackend.common;
 
 import com.xjzai1.xjzai1picturebackend.exception.ErrorCode;

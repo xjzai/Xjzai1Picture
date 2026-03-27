@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div id="addPicturePage">
     <h2 style="margin-bottom: 16px">

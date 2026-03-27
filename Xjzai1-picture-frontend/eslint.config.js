@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 import pluginVue from 'eslint-plugin-vue'
 import vueTsEslintConfig from '@vue/eslint-config-typescript'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'

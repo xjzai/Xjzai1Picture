@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getLoginUserUsingGet } from '@/api/userController'

@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import VueCropper from 'vue-cropper';

@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div id="searchPicturePage">
     <h2 style="margin-bottom: 16px">Search by Image</h2>

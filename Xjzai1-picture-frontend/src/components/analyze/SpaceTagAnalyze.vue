@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div class="space-tag-analyze">
     <a-card title="Picture Tag Word Cloud">

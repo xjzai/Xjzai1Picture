@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div id="spaceDetailPage">
     <!-- 空间信息 -->

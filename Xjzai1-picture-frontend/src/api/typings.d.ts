@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 declare namespace API {
   type BaseResponseBoolean_ = {
     code?: number

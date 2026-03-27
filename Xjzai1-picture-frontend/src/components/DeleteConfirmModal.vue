@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <a-modal v-model:visible="visible" title="Confirm Delete" :footer="false" @cancel="closeModal">
     <!-- 确认按钮 -->

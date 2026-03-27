@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <a-modal v-model:visible="visible" title="Share Picture" :footer="false" @cancel="closeModal">
     <h4>Copy Share Link</h4>

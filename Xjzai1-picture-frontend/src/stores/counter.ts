@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 

@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 export const PIC_REVIEW_STATUS_ENUM = {
   REVIEWING: 0,
   PASS: 1,

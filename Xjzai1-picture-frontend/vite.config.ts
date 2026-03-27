@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'

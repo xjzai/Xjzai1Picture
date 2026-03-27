@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div id="userLoginPage">
     <h2 class="title">xjz Cloud Gallery - User Login</h2>

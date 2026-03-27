@@ -1,3 +1,5 @@
+<!-- 作者: Liu Jiaxu (B01051251) -->
+
 <template>
   <div id="globalSider">
     <a-menu mode="inline" v-model:selectedKeys="current" :items="menuItems" @click="doMenuClick" class="menu" />

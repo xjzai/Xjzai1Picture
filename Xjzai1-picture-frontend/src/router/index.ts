@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/pages/HomePage.vue'
 import UserManagePage from '@/pages/admin/UserManagePage.vue'

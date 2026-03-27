@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 export default class PictureEditWebSocket {
   private pictureId: number
   private spaceId: number

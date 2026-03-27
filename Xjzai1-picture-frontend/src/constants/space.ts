@@ -1,3 +1,5 @@
+// 作者: Liu Jiaxu (B01051251)
+
 export const SPACE_LEVEL_ENUM = {
   COMMON: 0,
   PROFESSIONAL: 1,
