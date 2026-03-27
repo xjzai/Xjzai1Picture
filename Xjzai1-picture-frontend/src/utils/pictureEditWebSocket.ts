@@ -20,8 +20,8 @@ export default class PictureEditWebSocket {
     // todo url 有问题
     const DEV_BASE_URL = "ws://localhost:8123";
     const PROD_BASE_URL = "ws://www.xjzai1.top";
-    const url = `${PROD_BASE_URL}/api/ws/picture/edit?pictureId=${this.pictureId}&spaceId=${this.spaceId}`
-    // const url = `${DEV_BASE_URL}/api/ws/picture/edit?pictureId=${this.pictureId}&spaceId=${this.spaceId}`
+    // const url = `${PROD_BASE_URL}/api/ws/picture/edit?pictureId=${this.pictureId}&spaceId=${this.spaceId}`
+    const url = `${DEV_BASE_URL}/api/ws/picture/edit?pictureId=${this.pictureId}&spaceId=${this.spaceId}`
     this.socket = new WebSocket(url)
 
     // 设置携带 cookie

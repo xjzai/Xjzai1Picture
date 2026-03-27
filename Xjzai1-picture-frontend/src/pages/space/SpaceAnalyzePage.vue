@@ -1,9 +1,9 @@
 <template>
   <div id="spaceAnalyzePage">
     <h2>
-      空间图库分析 -
-      <span v-if="queryAll"> 全部空间 </span>
-      <span v-else-if="queryPublic"> 公共图库 </span>
+      Space Gallery Analysis -
+      <span v-if="queryAll"> All Spaces </span>
+      <span v-else-if="queryPublic"> Public Gallery </span>
       <span v-else>
       <a :href="`/space/${spaceId}`" target="_blank">id：{{ spaceId }}</a>
     </span>
